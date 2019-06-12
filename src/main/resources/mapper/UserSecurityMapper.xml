@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bangxuan.xxw.dao.UserSecurityMapper" >
+  <resultMap id="BaseResultMap" type="com.bangxuan.xxw.entity.UserSecurity" >
+    <constructor >
+      <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="password" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="saltvalue" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="authcode" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sendauthcode_time" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="thirdparty_type" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="thirdparty_openid" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="phonenumber" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="email" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="type" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="register_ip" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_code, password, saltvalue, authcode, sendauthcode_time, thirdparty_type, 
+    thirdparty_openid, create_time, phonenumber, email, type, status, register_ip
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from gy_user_security
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from gy_user_security
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.bangxuan.xxw.entity.UserSecurity" >
+    insert into gy_user_security (id, user_code, password, 
+      saltvalue, authcode, sendauthcode_time, 
+      thirdparty_type, thirdparty_openid, create_time, 
+      phonenumber, email, type, 
+      status, register_ip)
+    values (#{id,jdbcType=VARCHAR}, #{userCode,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{saltvalue,jdbcType=VARCHAR}, #{authcode,jdbcType=VARCHAR}, #{sendauthcodeTime,jdbcType=VARCHAR}, 
+      #{thirdpartyType,jdbcType=CHAR}, #{thirdpartyOpenid,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
+      #{phonenumber,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{type,jdbcType=CHAR}, 
+      #{status,jdbcType=CHAR}, #{registerIp,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bangxuan.xxw.entity.UserSecurity" >
+    insert into gy_user_security
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="user_code != null" >
+        user_code,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="saltvalue != null" >
+        saltvalue,
+      </if>
+      <if test="authcode != null" >
+        authcode,
+      </if>
+      <if test="sendauthcode_time != null" >
+        sendauthcode_time,
+      </if>
+      <if test="thirdparty_type != null" >
+        thirdparty_type,
+      </if>
+      <if test="thirdparty_openid != null" >
+        thirdparty_openid,
+      </if>
+        create_time,
+      <if test="phonenumber != null" >
+        phonenumber,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="register_ip != null" >
+        register_ip,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="user_code != null" >
+        #{user_code,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="saltvalue != null" >
+        #{saltvalue,jdbcType=VARCHAR},
+      </if>
+      <if test="authcode != null" >
+        #{authcode,jdbcType=VARCHAR},
+      </if>
+      <if test="sendauthcode_time != null" >
+        date_format(now(),'%Y-%m-%d %H:%i:%s'),
+      </if>
+      <if test="thirdparty_type != null" >
+        #{thirdparty_type,jdbcType=CHAR},
+      </if>
+      <if test="thirdparty_openid != null" >
+        #{thirdparty_openid,jdbcType=VARCHAR},
+      </if>
+
+      date_format(now(),'%Y-%m-%d %H:%i:%s'),
+
+      <if test="phonenumber != null" >
+        #{phonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="register_ip != null" >
+        #{register_ip,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPhoneSelective" parameterType="com.bangxuan.xxw.entity.UserSecurity" >
+    update gy_user_security
+    <set >
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="saltvalue != null" >
+        saltvalue = #{saltvalue,jdbcType=VARCHAR},
+      </if>
+      <if test="authcode != null" >
+        authcode = #{authcode,jdbcType=VARCHAR},
+      </if>
+      <if test="sendauthcode_time != null" >
+        sendauthcode_time = date_format(now(),'%Y-%m-%d %H:%i:%s'),
+      </if>
+      <if test="thirdparty_type != null" >
+        thirdparty_type = #{thirdparty_type,jdbcType=CHAR},
+      </if>
+      <if test="thirdparty_openid != null" >
+        thirdparty_openid = #{thirdparty_openid,jdbcType=VARCHAR},
+      </if>
+
+      <if test="phonenumber != null" >
+        phonenumber = #{phonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="register_ip != null" >
+        register_ip = #{register_ip,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where phonenumber = #{phonenumber,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bangxuan.xxw.entity.UserSecurity" >
+    update gy_user_security
+    set user_code = #{userCode,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      saltvalue = #{saltvalue,jdbcType=VARCHAR},
+      authcode = #{authcode,jdbcType=VARCHAR},
+      sendauthcode_time = #{sendauthcodeTime,jdbcType=VARCHAR},
+      thirdparty_type = #{thirdpartyType,jdbcType=CHAR},
+      thirdparty_openid = #{thirdpartyOpenid,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      phonenumber = #{phonenumber,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      type = #{type,jdbcType=CHAR},
+      status = #{status,jdbcType=CHAR},
+      register_ip = #{registerIp,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

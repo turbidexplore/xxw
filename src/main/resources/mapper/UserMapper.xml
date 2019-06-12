@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bangxuan.xxw.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.bangxuan.xxw.entity.User" >
+    <constructor >
+      <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="nikename" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="headportrait" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="city" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="college" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="company_address" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="company_area" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="company_city" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="company_country" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="company_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="company_province" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="degree" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="major" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="mobile" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="position" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="telephone" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, nikename, name, headportrait, city, create_time, college, company_address, 
+    company_area, company_city, company_country, company_name, company_province, degree, 
+    major, mobile, position, telephone
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from gy_user
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from gy_user
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.bangxuan.xxw.entity.User" >
+    insert into gy_user (id, code, nikename, 
+      name, headportrait, city, 
+      create_time, college, company_address, 
+      company_area, company_city, company_country, 
+      company_name, company_province, degree, 
+      major, mobile, position, 
+      telephone)
+    values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{nikename,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{headportrait,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+        date_format(now(),'%Y-%m-%d %H:%i:%s'), #{college,jdbcType=VARCHAR}, #{company_address,jdbcType=VARCHAR},
+      #{company_area,jdbcType=VARCHAR}, #{company_city,jdbcType=VARCHAR}, #{company_country,jdbcType=VARCHAR},
+      #{company_name,jdbcType=VARCHAR}, #{company_province,jdbcType=VARCHAR}, #{degree,jdbcType=VARCHAR},
+      #{major,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{position,jdbcType=VARCHAR}, 
+      #{telephone,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bangxuan.xxw.entity.User" >
+    insert into gy_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="nikename != null" >
+        nikename,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="headportrait != null" >
+        headportrait,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="college != null" >
+        college,
+      </if>
+      <if test="companyAddress != null" >
+        company_address,
+      </if>
+      <if test="companyArea != null" >
+        company_area,
+      </if>
+      <if test="companyCity != null" >
+        company_city,
+      </if>
+      <if test="companyCountry != null" >
+        company_country,
+      </if>
+      <if test="companyName != null" >
+        company_name,
+      </if>
+      <if test="companyProvince != null" >
+        company_province,
+      </if>
+      <if test="degree != null" >
+        degree,
+      </if>
+      <if test="major != null" >
+        major,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="position != null" >
+        position,
+      </if>
+      <if test="telephone != null" >
+        telephone,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="nikename != null" >
+        #{nikename,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="headportrait != null" >
+        #{headportrait,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="college != null" >
+        #{college,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddress != null" >
+        #{companyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="companyArea != null" >
+        #{companyArea,jdbcType=VARCHAR},
+      </if>
+      <if test="companyCity != null" >
+        #{companyCity,jdbcType=VARCHAR},
+      </if>
+      <if test="companyCountry != null" >
+        #{companyCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null" >
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyProvince != null" >
+        #{companyProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="degree != null" >
+        #{degree,jdbcType=VARCHAR},
+      </if>
+      <if test="major != null" >
+        #{major,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null" >
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bangxuan.xxw.entity.User" >
+    update gy_user
+    <set >
+      <if test="nikename != null" >
+        nikename = #{nikename,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="headportrait != null" >
+        headportrait = #{headportrait,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null" >
+        create_time = #{create_time,jdbcType=VARCHAR},
+      </if>
+      <if test="college != null" >
+        college = #{college,jdbcType=VARCHAR},
+      </if>
+      <if test="company_address != null" >
+        company_address = #{company_address,jdbcType=VARCHAR},
+      </if>
+      <if test="company_area != null" >
+        company_area = #{company_area,jdbcType=VARCHAR},
+      </if>
+      <if test="company_city != null" >
+        company_city = #{company_city,jdbcType=VARCHAR},
+      </if>
+      <if test="company_country != null" >
+        company_country = #{company_country,jdbcType=VARCHAR},
+      </if>
+      <if test="company_name != null" >
+        company_name = #{company_name,jdbcType=VARCHAR},
+      </if>
+      <if test="company_province != null" >
+        company_province = #{company_province,jdbcType=VARCHAR},
+      </if>
+      <if test="degree != null" >
+        degree = #{degree,jdbcType=VARCHAR},
+      </if>
+      <if test="major != null" >
+        major = #{major,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null" >
+        position = #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bangxuan.xxw.entity.User" >
+    update gy_user
+    set code = #{code,jdbcType=VARCHAR},
+      nikename = #{nikename,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      headportrait = #{headportrait,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      college = #{college,jdbcType=VARCHAR},
+      company_address = #{companyAddress,jdbcType=VARCHAR},
+      company_area = #{companyArea,jdbcType=VARCHAR},
+      company_city = #{companyCity,jdbcType=VARCHAR},
+      company_country = #{companyCountry,jdbcType=VARCHAR},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      company_province = #{companyProvince,jdbcType=VARCHAR},
+      degree = #{degree,jdbcType=VARCHAR},
+      major = #{major,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      position = #{position,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bangxuan.xxw.dao.CompanyMapper" >
+  <resultMap id="BaseResultMap" type="com.bangxuan.xxw.entity.Company" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="company_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="phone" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="pwd" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="salt" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="company_en" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="company_desc" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="company_law" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="company_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="company_addr" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="company_createtime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="company_capital" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="company_url" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="company_url1" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="contact_man" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="contact_phone" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="contact_phone1" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="contact_email" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="unified_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="file_3d" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="file_2d" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="video" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="paper_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="electron_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="level" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="add_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="add_user" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="disabled" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="last_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="last_user" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="country" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="province" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="city" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="district" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="logo" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, company_name, phone, pwd, salt, company_en, company_desc, company_law, company_code, 
+    company_addr, company_createtime, company_capital, company_url, company_url1, contact_man, 
+    contact_phone, contact_phone1, contact_email, unified_code, file_3d, file_2d, video, 
+    paper_code, electron_code, level, add_time, add_user, disabled, last_time, last_user, 
+    country, province, city, district, logo
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from gy_company
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from gy_company
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.bangxuan.xxw.entity.Company" >
+    insert into gy_company (id, company_name, phone, 
+      pwd, salt, company_en, 
+      company_desc, company_law, company_code, 
+      company_addr, company_createtime, company_capital, 
+      company_url, company_url1, contact_man, 
+      contact_phone, contact_phone1, contact_email, 
+      unified_code, file_3d, file_2d, 
+      video, paper_code, electron_code, 
+      level, add_time, add_user, 
+      disabled, last_time, last_user, 
+      country, province, city, 
+      district, logo)
+    values (#{id,jdbcType=INTEGER}, #{companyName,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{pwd,jdbcType=VARCHAR}, #{salt,jdbcType=CHAR}, #{companyEn,jdbcType=VARCHAR}, 
+      #{companyDesc,jdbcType=VARCHAR}, #{companyLaw,jdbcType=VARCHAR}, #{companyCode,jdbcType=VARCHAR}, 
+      #{companyAddr,jdbcType=VARCHAR}, #{companyCreatetime,jdbcType=TIMESTAMP}, #{companyCapital,jdbcType=DECIMAL}, 
+      #{companyUrl,jdbcType=VARCHAR}, #{companyUrl1,jdbcType=VARCHAR}, #{contactMan,jdbcType=VARCHAR}, 
+      #{contactPhone,jdbcType=VARCHAR}, #{contactPhone1,jdbcType=VARCHAR}, #{contactEmail,jdbcType=VARCHAR}, 
+      #{unifiedCode,jdbcType=VARCHAR}, #{file3d,jdbcType=VARCHAR}, #{file2d,jdbcType=VARCHAR}, 
+      #{video,jdbcType=VARCHAR}, #{paperCode,jdbcType=VARCHAR}, #{electronCode,jdbcType=VARCHAR}, 
+      #{level,jdbcType=TINYINT}, #{addTime,jdbcType=TIMESTAMP}, #{addUser,jdbcType=VARCHAR}, 
+      #{disabled,jdbcType=TINYINT}, #{lastTime,jdbcType=TIMESTAMP}, #{lastUser,jdbcType=VARCHAR}, 
+      #{country,jdbcType=INTEGER}, #{province,jdbcType=INTEGER}, #{city,jdbcType=INTEGER}, 
+      #{district,jdbcType=INTEGER}, #{logo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bangxuan.xxw.entity.Company" >
+    insert into gy_company
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="companyName != null" >
+        company_name,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="pwd != null" >
+        pwd,
+      </if>
+      <if test="salt != null" >
+        salt,
+      </if>
+      <if test="companyEn != null" >
+        company_en,
+      </if>
+      <if test="companyDesc != null" >
+        company_desc,
+      </if>
+      <if test="companyLaw != null" >
+        company_law,
+      </if>
+      <if test="companyCode != null" >
+        company_code,
+      </if>
+      <if test="companyAddr != null" >
+        company_addr,
+      </if>
+      <if test="companyCreatetime != null" >
+        company_createtime,
+      </if>
+      <if test="companyCapital != null" >
+        company_capital,
+      </if>
+      <if test="companyUrl != null" >
+        company_url,
+      </if>
+      <if test="companyUrl1 != null" >
+        company_url1,
+      </if>
+      <if test="contactMan != null" >
+        contact_man,
+      </if>
+      <if test="contactPhone != null" >
+        contact_phone,
+      </if>
+      <if test="contactPhone1 != null" >
+        contact_phone1,
+      </if>
+      <if test="contactEmail != null" >
+        contact_email,
+      </if>
+      <if test="unifiedCode != null" >
+        unified_code,
+      </if>
+      <if test="file3d != null" >
+        file_3d,
+      </if>
+      <if test="file2d != null" >
+        file_2d,
+      </if>
+      <if test="video != null" >
+        video,
+      </if>
+      <if test="paperCode != null" >
+        paper_code,
+      </if>
+      <if test="electronCode != null" >
+        electron_code,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="addUser != null" >
+        add_user,
+      </if>
+      <if test="disabled != null" >
+        disabled,
+      </if>
+      <if test="lastTime != null" >
+        last_time,
+      </if>
+      <if test="lastUser != null" >
+        last_user,
+      </if>
+      <if test="country != null" >
+        country,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="district != null" >
+        district,
+      </if>
+      <if test="logo != null" >
+        logo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="companyName != null" >
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null" >
+        #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null" >
+        #{salt,jdbcType=CHAR},
+      </if>
+      <if test="companyEn != null" >
+        #{companyEn,jdbcType=VARCHAR},
+      </if>
+      <if test="companyDesc != null" >
+        #{companyDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="companyLaw != null" >
+        #{companyLaw,jdbcType=VARCHAR},
+      </if>
+      <if test="companyCode != null" >
+        #{companyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddr != null" >
+        #{companyAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="companyCreatetime != null" >
+        #{companyCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="companyCapital != null" >
+        #{companyCapital,jdbcType=DECIMAL},
+      </if>
+      <if test="companyUrl != null" >
+        #{companyUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="companyUrl1 != null" >
+        #{companyUrl1,jdbcType=VARCHAR},
+      </if>
+      <if test="contactMan != null" >
+        #{contactMan,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPhone != null" >
+        #{contactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPhone1 != null" >
+        #{contactPhone1,jdbcType=VARCHAR},
+      </if>
+      <if test="contactEmail != null" >
+        #{contactEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="unifiedCode != null" >
+        #{unifiedCode,jdbcType=VARCHAR},
+      </if>
+      <if test="file3d != null" >
+        #{file3d,jdbcType=VARCHAR},
+      </if>
+      <if test="file2d != null" >
+        #{file2d,jdbcType=VARCHAR},
+      </if>
+      <if test="video != null" >
+        #{video,jdbcType=VARCHAR},
+      </if>
+      <if test="paperCode != null" >
+        #{paperCode,jdbcType=VARCHAR},
+      </if>
+      <if test="electronCode != null" >
+        #{electronCode,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addUser != null" >
+        #{addUser,jdbcType=VARCHAR},
+      </if>
+      <if test="disabled != null" >
+        #{disabled,jdbcType=TINYINT},
+      </if>
+      <if test="lastTime != null" >
+        #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUser != null" >
+        #{lastUser,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null" >
+        #{country,jdbcType=INTEGER},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=INTEGER},
+      </if>
+      <if test="district != null" >
+        #{district,jdbcType=INTEGER},
+      </if>
+      <if test="logo != null" >
+        #{logo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bangxuan.xxw.entity.Company" >
+    update gy_company
+    <set >
+      <if test="company_name != null" >
+        company_name = #{company_name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null" >
+        pwd = #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null" >
+        salt = #{salt,jdbcType=CHAR},
+      </if>
+      <if test="company_en != null" >
+        company_en = #{company_en,jdbcType=VARCHAR},
+      </if>
+      <if test="company_desc != null" >
+        company_desc = #{company_desc,jdbcType=VARCHAR},
+      </if>
+      <if test="company_law != null" >
+        company_law = #{company_law,jdbcType=VARCHAR},
+      </if>
+      <if test="company_code != null" >
+        company_code = #{company_code,jdbcType=VARCHAR},
+      </if>
+      <if test="company_addr != null" >
+        company_addr = #{company_addr,jdbcType=VARCHAR},
+      </if>
+      <if test="company_createtime != null" >
+        company_createtime = #{company_createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="company_capital != null" >
+        company_capital = #{ company_capital,jdbcType=VARCHAR},
+      </if>
+      <if test="company_url != null" >
+        company_url = #{company_url,jdbcType=VARCHAR},
+      </if>
+      <if test="company_url1 != null" >
+        company_url1 = #{company_url1,jdbcType=VARCHAR},
+      </if>
+      <if test="contact_man != null" >
+        contact_man = #{contact_man,jdbcType=VARCHAR},
+      </if>
+      <if test="contact_phone != null" >
+        contact_phone = #{contact_phone,jdbcType=VARCHAR},
+      </if>
+      <if test="contact_phone1 != null" >
+        contact_phone1 = #{contact_phone1,jdbcType=VARCHAR},
+      </if>
+      <if test="contact_email != null" >
+        contact_email = #{contact_email,jdbcType=VARCHAR},
+      </if>
+      <if test="unified_code != null" >
+        unified_code = #{unified_code,jdbcType=VARCHAR},
+      </if>
+      <if test="file_3d != null" >
+        file_3d = #{file_3d,jdbcType=VARCHAR},
+      </if>
+      <if test="file_2d != null" >
+        file_2d = #{file_2d,jdbcType=VARCHAR},
+      </if>
+      <if test="video != null" >
+        video = #{video,jdbcType=VARCHAR},
+      </if>
+      <if test="paper_code != null" >
+        paper_code = #{paper_code,jdbcType=VARCHAR},
+      </if>
+      <if test="electron_code != null" >
+        electron_code = #{electron_code,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=TINYINT},
+      </if>
+      <if test="add_time != null" >
+        add_time = #{add_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="add_user != null" >
+        add_user = #{add_user,jdbcType=VARCHAR},
+      </if>
+      <if test="disabled != null" >
+        disabled = #{disabled,jdbcType=TINYINT},
+      </if>
+      <if test="last_time != null" >
+        last_time = #{last_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="last_user != null" >
+        last_user = #{last_user,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null" >
+        country = #{country,jdbcType=INTEGER},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=INTEGER},
+      </if>
+      <if test="district != null" >
+        district = #{district,jdbcType=INTEGER},
+      </if>
+      <if test="logo != null" >
+        logo = #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bangxuan.xxw.entity.Company" >
+    update gy_company
+    set company_name = #{companyName,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      pwd = #{pwd,jdbcType=VARCHAR},
+      salt = #{salt,jdbcType=CHAR},
+      company_en = #{companyEn,jdbcType=VARCHAR},
+      company_desc = #{companyDesc,jdbcType=VARCHAR},
+      company_law = #{companyLaw,jdbcType=VARCHAR},
+      company_code = #{companyCode,jdbcType=VARCHAR},
+      company_addr = #{companyAddr,jdbcType=VARCHAR},
+      company_createtime = #{companyCreatetime,jdbcType=TIMESTAMP},
+      company_capital = #{companyCapital,jdbcType=DECIMAL},
+      company_url = #{companyUrl,jdbcType=VARCHAR},
+      company_url1 = #{companyUrl1,jdbcType=VARCHAR},
+      contact_man = #{contactMan,jdbcType=VARCHAR},
+      contact_phone = #{contactPhone,jdbcType=VARCHAR},
+      contact_phone1 = #{contactPhone1,jdbcType=VARCHAR},
+      contact_email = #{contactEmail,jdbcType=VARCHAR},
+      unified_code = #{unifiedCode,jdbcType=VARCHAR},
+      file_3d = #{file3d,jdbcType=VARCHAR},
+      file_2d = #{file2d,jdbcType=VARCHAR},
+      video = #{video,jdbcType=VARCHAR},
+      paper_code = #{paperCode,jdbcType=VARCHAR},
+      electron_code = #{electronCode,jdbcType=VARCHAR},
+      level = #{level,jdbcType=TINYINT},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      add_user = #{addUser,jdbcType=VARCHAR},
+      disabled = #{disabled,jdbcType=TINYINT},
+      last_time = #{lastTime,jdbcType=TIMESTAMP},
+      last_user = #{lastUser,jdbcType=VARCHAR},
+      country = #{country,jdbcType=INTEGER},
+      province = #{province,jdbcType=INTEGER},
+      city = #{city,jdbcType=INTEGER},
+      district = #{district,jdbcType=INTEGER},
+      logo = #{logo,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

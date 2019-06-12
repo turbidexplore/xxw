@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bangxuan.xxw.dao.NewsMapper" >
+  <resultMap id="BaseResultMap" type="com.bangxuan.xxw.entity.News" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="class_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="title" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="content" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="news_desc" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="vist" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="is_hot" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="is_new" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="add_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="add_user" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="disabled" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="last_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="last_user" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, class_id, title, content, news_desc, vist, is_hot, is_new, add_time, add_user, 
+    disabled, last_time, last_user
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from gy_news
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from gy_news
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.bangxuan.xxw.entity.News" >
+    insert into gy_news (id, class_id, title, 
+      content, news_desc, vist, 
+      is_hot, is_new, add_time, 
+      add_user, disabled, last_time, 
+      last_user)
+    values (#{id,jdbcType=INTEGER}, #{classId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{newsDesc,jdbcType=VARCHAR}, #{vist,jdbcType=INTEGER}, 
+      #{isHot,jdbcType=TINYINT}, #{isNew,jdbcType=TINYINT}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{addUser,jdbcType=VARCHAR}, #{disabled,jdbcType=TINYINT}, #{lastTime,jdbcType=TIMESTAMP}, 
+      #{lastUser,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bangxuan.xxw.entity.News" >
+    insert into gy_news
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="classId != null" >
+        class_id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="newsDesc != null" >
+        news_desc,
+      </if>
+      <if test="vist != null" >
+        vist,
+      </if>
+      <if test="isHot != null" >
+        is_hot,
+      </if>
+      <if test="isNew != null" >
+        is_new,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="addUser != null" >
+        add_user,
+      </if>
+      <if test="disabled != null" >
+        disabled,
+      </if>
+      <if test="lastTime != null" >
+        last_time,
+      </if>
+      <if test="lastUser != null" >
+        last_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="classId != null" >
+        #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="newsDesc != null" >
+        #{newsDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="vist != null" >
+        #{vist,jdbcType=INTEGER},
+      </if>
+      <if test="isHot != null" >
+        #{isHot,jdbcType=TINYINT},
+      </if>
+      <if test="isNew != null" >
+        #{isNew,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addUser != null" >
+        #{addUser,jdbcType=VARCHAR},
+      </if>
+      <if test="disabled != null" >
+        #{disabled,jdbcType=TINYINT},
+      </if>
+      <if test="lastTime != null" >
+        #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUser != null" >
+        #{lastUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bangxuan.xxw.entity.News" >
+    update gy_news
+    <set >
+      <if test="classId != null" >
+        class_id = #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="newsDesc != null" >
+        news_desc = #{newsDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="vist != null" >
+        vist = #{vist,jdbcType=INTEGER},
+      </if>
+      <if test="isHot != null" >
+        is_hot = #{isHot,jdbcType=TINYINT},
+      </if>
+      <if test="isNew != null" >
+        is_new = #{isNew,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addUser != null" >
+        add_user = #{addUser,jdbcType=VARCHAR},
+      </if>
+      <if test="disabled != null" >
+        disabled = #{disabled,jdbcType=TINYINT},
+      </if>
+      <if test="lastTime != null" >
+        last_time = #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUser != null" >
+        last_user = #{lastUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bangxuan.xxw.entity.News" >
+    update gy_news
+    set class_id = #{classId,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      news_desc = #{newsDesc,jdbcType=VARCHAR},
+      vist = #{vist,jdbcType=INTEGER},
+      is_hot = #{isHot,jdbcType=TINYINT},
+      is_new = #{isNew,jdbcType=TINYINT},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      add_user = #{addUser,jdbcType=VARCHAR},
+      disabled = #{disabled,jdbcType=TINYINT},
+      last_time = #{lastTime,jdbcType=TIMESTAMP},
+      last_user = #{lastUser,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

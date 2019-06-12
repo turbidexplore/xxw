@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bangxuan.xxw.dao.FeedbackMapper" >
+  <resultMap id="BaseResultMap" type="com.bangxuan.xxw.entity.Feedback" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="title" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="context" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="image" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="phonenumer" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="email" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, title, context, image, phonenumer, email, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from gy_feedback
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from gy_feedback
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.bangxuan.xxw.entity.Feedback" >
+    insert into gy_feedback ( title, context,image, phonenumer, email, create_time,status)
+    values (#{title,jdbcType=VARCHAR}, #{context,jdbcType=VARCHAR},
+      #{image,jdbcType=VARCHAR}, #{phonenumer,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      date_format(now(),'%Y-%m-%d %H:%i:%s'),0)
+  </insert>
+  <insert id="insertSelective" parameterType="com.bangxuan.xxw.entity.Feedback" >
+    insert into gy_feedback
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="context != null" >
+        context,
+      </if>
+      <if test="image != null" >
+        image,
+      </if>
+      <if test="phonenumer != null" >
+        phonenumer,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="create_time != null" >
+        create_time
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="context != null" >
+        #{context,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null" >
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenumer != null" >
+        #{phonenumer,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null" >
+        date_format(now(),'%Y-%m-%d %H:%i:%s')
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bangxuan.xxw.entity.Feedback" >
+    update gy_feedback
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="context != null" >
+        context = #{context,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null" >
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenumer != null" >
+        phonenumer = #{phonenumer,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="create_time != null" >
+        create_time = #{create_time,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bangxuan.xxw.entity.Feedback" >
+    update gy_feedback
+    set title = #{title,jdbcType=VARCHAR},
+      context = #{context,jdbcType=VARCHAR},
+      image = #{image,jdbcType=VARCHAR},
+      phonenumer = #{phonenumer,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      create_time = #{create_time,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

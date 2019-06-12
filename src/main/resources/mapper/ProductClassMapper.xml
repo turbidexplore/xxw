@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bangxuan.xxw.dao.ProductClassMapper">
+  <resultMap id="BaseResultMap" type="com.bangxuan.xxw.entity.ProductClass">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="pid" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="class_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="class_en" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="level" javaType="java.lang.Byte" jdbcType="TINYINT" />
+      <arg column="route_path" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="class_index" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="logo" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="file_2d" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="class_desc" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="industry" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="pcount" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="clcount" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="company_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="brand_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="pids" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="pc_position" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="parent_ids" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="isauth" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, pid, class_name, class_en, level, route_path, class_index, logo, file_2d, class_desc, 
+    industry, pcount, clcount, company_id, brand_id, pids, pc_position
+  </sql>
+  <select id="selectByCondition"  resultType="com.bangxuan.xxw.entity.ProductClass" parameterType="com.bangxuan.xxw.entity.ProductClass" >
+    select * from gy_product_class
+    where 0=0
+    <trim>
+      <if test="id != null" >
+        and id= #{id,jdbcType=INTEGER}
+      </if>
+      <if test="pid != null" >
+        and pid= #{pid,jdbcType=INTEGER}
+      </if>
+      <if test="class_name != null" >
+        and class_name= #{class_name,jdbcType=VARCHAR}
+      </if>
+
+      <if test="level != null" >
+        and level= #{level,jdbcType=TINYINT}
+      </if>
+      <if test="industry != null" >
+        and industry= #{industry,jdbcType=VARCHAR}
+      </if>
+      <if test="pids!= null" >
+        and pids= #{pids,jdbcType=INTEGER}
+      </if>
+
+      <if test="pcount != null" >
+        and pcount= #{pcount,jdbcType=INTEGER}
+      </if>
+      <if test="clcount != null" >
+        and clcount=#{clcount,jdbcType=INTEGER}
+      </if>
+      <if test="company_id != null" >
+        and  company_id= #{company_id,jdbcType=INTEGER}
+      </if>
+      <if test="brand_id != null" >
+        and brand_id= #{brand_id,jdbcType=INTEGER}
+      </if>
+        order by pinyin_index asc
+    </trim>
+  </select>
+
+
+  <select id="selectByConditionAuth"  resultType="com.alibaba.fastjson.JSONObject" parameterType="com.alibaba.fastjson.JSONObject" >
+    select a.*,x.level as isauth from gy_product_class a
+    LEFT join gy_company x on a.company_id=x.id
+    LEFT join gy_company_brand b on a.brand_id=b.id
+    LEFT join gy_sys_area c on b.province_id=c.id
+    LEFT join gy_sys_area d on b.country_id=d.id
+    where  a.pid= #{pid,jdbcType=INTEGER}
+    <trim>
+      <if test="brand_id != null" >
+        and a.brand_id in
+         <foreach item="item" index="index" collection="brand_id" open="(" close=")" separator=",">
+        #{item}
+      </foreach>
+      </if>
+      <if test="area_name != null" >
+        and c.area_name in
+        <foreach item="item" index="index" collection="area_name" open="(" close=")" separator=",">
+          #{item}
+        </foreach>
+         or d.area_name in
+        <foreach item="item" index="index" collection="area_name" open="(" close=")" separator=",">
+          #{item}
+        </foreach>
+          and a.pid= #{pid,jdbcType=INTEGER}
+        <if test="brand_id != null" >
+          and a.brand_id in
+          <foreach item="item" index="index" collection="brand_id" open="(" close=")" separator=",">
+            #{item}
+          </foreach>
+        </if>
+      </if>
+      order by x.isauth desc
+    </trim>
+  </select>
+</mapper>

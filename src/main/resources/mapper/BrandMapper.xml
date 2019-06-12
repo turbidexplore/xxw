@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bangxuan.xxw.dao.BrandMapper" >
+  <resultMap id="BaseResultMap" type="com.bangxuan.xxw.entity.Brand" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="company_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="brand_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="country_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="add_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="add_user" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="disabled" jdbcType="TINYINT" javaType="java.lang.Byte" />
+      <arg column="last_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="last_user" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="province_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="city_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="brand_logo" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, company_id, brand_name, country_id, add_time, add_user, disabled, last_time, 
+    last_user, province_id, city_id, brand_logo
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from gy_company_brand
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from gy_company_brand
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.bangxuan.xxw.entity.Brand" >
+    insert into gy_company_brand (id, company_id, brand_name, 
+      country_id, add_time, add_user, 
+      disabled, last_time, last_user, 
+      province_id, city_id, brand_logo
+      )
+    values (#{id,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}, #{brandName,jdbcType=VARCHAR}, 
+      #{countryId,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, #{addUser,jdbcType=VARCHAR}, 
+      #{disabled,jdbcType=TINYINT}, #{lastTime,jdbcType=TIMESTAMP}, #{lastUser,jdbcType=VARCHAR}, 
+      #{provinceId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, #{brandLogo,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.bangxuan.xxw.entity.Brand" >
+    insert into gy_company_brand
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="brandName != null" >
+        brand_name,
+      </if>
+      <if test="countryId != null" >
+        country_id,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="addUser != null" >
+        add_user,
+      </if>
+      <if test="disabled != null" >
+        disabled,
+      </if>
+      <if test="lastTime != null" >
+        last_time,
+      </if>
+      <if test="lastUser != null" >
+        last_user,
+      </if>
+      <if test="provinceId != null" >
+        province_id,
+      </if>
+      <if test="cityId != null" >
+        city_id,
+      </if>
+      <if test="brandLogo != null" >
+        brand_logo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="brandName != null" >
+        #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="countryId != null" >
+        #{countryId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addUser != null" >
+        #{addUser,jdbcType=VARCHAR},
+      </if>
+      <if test="disabled != null" >
+        #{disabled,jdbcType=TINYINT},
+      </if>
+      <if test="lastTime != null" >
+        #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUser != null" >
+        #{lastUser,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null" >
+        #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="brandLogo != null" >
+        #{brandLogo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bangxuan.xxw.entity.Brand" >
+    update gy_company_brand
+    <set >
+      <if test="company_id != null" >
+        company_id = #{company_id,jdbcType=INTEGER},
+      </if>
+      <if test="brand_name != null" >
+        brand_name = #{brand_name,jdbcType=VARCHAR},
+      </if>
+      <if test="country_id != null" >
+        country_id = #{country_id,jdbcType=INTEGER},
+      </if>
+      <if test="add_time != null" >
+        add_time = #{add_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="add_user != null" >
+        add_user = #{add_user,jdbcType=VARCHAR},
+      </if>
+      <if test="disabled != null" >
+        disabled = #{disabled,jdbcType=TINYINT},
+      </if>
+      <if test="last_time != null" >
+        last_time = #{last_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="last_user != null" >
+        last_user = #{last_user,jdbcType=VARCHAR},
+      </if>
+      <if test="province_id != null" >
+        province_id = #{province_id,jdbcType=INTEGER},
+      </if>
+      <if test="city_id != null" >
+        city_id = #{city_id,jdbcType=INTEGER},
+      </if>
+      <if test="brand_logo != null" >
+        brand_logo = #{brand_logo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bangxuan.xxw.entity.Brand" >
+    update gy_company_brand
+    set company_id = #{companyId,jdbcType=INTEGER},
+      brand_name = #{brandName,jdbcType=VARCHAR},
+      country_id = #{countryId,jdbcType=INTEGER},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      add_user = #{addUser,jdbcType=VARCHAR},
+      disabled = #{disabled,jdbcType=TINYINT},
+      last_time = #{lastTime,jdbcType=TIMESTAMP},
+      last_user = #{lastUser,jdbcType=VARCHAR},
+      province_id = #{provinceId,jdbcType=INTEGER},
+      city_id = #{cityId,jdbcType=INTEGER},
+      brand_logo = #{brandLogo,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

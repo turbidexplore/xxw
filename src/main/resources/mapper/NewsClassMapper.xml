@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bangxuan.xxw.dao.NewsClassMapper" >
+  <resultMap id="BaseResultMap" type="com.bangxuan.xxw.entity.NewsClass" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="pid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="class_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="class_desc" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="class_index" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, pid, class_name, class_desc, class_index
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from gy_news_class
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from gy_news_class
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.bangxuan.xxw.entity.NewsClass" >
+    insert into gy_news_class (id, pid, class_name, 
+      class_desc, class_index)
+    values (#{id,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{className,jdbcType=VARCHAR}, 
+      #{classDesc,jdbcType=VARCHAR}, #{classIndex,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bangxuan.xxw.entity.NewsClass" >
+    insert into gy_news_class
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="className != null" >
+        class_name,
+      </if>
+      <if test="classDesc != null" >
+        class_desc,
+      </if>
+      <if test="classIndex != null" >
+        class_index,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="className != null" >
+        #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="classDesc != null" >
+        #{classDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="classIndex != null" >
+        #{classIndex,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bangxuan.xxw.entity.NewsClass" >
+    update gy_news_class
+    <set >
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="className != null" >
+        class_name = #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="classDesc != null" >
+        class_desc = #{classDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="classIndex != null" >
+        class_index = #{classIndex,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bangxuan.xxw.entity.NewsClass" >
+    update gy_news_class
+    set pid = #{pid,jdbcType=INTEGER},
+      class_name = #{className,jdbcType=VARCHAR},
+      class_desc = #{classDesc,jdbcType=VARCHAR},
+      class_index = #{classIndex,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
