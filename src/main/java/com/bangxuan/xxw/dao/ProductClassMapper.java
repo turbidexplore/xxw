@@ -56,10 +56,10 @@ public interface ProductClassMapper {
     @Select("select id,level from gy_product_class a\n" +
             "where 0<(select count(*) from gy_product_class b where b.pid=a.id  and b.logo !='') and\n" +
             "    (select count(*) from gy_product_class b where b.pid=a.id  and b.logo !='')=(select count(*) from gy_product_class c where c.pid=a.id )\n" +
-            "    and a.level =#{level} and a.logo is null and a.id not in (select taskno from user_task) order by a.brand_id desc LIMIT 0,1\n" )
+            "    and a.level =#{level} and a.logo is null and a.id not in (select taskno from user_task) order by a.brand_id asc LIMIT 0,1\n" )
     List<JSONObject> selectProductClassNotLogo(@Param("level")String level);
 
-    @Select("select id,level from gy_product_class a where a.level =#{level} and a.logo is null and a.id not in (select taskno from user_task) order by a.brand_id desc LIMIT 0,1 ")
+    @Select("select id,level from gy_product_class a where a.level =#{level} and a.logo is null and a.id not in (select taskno from user_task) order by a.brand_id asc LIMIT 0,1 ")
     List<JSONObject> selectProductClassNotLogob(@Param("level")String level);
 
     @Update("update gy_product_class set logo=#{url} where id=#{id}")

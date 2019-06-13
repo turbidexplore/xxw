@@ -53,5 +53,4 @@ public class XxwApplication {
         SpringApplication.run(XxwApplication.class, args);
     }
 
-
 }

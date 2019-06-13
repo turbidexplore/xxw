@@ -168,13 +168,177 @@
                 <span id="add_user"></span>
               </div>
             </div>
-            <button type="button" class="mb-2 btn btn-sm btn-primary mr-1" onclick="savetable()">发送邮件</button>
-            <div id="example"></div>
+            <div class="row">
+              <div class="col-lg-5"  id="level5space" >
+                <div class="card card-small mb-4 pt-3" id="myp" >
+                  <div class="card-header border-bottom">
+                    <h4 class="m-0" id="classname" style="font-weight: bold;color: red;">图文编辑(粘贴赋值)</h4>
+                  </div>
+                  <div class="card-header border-bottom text-center">
+                    <h4 class="mb-0" id="company_name_title">图片粘贴处</h4>
+                    <div class="mb-3 mx-auto">
+                      <input type="hidden" id="images_url">
+                      <img  src="" alt="无图片" width="60%" id="images"> </div>
+                  </div>
+                  <div class="card-header border-bottom text-center">
+                    <h4 class="mb-0">文字编辑处</h4>
+                    <div class="mb-3 mx-auto">
+
+                      <textarea style="width: 80%;height: 100px;" id="word"></textarea> </div>
+                  </div>
+                  <div class="card-header border-bottom text-center">
+                    <h4 class="mb-0">链接编辑处</h4>
+                    <div class="mb-3 mx-auto">
+
+                      <input type="text" style="width: 70%;" id="url"/> </div>
+                  </div>
+                </div>
+
+                <button type="button" class="mb-2 btn btn-sm btn-primary mr-1" onclick="savetable()">发送邮件</button>
+                <div id="example"></div>
+              </div>
+              <div class="col-lg-7" id="context">
+                <div style="width:100%;max-width: 750px;margin:0 auto;background-color: #f3f6f6">
+                  <section style="width:100%;margin:0 auto 20px;">
+                    <!-- <h2 class="section-title">通栏banner图片</h2> -->
+                    <div style="width:100%;">
+                      <img style="width:100%;" onclick="changeimg(this)" src="https://www.lingjianbang.com/_nuxt/img/c38f959.jpg" alt="您正在查找这样的信息吗？">
+                    </div>
+                  </section>
+                  <section style="width:100%;margin:0 auto 20px;">
+                    <h2 style="font-weight: bold;font-size: 18px; line-height: 32px;color: #f70;" onclick="changeword(this)">您在找这些零件吗？</h2>
+                    <div class="first-list">
+                      <h4 style="display: block;margin:0 auto;text-align: center;font-size: 13px;line-height: 32px;color: #555;">
+                        <i>———— </i> <span  onclick="changeword(this)">轻松下载各分类零件</span> <i> ————</i>
+                      </h4>
+                      <ul style="list-style: none;display: flex;margin:0;padding:0">
+                        <li style="flex: 1;margin-bottom:10px;list-style: none;">
+                          <div style="width:80%;margin:0 auto;">
+                            <img style="width: 100%;" onclick="changeimg(this)" src="https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/images/201905160906357652803167307017255.png">
+                          </div>
+                          <div style="text-align: center;">
+                            <p style="font-size: 14px;color:#444;" onclick="changeword(this)">零件分类名称</p>
+                          </div>
+                          <div style="text-align: center;">
+                            <a ondrag="changeurl(this)" style="display:block;width:90%;margin: 10px auto;padding: 10px 0;color:#fff;background-color: #f70;font-size:12px;text-decoration:none;" href="#">
+                              跳转对应内容>>
+                            </a>
+                          </div>
+                        </li>
+                        <li style="flex: 1;margin-bottom:10px;list-style: none;">
+                          <div style="width:80%;margin:0 auto;">
+                            <img style="width: 100%;" onclick="changeimg(this)" src="https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/images/201905161250001715937945422513327.png">
+                          </div>
+                          <div style="text-align: center;">
+                            <p style="font-size: 14px;color:#444;" onclick="changeword(this)">零件分类名称</p>
+                          </div>
+                          <div style="text-align: center;">
+                            <a ondrag="changeurl(this)" style="display:block;width:90%;margin: 10px auto;padding: 10px 0;color:#fff;background-color: #f70;font-size:12px;text-decoration:none;" href="#">
+                              跳转对应内容>>
+                            </a>
+                          </div>
+                        </li>
+                        <li style="flex: 1;margin-bottom:10px;list-style: none;">
+                          <div style="width:80%;margin:0 auto;">
+                            <img style="width: 100%;" onclick="changeimg(this)" src="https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/images/201904260755308010803197020942958.png">
+                          </div>
+                          <div style="text-align: center;">
+                            <p style="font-size: 14px;color:#444;" onclick="changeword(this)">零件分类名称</p>
+                          </div>
+                          <div style="text-align: center;">
+                            <a ondrag="changeurl(this)" style="display:block;width:90%;margin: 10px auto;padding: 10px 0;color:#fff;background-color: #f70;font-size:12px;text-decoration:none;" href="#">
+                              跳转对应内容>>
+                            </a>
+                          </div>
+                        </li>
+                      </ul>
+
+                    </div>
+                  </section>
+                  <section style="width:100%;margin:0 auto 20px;">
+                    <h2 style="font-weight: bold;font-size: 18px; line-height: 32px;color: #f70;" onclick="changeword(this)">这些是品牌零件的生产商</h2>
+                    <div class="second-list">
+                      <h4 style="display: block;margin:0 auto;text-align: center;font-size: 13px;line-height: 32px;color: #555;">
+                        <i>———— </i> <span  onclick="changeword(this)">已入驻的品牌</span> <i> ————</i>
+                      </h4>
+                      <ul style="list-style: none;display: flex;margin:0;padding:0">
+                        <li style="flex: 1;margin-bottom:10px;list-style: none;">
+                          <div style="width:90%;margin:0 auto;">
+                            <img style="width: 100%;" onclick="changeimg(this)" src="https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/brand/logo/1560241435748w80p1vvywud.png">
+                          </div>
+                          <div style="width:90%;margin:0 auto;">
+                            <p style="position: relative;font-size: 13px;line-height: 18px;max-height: 108px;overflow: hidden;" onclick="changeword(this)">
+                              制造、加工、经销：刃具、工具；自产产品的出口和自用产品的进口业务*制造、加工、经销：刃具、工具；自产产品的出口和自用产品的进口业
+                            </p>
+                          </div>
+                          <div style="text-align: center;">
+                            <a ondrag="changeurl(this)" style="display:block;width:90%;margin: 10px auto;padding: 10px 0;color:#fff;background-color: #f70;font-size:12px;text-decoration:none;" href="#">
+                              跳转对应内容>>
+                            </a>
+                          </div>
+                        </li>
+                        <li style="flex: 1;margin-bottom:10px;list-style: none;">
+                          <div style="width:90%;margin:0 auto;">
+                            <img onclick="changeimg(this)" style="width: 100%;" src="https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/brand/logo/1560231421208r77bx9e7k6.png">
+                          </div>
+                          <div style="width:90%;margin:0 auto;">
+                            <p style="position: relative;font-size: 13px;line-height: 18px;max-height: 108px;overflow: hidden;" onclick="changeword(this)">
+                              制造、加工、经销：刃具、工具；自产产品的出口和自用产品的进口业务*制造、加工、经销：刃具、工具；自产产品的出口和自用产品的进口业务*制造、加工、经销：刃具、工具；自产产品的出口和自用产品的进口业务*
+                            </p>
+                          </div>
+                          <div style="text-align: center;">
+                            <a ondrag="changeurl(this)"  style="display:block;width:90%;margin: 10px auto;padding: 10px 0;color:#fff;background-color: #f70;font-size:12px;text-decoration:none;" href="#">
+                              跳转对应内容>>
+                            </a>
+                          </div>
+                        </li>
+                        <li style="flex: 1;margin-bottom:10px;list-style: none;">
+                          <div style="width:90%;margin:0 auto;">
+                            <img onclick="changeimg(this)" style="width: 100%;" src="https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/brand/logo/1560229381227yxmszo5jfba.png">
+                          </div>
+                          <div style="width:90%;margin:0 auto;">
+                            <p style="position: relative;font-size: 13px;line-height: 18px;max-height: 108px;overflow: hidden;" onclick="changeword(this)">
+                              制造、加工、经销：刃具、工具；自产产品的出口和自用产品的进口业务*制造、加工、经销：刃具、工具；自产产品的出口和自用产品的进口业务*制造、加工、经销：刃具、工具；自产产品的出口和自用产品的进口业务*制造、加工、经销：刃具、工具；自产产品的出口和自用产品的进口业务*制造、加工、经销：刃具、工具；自产产品的出口和自用产品的进口业务*
+                            </p>
+                          </div>
+                          <div style="text-align: center;">
+                            <a ondrag="changeurl(this)" style="display:block;width:90%;margin: 10px auto;padding: 10px 0;color:#fff;background-color: #f70;font-size:12px;text-decoration:none;" href="#">
+                              跳转对应内容>>
+                            </a>
+                          </div>
+                        </li>
+                      </ul>
+
+                    </div>
+                  </section>
+                  <section style="width:100%;margin:0 auto 20px;">
+                    <h2 style="font-weight: bold;font-size: 18px; line-height: 32px;color: #f70;"  onclick="changeword(this)">我们在不断进步!</h2>
+                    <div>
+                      <h4 style="display: block;margin:0 auto;text-align: center;font-size: 13px;line-height: 32px;color: #555;">
+                        <i>———— </i> <span  onclick="changeword(this)">轻松选型，找零件邦</span> <i> ————</i>
+                      </h4>
+                      <hr>
+                      <div>
+                        <p  onclick="changeword(this)">零件邦简介零件邦简介零件邦简介零件邦简介</p>
+                        <a ondrag="changeurl(this)" href="">注册跳转链接</a>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+
+
+              </div>
+              <!-- End Default Light Table -->
+            </div>
+
+            
           </div>
          &nbsp;&nbsp;
 
         </main>
       </div>
+
+
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -189,7 +353,7 @@
   <script>
 
     var data = [//四行五列
-      ["", "", "", "", "","","","","","","","","","","","","","",""],
+      ["", "", "", "", "","",""],
 
     ];
     var container = document.getElementById('example');
@@ -212,7 +376,7 @@
         "method": "GET",
         "processData": false,
         "headers": {
-          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+          "Authorization": "Bearer "+ $.cookie("ACCESS_TOKEN"),
           "cache-control": "no-cache",
           "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
         }
@@ -239,6 +403,7 @@
     function savetable() {
       var count=hot.countRows();
       var data=[];
+      data.push($("#context").html());
       for (i=0;i<=count;i++){
         if(!hot.isEmptyRow(i)) {
           var scount=hot.getDataAtRow(i).length;
@@ -249,8 +414,8 @@
           }
         }
       }
-      console.log(data)
       if (data.length>0){
+
         var settings = {
           "async": true,
           "crossDomain": true,
@@ -267,7 +432,70 @@
       }
      }
 
+    $("#myp").on('paste', function(eventObj) {
+      // 处理粘贴事件
+      var event = eventObj.originalEvent;
+      var imageRe = new RegExp(/image\/.*/);
+      var fileList = $.map(event.clipboardData.items, function (o) {
+        if(!imageRe.test(o.type)){ return }
+        var blob = o.getAsFile();
+        return blob;
+      });
+      if(fileList.length <= 0){ return }
+      upload(fileList);
+      //阻止默认行为即不让剪贴板内容在div中显示出来
+      event.preventDefault();
+    });
+    function upload(fileList) {
+      for(var i = 0, l = fileList.length; i < l; i++){
+        var fd = new FormData();
+        var f = fileList[i];
+        fd.append('file', f);
+        $.ajax({
+          url:"/file/ocr",
+          type: 'POST',
+          dataType: 'json',
+          data: fd,
+          processData: false,
+          contentType: false,
+          xhrFields: { withCredentials: true },
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials': 'true'
+          },
+          success: function(result){
+            $("#images").attr("src","https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/ocr/"+result.data);
+            $("#images_url").val("https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/ocr/"+result.data);
+          },
+          error: function(){
+            alert("上传图片错误");
+          }
+        });
+      }
+    }
 
+
+    function changeimg(obj) {
+      if($("#images_url").val()!="") {
+        obj.src = $("#images_url").val();
+        obj.style.border="2px solid green ";
+
+      }
+    }
+
+    function changeword(obj) {
+      if($("#word").val()!="") {
+        obj.innerHTML = $("#word").val();
+        obj.style.border="2px solid green ";
+      }
+    }
+    
+    function changeurl(obj) {
+      if($("#url").val()!="") {
+        obj.href = $("#url").val();
+        obj.style.border="2px solid green ";
+      }
+    }
   </script>
   </body>
 </html>

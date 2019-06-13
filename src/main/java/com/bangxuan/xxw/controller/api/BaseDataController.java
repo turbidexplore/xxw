@@ -335,11 +335,11 @@ public class BaseDataController {
     @Autowired
     MailService mailService;
 
-    @GetMapping("/mail")
-    public Mono<Message> mail(@RequestParam("mail")String mail){
-        mailService.sendHtmlMail(mail);
-        return Mono.just(Message.SCUESSS("发送成功",0));
-    }
+//    @GetMapping("/mail")
+//    public Mono<Message> mail(@RequestParam("mail")String mail){
+//        mailService.sendHtmlMail(mail);
+//        return Mono.just(Message.SCUESSS("发送成功",0));
+//    }
 
     @Autowired
     private MongoTemplate mt; //自动注入MongoTemplate
@@ -381,8 +381,9 @@ public class BaseDataController {
 
     @PostMapping("/sendmail")
     public Mono<Message> sendmail(@RequestBody JSONArray jsonArray){
+        String text=jsonArray.get(0).toString().replace("ondrag=\"changeurl(this)\"","").replace("onclick=\"changeimg(this)\"","").replace("onclick=\"changeword(this)\"","").replace("border: 2px solid green;","");
         jsonArray.forEach(a->{
-            mailService.sendHtmlMail(a.toString());
+            mailService.sendHtmlMail(a.toString(), text);
         });
         return Mono.just(Message.SCUESSS("发送成功",0));
     }

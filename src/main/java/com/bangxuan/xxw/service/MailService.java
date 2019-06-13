@@ -94,16 +94,16 @@ public class MailService {
     }
 
 
-    public void sendHtmlMail(String mail){
+    public void sendHtmlMail(String mail,String context){
         try {
-            String authcode= "XXX";
+
             MimeMessage mimeMessage=mimeMessage();
             // MiniMultipart类是一个容器类，包含MimeBodyPart类型的对象
             Multipart mainPart = new MimeMultipart();
             // 创建一个包含HTML内容的MimeBodyPart
             BodyPart html = new MimeBodyPart();
             // 设置HTML内容
-            html.setContent(htmltext(authcode), "text/html; charset=utf-8");
+            html.setContent(context, "text/html; charset=utf-8");
             mainPart.addBodyPart(html);
             // 将MiniMultipart对象设置为邮件内容
             mimeMessage.setContent(mainPart);
