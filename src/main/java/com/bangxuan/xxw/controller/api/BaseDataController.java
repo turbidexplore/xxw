@@ -26,6 +26,7 @@ import java.math.RoundingMode;
 import java.security.Principal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Api(value = "By basedata",description = "基础数据")
@@ -238,7 +239,9 @@ public class BaseDataController {
 
     @PostMapping("/downloadFilelibs")
     public Mono<Message> downloadFilelibs(Principal principal){
-        userMapper.updateYBCount(userMapper.get(principal.getName()).getYbcount()-1,principal.getName());
+        if(userMapper.get(principal.getName()).getYbcount()>0) {
+            userMapper.updateYBCount(userMapper.get(principal.getName()).getYbcount() - 1, principal.getName());
+        }
         return Mono.just(Message.SCUESSS("ok",null));
     }
 
@@ -387,5 +390,7 @@ public class BaseDataController {
         });
         return Mono.just(Message.SCUESSS("发送成功",0));
     }
+
+
 
 }

@@ -24,6 +24,11 @@ public class NavController {
         return "index";
     }
 
+    @RequestMapping("/system/indextest")
+    public String indextest(){
+        return "indextest";
+    }
+
     @RequestMapping("/system/fk")
     public String fk(){
         return "fk";
@@ -74,7 +79,6 @@ public class NavController {
         request.setAttribute("id",id);
         return "fiveclassview";
     }
-
     @RequestMapping("/system/tasklogo")
     public String fk(@RequestParam("id")String id, HttpServletRequest request){
         request.setAttribute("id",id);

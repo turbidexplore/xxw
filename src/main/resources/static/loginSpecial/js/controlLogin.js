@@ -121,10 +121,7 @@ layui.use('layer', function () {
                     setTimeout(function () {
                         window.location.href="/system/index";
                     }, 1000);
-
-
                 }else{
-
                     var msgalert = '登录失败！帐号或密码错误';
                     var index = layer.alert(msgalert, { icon: 5, time: 4000, offset: 't', closeBtn: 0, title: '友情提示', btn: [], anim: 2, shade: 0 });
                     layer.style(index, {
@@ -139,9 +136,6 @@ layui.use('layer', function () {
                 }
                 //跳转页面
             });
-
-
-
         }
         return false;
     })
