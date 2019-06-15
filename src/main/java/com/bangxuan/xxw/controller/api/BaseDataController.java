@@ -103,15 +103,13 @@ public class BaseDataController {
     @ApiOperation("任务")
     public Mono<Message> task(Principal principal,@RequestParam("level") String level){
         JSONObject data = new JSONObject();
-
-       if(0==tasksService.getStatusCount(level,principal.getName(),"0")){
+        if(0==tasksService.getStatusCount(level,principal.getName(),"0")){
            List<JSONObject> str=null;
            if(level.equals("5")){
               str = productClassService.getProductClassNotLogob(level);
            }else {
                str =productClassService.getProductClassNotLogo(level);
            }
-
            for (int i = 0;i< str.size(); i++) {
                Tasks tasks=new Tasks();
                tasks.setStatus("0");
@@ -121,7 +119,6 @@ public class BaseDataController {
                tasks.setLevel(str.get(i).getString("level"));
                tasksService.insert(tasks);
            }
-
        }
         data.put("allcount",tasksService.getAllCount(principal.getName()));
         data.put("okcount",tasksService.getStatusCount("3",principal.getName(),"1")+tasksService.getStatusCount("4",principal.getName(),"1")+tasksService.getStatusCount("5",principal.getName(),"1"));
@@ -176,13 +173,15 @@ public class BaseDataController {
 
     @GetMapping("/tg")
     @ApiOperation("任务")
-    public Mono<Message> tg(Principal principal,@RequestParam("level")String level){
+    public Mono<Message> tg(Principal principal,@RequestParam("level")String level,@RequestParam("id")String id){
         JSONObject data = new JSONObject();
+            tasksService.updatetg(id);
+        productClassService.updateStatus(id);
             List<JSONObject> str=null;
             if(level.equals("5")){
                 str = productClassService.getProductClassNotLogob(level);
             }else {
-                str =productClassService.getProductClassNotLogo(level);
+                str = productClassService.getProductClassNotLogo(level);
             }
             for (int i = 0;i< str.size(); i++) {
                 Tasks tasks=new Tasks();
@@ -193,7 +192,6 @@ public class BaseDataController {
                 tasks.setLevel(str.get(i).getString("level"));
                 tasksService.insert(tasks);
             }
-
         data.put("data",tasksService.getTaskLogo(principal.getName(),level));
         return Mono.just(Message.SCUESSS(Message.SECUESS,data));
     }
@@ -247,7 +245,6 @@ public class BaseDataController {
 
     @GetMapping("/sitemap")
     public Mono<Message> sitemap() throws Exception {
-
         //打印推送结果
         ProductClass productClass=new ProductClass();
         productClass.setLevel(Byte.valueOf("4"));
@@ -286,7 +283,6 @@ public class BaseDataController {
      */
     @SuppressWarnings("unchecked")
     public static <T> void createXml(File file, List<T> list, Class<T> clz){
-
         try{
             // 创建Document
             Document document = DocumentHelper.createDocument();
@@ -338,12 +334,6 @@ public class BaseDataController {
     @Autowired
     MailService mailService;
 
-//    @GetMapping("/mail")
-//    public Mono<Message> mail(@RequestParam("mail")String mail){
-//        mailService.sendHtmlMail(mail);
-//        return Mono.just(Message.SCUESSS("发送成功",0));
-//    }
-
     @Autowired
     private MongoTemplate mt; //自动注入MongoTemplate
 
@@ -390,7 +380,4 @@ public class BaseDataController {
         });
         return Mono.just(Message.SCUESSS("发送成功",0));
     }
-
-
-
 }

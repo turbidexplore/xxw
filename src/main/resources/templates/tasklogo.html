@@ -326,23 +326,15 @@
                       }
                   }
 
-
                   $.ajax(settings).done(function (response) {
                       response.data.forEach(function (v,i) {
-                          $("#level5space").append("<div class=\"col-lg-3 col-md-6 col-sm-12 mb-4\" onclick=\"putlogo('"+v.logo+"')\">\n" +
-                              "                      <div class=\"card card-small card-post card-post--1\">\n" +
-                              "                          <div class=\"card-post__image\" style=\"background-image: url('https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/images/"+v.logo+"');\">\n" +
-                              "                              <a href=\"#\" class=\"card-post__category badge badge-pill badge-warning\">"+v.class_name+"</a>\n" +
-                              "                          </div>\n" +
-                              // "                          <div class=\"card-body\">\n" +
-                              // "                              <h5 class=\"card-title\">\n" +
-                              // "                                  <a class=\"text-fiord-blue\" href=\"#\">It so numerous if he may outlived disposal</a>\n" +
-                              // "                              </h5>\n" +
-                              // "                              <p class=\"card-text d-inline-block mb-3\">How but sons mrs lady when. Her especially are unpleasant out alteration continuing unreserved ready road market resolution...</p>\n" +
-                              // "                              <span class=\"text-muted\">29 February 2019</span>\n" +
-                              // "                          </div>\n" +
-                              "                      </div>\n" +
-                              "                  </div>");
+                          $("#level5space").append("<div style='width:165px;height:165px;margin: 10px; ' onclick=\"putlogo('"+v.logo+"')\">\n" +
+                                  "                      <div class=\"card card-small card-post card-post--1\">\n" +
+                                  "                          <div class=\"card-post__image\" style=\"border-radius: 0px;background-image: url('https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/images/"+v.logo+"');\">\n" +
+                                  "                              <a href=\"/system/tasklogo?id="+v.id+"\" class=\"card-post__category badge badge-pill badge-warning\">"+v.class_name+"</a>\n"+
+                                  "                          </div>\n" +
+                                  "                      </div>\n" +
+                                  "                  </div>" );
                       })
                   });
               }
@@ -356,11 +348,10 @@
 
       function tg(id) {
 
-
               var settings = {
                   "async": true,
                   "crossDomain": true,
-                  "url": "/basedata/tg?level="+ $("#level").val(),
+                  "url": "/basedata/tg?level="+ $("#level").val()+"&id="+id,
                   "method": "GET",
                   "headers": {
                       "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),

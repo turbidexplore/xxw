@@ -131,6 +131,7 @@ public interface ProductClassMapper {
     @Update("update gy_product_class set status=#{status} where id=#{id}")
     int updateSec(@Param("status")Integer status,@Param("id")Integer id);
 
-
+    @Update("update gy_product_class set taskstatus=#{taskstatus} where id=#{id}")
+    int updateStatus(@Param("taskstatus")Integer taskstatus,@Param("id")Integer id);
 }
 

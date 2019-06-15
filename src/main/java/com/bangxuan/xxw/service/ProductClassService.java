@@ -202,4 +202,8 @@ public class ProductClassService {
     public int updateClassData(Integer id, Integer value) {
         return productClassMapper.updateSec(value,id);
     }
+
+    public int updateStatus(String id) {
+        return productClassMapper.updateStatus(99,Integer.parseInt(id));
+    }
 }

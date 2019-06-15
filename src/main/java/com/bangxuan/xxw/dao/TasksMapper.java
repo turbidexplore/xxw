@@ -37,7 +37,7 @@ public interface TasksMapper {
     @Select("select count(*) from user_task where user=#{user} and type='logo' and status='1' and  to_days(create_time) = to_days(now())")
     Integer getTodayCount(@Param("user")String user);
 
-    @Delete("delete user_task  where taskno=#{id}")
+    @Delete("delete from user_task where taskno=#{id}")
     Integer updatetg(@Param("id") String id);
 
     @Select("select count(*) from user_task where status='1' and type='logo'  ")
@@ -58,4 +58,5 @@ public interface TasksMapper {
 
     @Select("select count(*) from user_task t,gy_product_class p where  t.taskno=p.id and t.user=#{name} and t.status='1'  and p.class_name like CONCAT('%',#{text},'%') ")
     int getMyCount(@Param("name")String name,@Param("text") String text);
+
 }
