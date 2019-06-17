@@ -102,7 +102,6 @@ public class UserSecurityController {
                     return Mono.just(Message.ERROR("无效验证码"));
                 }
             case "2":
-
                 break;
             }
 
@@ -111,7 +110,6 @@ public class UserSecurityController {
             return Mono.just(Message.ERROR("系统异常"));
         }
         return Mono.just(Message.SCUESSS("注册成功",null));
-
     }
 
     @Autowired
@@ -166,16 +164,6 @@ public class UserSecurityController {
         }
     }
 
-
-
-    @ApiOperation("test")
-    @GetMapping("/test")
-    public Mono<Message> test(){
-
-        return Mono.just(Message.SCUESSS("成功", new CodeLib().getNikeName(stringRedisTemplate)));
-
-    }
-
     @ApiOperation("是否注册")
     @GetMapping("/isRegister")
     public Mono<Message> isRegister( @RequestParam("phone")String phone){
@@ -184,24 +172,17 @@ public class UserSecurityController {
         }else {
             return Mono.just(Message.SCUESSS("已注册",1 ));
         }
-
     }
-
 
     @ApiOperation("更改密码")
     @PutMapping("/changePassword")
     public Mono<Message> changePassword(Principal principal, @Param("password")String password){
-
         return Mono.just(Message.SCUESSS("成功", userSecurityService.changePassword(principal.getName(),password)));
-
     }
-
 
     @GetMapping("/userdata_count")
     public Mono<Message> userdata_count(){
-
         return Mono.just(Message.SCUESSS("SECUESS", userSecurityService.findUserdataCount()));
-
     }
 }
 

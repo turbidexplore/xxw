@@ -23,5 +23,4 @@ public class BaiduOcrConfig {
 
         return client;
     }
-
 }

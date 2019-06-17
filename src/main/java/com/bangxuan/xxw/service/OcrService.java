@@ -137,14 +137,13 @@ public class OcrService {
             JSONArray tables=new JSONArray();
             res.getJSONArray("prism_tablesInfo").forEach(table->{
                LinkedHashMap<String,Object> tabledata=new LinkedHashMap<>();
-               JSONArray tdata=new JSONArray();
                 JSONObject.parseObject(table.toString()).getJSONArray("cellInfos").forEach(cell->{
                     JSONObject celldata= JSONObject.parseObject(cell.toString());
                     System.out.println(celldata);
                     if (celldata.getInteger("xec")==0){
                         JSONArray rowdata=new JSONArray();
                         rowdata.add(celldata);
-                        tdata.add(rowdata);
+                        tables.add(rowdata);
                         tabledata.put(celldata.getInteger("xec")+"-"+celldata.getInteger("yec"),rowdata);
                     }else {
                         JSONArray rowdata= (JSONArray) tabledata.get("0-"+celldata.getInteger("yec"));
@@ -161,7 +160,7 @@ public class OcrService {
                     }
 
                 });
-                tables.add(tdata);
+
             });
 //            mt.insert(tables,"tabledata");
             return tables;

@@ -147,6 +147,15 @@ public class ProductClassController {
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.updateClassData(id,value)));
     }
 
+    @PutMapping("/updateDesc")
+    public Mono<Message> updateDesc(@RequestBody JSONObject jsonObject){
+        jsonObject.getJSONArray("imgs").forEach(img->{
+            productClassService.addImage(jsonObject.getString("id"),img.toString());
+        });
+        productClassService.updateDesc(jsonObject.getString("desc"),jsonObject.getString("id"));
+        return Mono.just(Message.SCUESSS("ok",null));
+    }
+
 
 
 }

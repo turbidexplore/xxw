@@ -43,7 +43,7 @@ public interface BrandMapper {
     @Select({
             "<script>",
             "select a.* from gy_sys_area a,gy_company_brand b" +
-                    " where a.id=b.province_id  ",
+                    " where a.id=b.province_id and b.country_id =3263",
             "and b.id in ",
             "<foreach item='item' index='index' collection='ids'",
             "open='(' separator=',' close=')'>",

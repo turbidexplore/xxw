@@ -3,10 +3,7 @@ package com.bangxuan.xxw.dao;
 import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.entity.Company;
 import com.bangxuan.xxw.entity.ProductClass;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -54,12 +51,12 @@ public interface ProductClassMapper {
     List<JSONObject> getPDF(@Param("id") String id);
 
     @Select("select id,level from gy_product_class a\n" +
-            "where 0<(select count(*) from gy_product_class b where b.pid=a.id  and b.logo !='') and\n" +
+            "where 0<(select count(*) from gy_product_class b where a.taskstatus!=9 and  b.pid=a.id  and b.logo !='') and\n" +
             "    (select count(*) from gy_product_class b where b.pid=a.id  and b.logo !='')=(select count(*) from gy_product_class c where c.pid=a.id )\n" +
             "    and a.level =#{level} and a.logo is null and a.id not in (select taskno from user_task) order by a.brand_id asc LIMIT 0,1\n" )
     List<JSONObject> selectProductClassNotLogo(@Param("level")String level);
 
-    @Select("select id,level from gy_product_class a where a.level =#{level} and a.logo is null and a.id not in (select taskno from user_task) order by a.brand_id asc LIMIT 0,1 ")
+    @Select("select id,level from gy_product_class a where a.taskstatus!=9 and a.level =#{level} and a.logo is null and a.id not in (select taskno from user_task) order by a.brand_id asc LIMIT 0,1 ")
     List<JSONObject> selectProductClassNotLogob(@Param("level")String level);
 
     @Update("update gy_product_class set logo=#{url} where id=#{id}")
@@ -125,7 +122,7 @@ public interface ProductClassMapper {
 
     List<JSONObject> selectByConditionAuth(JSONObject jsonObject);
 
-    @Select("select a.*,b.pdf_file,c.company_addr,c.company_en,c.company_desc,c.company_name,c.logo as companylogo,c.id as company_id,d.*,e.area_name from gy_product_class a,gy_class_pdf b,gy_company c,gy_company_brand d,gy_sys_area e where e.id=d.country_id and a.company_id=c.id and a.brand_id =d.id and a.id=b.class_id and a.status <2 order by a.status,a.pinyin_index asc limit 0,1")
+    @Select("select a.*,b.pdf_file,c.company_name,c.logo as companylogo,c.id as company_id,d.* from gy_product_class a,gy_class_pdf b,gy_company c,gy_company_brand d where a.company_id=c.id and a.brand_id =d.id and a.id=b.class_id and a.status <2 order by a.status,a.pinyin_index asc limit 0,1")
     JSONObject getOne();
 
     @Update("update gy_product_class set status=#{status} where id=#{id}")
@@ -133,5 +130,17 @@ public interface ProductClassMapper {
 
     @Update("update gy_product_class set taskstatus=#{taskstatus} where id=#{id}")
     int updateStatus(@Param("taskstatus")Integer taskstatus,@Param("id")Integer id);
+
+    @Update("update gy_product_class set taskstatus=0 where 1=1")
+    int updateTaskLogo();
+
+    @Select("select * from gy_product_class")
+    List<ProductClass> all();
+
+    @Update("update gy_product_class set class_desc=#{desc} where id=#{id}")
+    int updateDesc(@Param("desc")String desc,@Param("id") String id);
+
+    @Insert("insert into filegroup(class_id,url) values(#{class_id},#{url})")
+    int addImage(@Param("class_id") String class_id,@Param("url") String url);
 }
 

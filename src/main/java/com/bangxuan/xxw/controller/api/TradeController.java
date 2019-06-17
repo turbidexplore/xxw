@@ -25,10 +25,6 @@ public class TradeController {
     @Autowired
     private TradeService tradeService;
 
-
-    @Autowired
-    private ProductClassService productClassService;
-
     @ApiOperation("获取层级行业类型")
     @GetMapping("/getbylevel")
     public Mono<Message> getByLevel(){

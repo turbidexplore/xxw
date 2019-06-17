@@ -26,7 +26,6 @@ import java.math.RoundingMode;
 import java.security.Principal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Api(value = "By basedata",description = "基础数据")
@@ -47,6 +46,27 @@ public class BaseDataController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private FileLibService fileLibService;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private UserSecurityService userSecurityService;
+
+    @Autowired
+    private AreaService areaService;
+
+    @Autowired
+    private TasksService tasksService;
+
+    @Autowired
+    private MailService mailService;
+
+    @Autowired
+    private MongoTemplate mt; //自动注入MongoTemplate
+
     @GetMapping("/getStatistics")
     @ApiOperation("数据统计")
     public Mono<Message> getStatistics(){
@@ -62,14 +82,7 @@ public class BaseDataController {
     }
 
     public List<JSONObject> jsonArraySort(String KEY_NAME,String jsonArrStr) {
-        //转list 1
         List<JSONObject> list = JSONArray.parseArray(jsonArrStr, JSONObject.class);
-//转list 2
-//List<JSONObject> list = new ArrayList<JSONObject>();
-//for (int i = 0; i < a.size(); i++) {
-//    list.add((JSONObject) a.get(i));
-//}
-
         Collections.sort(list, new Comparator<JSONObject>() {
             @Override
             public int compare(JSONObject o1, JSONObject o2) {
@@ -95,9 +108,6 @@ public class BaseDataController {
 
         return Mono.just(Message.SCUESSS(Message.SECUESS,data));
     }
-
-    @Autowired
-    private TasksService tasksService;
 
     @GetMapping("/task")
     @ApiOperation("任务")
@@ -135,17 +145,14 @@ public class BaseDataController {
         data.put("data",tasksService.getTaskLogo(principal.getName(),level));
 
         JSONArray userdata=new JSONArray();
-
         List<JSONObject> users=userService.getAllAdminData();
         users.forEach(user->{
             user.put("today",tasksService.getTodayCount(user.getString("phonenumber")));
             user.put("all",tasksService.getAllCount(user.getString("phonenumber")));
             userdata.add(user);
         });
-
         data.put("todaydata",jsonArraySort("today",userdata.toJSONString()));
         data.put("alldata",jsonArraySort("all",userdata.toJSONString()));
-
         return Mono.just(Message.SCUESSS(Message.SECUESS,data));
     }
 
@@ -160,8 +167,6 @@ public class BaseDataController {
         double accuracy_num = num / total * 100;
         return df.format(accuracy_num)+"%";
     }
-
-
 
     @PutMapping("/updatetask")
     @ApiOperation("任务")
@@ -202,23 +207,11 @@ public class BaseDataController {
         return Mono.just(Message.SCUESSS(String.valueOf(tasksService.getMyCount(principal.getName(),text)),tasksService.getMy(principal.getName(),page,size,text)));
     }
 
-    @Autowired
-    private AreaService areaService;
-
     @GetMapping("/areas")
     @ApiOperation("地区信息")
     public Mono<Message> areas(@RequestParam("pid")String pid){
         return Mono.just(Message.SCUESSS(Message.SECUESS,areaService.getByPid(pid)));
     }
-
-    @Autowired
-    private FileLibService fileLibService;
-
-    @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private UserSecurityService userSecurityService;
 
     @PutMapping("/fileLib")
     @ApiOperation("采集资料")
@@ -260,7 +253,6 @@ public class BaseDataController {
                 e.printStackTrace();
             }
         });
-
         productClass.setLevel(Byte.valueOf("3"));
         productClassService.getByLevelCondition(productClass).forEach(p->{
             try {
@@ -274,68 +266,6 @@ public class BaseDataController {
         createXml(file,sb, SiteMap.class);
         return null;
     }
-
-    /**
-     * dom4j xml生成方法
-     * @param file
-     * @param list
-     * @param clz
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> void createXml(File file, List<T> list, Class<T> clz){
-        try{
-            // 创建Document
-            Document document = DocumentHelper.createDocument();
-
-            // 创建根节点
-            Element root = document.addElement("root");
-
-            // 获取类中所有的字段
-            Field[] fields = clz.getDeclaredFields();
-
-            // 先把List<T>对象转成json字符串
-            String str = JSONObject.toJSONString(list);
-
-            // 把json字符串转换成List<Map<Object, Object>>
-            List<Map<Object, Object>> mapList = (List<Map<Object, Object>>)JSONArray.parse(str);
-
-            Element element;
-            Map<Object,Object> map;
-            // 迭代拼接xml节点数据
-            for (int i=0; i<mapList.size(); i++) {
-                // 在根节点下添加子节点
-                element = root.addElement(clz.getSimpleName());
-                // 获取Map<Object, Object>对象
-                map = mapList.get(i);
-                // 从map中获取数据，拼接xml
-                for(Field field : fields){
-                    // 在子节点下再添加子节点
-                    element.addElement(field.getName())
-                            .addAttribute("attr", field.getType().getName())
-                            .addText(String.valueOf(map.get(field.getName())));
-                }
-            }
-            // 把xml内容输出到文件中
-            OutputFormat format = OutputFormat.createPrettyPrint();
-            XMLWriter writer = new XMLWriter( new FileOutputStream(file), format);
-            writer.write(document);
-
-            System.out.println("Dom4jUtils Create Xml success!");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    @Autowired
-    MailService mailService;
-
-    @Autowired
-    private MongoTemplate mt; //自动注入MongoTemplate
 
     @PutMapping("/saveclassdata")
     public Mono<Message> saveclassdata(@RequestBody JSONArray jsonArray,@RequestParam("id")String id){
@@ -379,5 +309,50 @@ public class BaseDataController {
             mailService.sendHtmlMail(a.toString(), text);
         });
         return Mono.just(Message.SCUESSS("发送成功",0));
+    }
+
+
+    @SuppressWarnings("unchecked")
+    public static <T> void createXml(File file, List<T> list, Class<T> clz){
+        try{
+            // 创建Document
+            Document document = DocumentHelper.createDocument();
+            // 创建根节点
+            Element root = document.addElement("root");
+            // 获取类中所有的字段
+            Field[] fields = clz.getDeclaredFields();
+            // 先把List<T>对象转成json字符串
+            String str = JSONObject.toJSONString(list);
+            // 把json字符串转换成List<Map<Object, Object>>
+            List<Map<Object, Object>> mapList = (List<Map<Object, Object>>)JSONArray.parse(str);
+
+            Element element;
+            Map<Object,Object> map;
+            // 迭代拼接xml节点数据
+            for (int i=0; i<mapList.size(); i++) {
+                // 在根节点下添加子节点
+                element = root.addElement(clz.getSimpleName());
+                // 获取Map<Object, Object>对象
+                map = mapList.get(i);
+                // 从map中获取数据，拼接xml
+                for(Field field : fields){
+                    // 在子节点下再添加子节点
+                    element.addElement(field.getName())
+                            .addAttribute("attr", field.getType().getName())
+                            .addText(String.valueOf(map.get(field.getName())));
+                }
+            }
+            // 把xml内容输出到文件中
+            OutputFormat format = OutputFormat.createPrettyPrint();
+            XMLWriter writer = new XMLWriter( new FileOutputStream(file), format);
+            writer.write(document);
+            System.out.println("Dom4jUtils Create Xml success!");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

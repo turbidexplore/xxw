@@ -27,9 +27,6 @@ public class CustomerUserDetailsService implements UserDetailsService {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest servletRequest =  requestAttributes.getRequest();
         String login_type= servletRequest.getParameter("login_type").trim();
-//        if(login_type!="sms"&&login_type!="password"&&!login_type.equals("sms")&&!login_type.equals("password")){
-//            return  new org.springframework.security.core.userdetails.User(username,userService.selectPasswordByOpenid(username,login_type),true,true,true,true,AuthorityUtils.NO_AUTHORITIES);
-//        }
         UserSecurity userSecurity = userSecurityService.findByPhone(username);
         String password="";
         if (userSecurity==null){

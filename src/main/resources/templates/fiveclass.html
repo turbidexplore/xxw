@@ -172,7 +172,7 @@
               <div class="col-lg-12">
                 <div class="card card-small mb-4">
                   <div class="card-header border-bottom">
-                    <h4 class="m-0" id="classname" style="font-weight: bold;color: red;"></h4>
+                    <h6 class="m-0" id="classname" style="color: red;"></h6>
                   </div>
                   <ul class="list-group list-group-flush">
                     <li class="list-group-item p-3">
@@ -181,26 +181,23 @@
                           <form>
                             <div class="form-row">
                               <div class="form-group col-md-4">
-                                <img src="" width="50%;" alt="logo" id="companylogo" onclick="companylogo()">
+                                <img src="" width="40%;" alt="logo" id="companylogo" >
                                 <input type="hidden" id="coreid">
                                 <p id="company"></p> </div>
-                              <div class="form-group col-md-4">
-                                <img src="" width="50%;" alt="logo" id="brandlogo">
-                                <p id="brand"></p> </div>
-                              <div class="form-group col-md-1">
-                                <img src="" width="100%;" alt="logo" id="classlogo" onclick="classlogo()">
-                              </div>
+
                               <div class="form-group col-md-3">
-                                <p id="route_path"></p> </div>
+                                <img src="" width="60%;" alt="logo" id="classlogo" onclick="classlogo()">
+                              </div>
+                              <div class="form-group col-md-5 " id="myp">
+                                    <h4 class="mb-0" >图片粘贴处</h4>
+                                    <div class="mb-3 mx-auto">
+                                      <input type="hidden" id="class_logo_url">
+                                      <input type="hidden" id="company_logo_url">
+                                      <input type="hidden" id="public_logo_url">
+                                      <img  src="" alt="无图片" width="50%" id="public_logo"> </div>
+                              </div>
                             </div>
                             <SCRIPT>
-                              function companylogo() {
-
-                                if(null!=$("#public_logo_url").val()&&""!=$("#public_logo_url").val()) {
-                                  $("#companylogo").attr("src", "https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/temp/" + $("#public_logo_url").val());
-                                  $("#company_logo_url").val($("#public_logo_url").val());
-                                }
-                              }
 
                               function classlogo() {
                                 if(null!=$("#class_logo_url").val()&&""!=$("#class_logo_url").val()) {
@@ -232,136 +229,47 @@
               </div>
             </div>
             <!-- End Default Light Table -->
+
             <div class="row">
-              <div class="col-lg-5">
-                <div class="card card-small mb-4 pt-3" id="myp" onmouseout="this.style.borderStyle='none';" onmouseover="this.style.borderStyle='solid';">
-                  <div class="card-header border-bottom text-center">
-                    <h4 class="mb-0" >图片粘贴处</h4>
-                    <div class="mb-3 mx-auto">
-                      <input type="hidden" id="class_logo_url">
-                      <input type="hidden" id="company_logo_url">
-                      <input type="hidden" id="public_logo_url">
-                      <img  src="" alt="无图片" width="100%" id="public_logo"> </div>
-                  </div>
-                </div>
-                <div class="card card-small overflow-hidden mb-4" onmouseout="this.style.borderStyle='none';" onmouseover="this.style.borderStyle='solid';">
-                  <div class="card-header bg-light">
-                    <h6 class="m-0 text-black">品牌</h6>
-                  </div>
-                  <div class="card-body p-0 pb-3 bg-light text-center">
-                    <table class="table table-light mb-0">
-                      <thead class="thead-light">
-                      <tr>
-                        <th width="18%" scope="col" class="border-bottom-0">名称</th>
-                        <th width="18%" scope="col" class="border-bottom-0">Logo</th>
-                        <th width="18%" scope="col" class="border-bottom-0">国家</th>
-                        <th width="18%" scope="col" class="border-bottom-0">省份</th>
-                        <th width="18%" scope="col" class="border-bottom-0">城市</th>
-                        <th width="10%" scope="col" class="border-bottom-0">操作</th>
-                      </tr>
-                      </thead>
-                      <tbody id="data">
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-7" >
+
+              <div class="col-lg-5" >
                 <div class="card card-small mb-4" onmouseout="this.style.borderStyle='none';" onmouseover="this.style.borderStyle='solid';">
                   <div class="card-header border-bottom">
-                    <h6 class="m-0">公司信息</h6>
+                    <h6 class="m-0">产品信息</h6>
                   </div>
                   <ul class="list-group list-group-flush">
                     <li class="list-group-item p-3">
                       <div class="row">
                         <div class="col">
                           <form>
-                            <div class="form-row">
-                              <div class="form-group col-md-6">
-                                <label for="company_name">中文名称</label>
-                                <input  type="text" class="form-control" id="company_name" placeholder="公司名称" > </div>
-                              <div class="form-group col-md-6">
-                                <label for="company_en">英文名称</label>
-                                <input  type="text" class="form-control" id="company_en" placeholder="Company Name" > </div>
-                            </div>
-                            <div class="form-row">
-                              <div class="form-group col-md-6">
-                                <label for="company_law">法人</label>
-                                <input  type="text" class="form-control" id="company_law" placeholder="法人名称" > </div>
-                              <div class="form-group col-md-6">
-                                <label for="company_capital">注册资本</label>
-                                <input  type="text" class="form-control" id="company_capital" placeholder="注册资本"> </div>
-                              <div class="form-group col-md-6">
-                                <label for="company_capital">全国统一信用代码</label>
-                                <input  type="text" class="form-control" id="unified_code" placeholder="全国统一信用代码"> </div>
-                            </div>
-                            <div class="form-row">
-                              <div class="form-group col-md-6">
-                                <label for="company_url">网站</label>
-                                <input  type="text" class="form-control" id="company_url" placeholder="网站" > </div>
-                              <div class="form-group col-md-6">
-                                <label for="company_url1">其他网站</label>
-                                <input  type="text" class="form-control" id="company_url1" placeholder="其他网站"> </div>
-                            </div>
-                            <div class="form-row">
-                              <div class="form-group col-md-6">
-                                <label for="company_url">纸样本编码</label>
-                                <input  type="text" class="form-control" id="paper_code" placeholder="纸样本编码" > </div>
-                              <div class="form-group col-md-6">
-                                <label for="company_url1">电子样本编码</label>
-                                <input  type="text" class="form-control" id="electron_code" placeholder="电子样本编码"> </div>
-                            </div>
-                            <div class="form-row">
-                              <div class="form-group col-md-3">
-                                <label for="contact_man">联系人</label>
-                                <input  type="text" class="form-control" id="contact_man"  placeholder="联系人" > </div>
-                              <div class="form-group col-md-3">
-                                <label for="contact_phone">电话号码</label>
-                                <input  type="text" class="form-control" id="contact_phone"  placeholder="电话号码" > </div>
-                              <div class="form-group col-md-3">
-                                <label for="contact_phone1">其他电话号码</label>
-                                <input  type="text" class="form-control" id="contact_phone1"  placeholder="其他电话号码" > </div>
-                              <div class="form-group col-md-3">
-                                <label for="contact_email">联系邮箱</label>
-                                <input  type="text" class="form-control" id="contact_email" placeholder="联系邮箱" > </div>
-                            </div>
-                            <div class="form-row">
-                              <div class="form-group col-md-3">
-                                <label for="country">所在国家</label>
-                                <select onchange="areas(this.value,'province',0)" id="country" class="form-control">
-                                </select>
-                              </div>
-                              <div class="form-group col-md-3">
-                                <label for="province">所在省份</label>
-                                <select onchange="areas(this.value,'city',0)" id="province" class="form-control">
-                                </select>
-                              </div>
-                              <div class="form-group col-md-3">
-                                <label for="city">所在城市</label>
-                                <select  onchange="areas(this.value,'district',0)"  id="city" class="form-control">
-                                </select>
-                              </div>
-                              <div class="form-group col-md-3">
-                                <label for="district">所在区县</label>
-                                <select  id="district" class="form-control">
-                                </select>
-                              </div>
-                              <input type="hidden" id="id" >
-
-                            </div>
-                            <div class="form-group">
-                              <label for="company_addr">注册地址</label>
-                              <input  type="text" class="form-control" id="company_addr" placeholder="注册地址">
-                            </div>
 
                             <div class="form-row">
                               <div class="form-group col-md-12">
-                                <label for="company_desc">公司简介</label>
-                                <textarea  class="form-control" id="company_desc" rows="5">描述</textarea>
+                                <label for="desc">产品简介</label>
+                                <textarea  class="form-control" id="desc" rows="5">描述</textarea>
                               </div>
                             </div>
+                            <div class="form-row"  >
+                              <label onclick="addimg()">添加图片信息</label>
+                              <div class="form-group col-md-12" id="imgs">
 
-                            <button type="button" onclick="update()" style="float: right;" class="btn btn-success">保存公司信息</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <SCRIPT>
+
+                                  function addimg() {
+                                    if(null!=$("#public_logo_url").val()&&""!=$("#public_logo_url").val()) {
+                                      $("#imgs").append("<div onclick='rm(this)'  style='float: left;margin: 10px;'><input type='hidden' value='" + $("#public_logo_url").val() + "'><img src=\"https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/temp/" + $("#public_logo_url").val() + "\" alt=\"logo\"  width=\"100px;\"></div>");
+                                    }else {
+                                      alert("请粘贴图片");
+                                    }
+                                  }
+
+                                  function rm(my) {
+                                    $(my).remove();
+                                  }
+                                </SCRIPT>
+                              </div>
+                            </div>
+                            <button type="button" onclick="update()" style="float: right;" class="btn btn-success">保存产品信息</button>&nbsp;&nbsp;&nbsp;&nbsp;
                           </form>
                         </div>
                       </div>
@@ -369,13 +277,14 @@
                   </ul>
                 </div>
               </div>
+              <div class="col-lg-7"  id="level5space" >
 
+              </div>
             </div>
           </div>
          &nbsp;&nbsp;
           <!-- End Page Header -->
           <!-- Default Light Table -->
-
 
         </main>
       </div>
@@ -413,87 +322,6 @@
 
 
 
-
-    function areas(pid,id,value) {
-      if(id=="country"||id=="province"||id=="city"){
-        $("#district").html("");
-        $("#district").append("<option value='0'>请选择...</option>")
-      }
-      if(id=="province"||id=="country"){
-        $("#city").html("");
-        $("#city").append("<option value='0'>请选择...</option>")
-      }
-      if(id=="country"){
-        $("#province").html("");
-        $("#province").append("<option value='0'>请选择...</option>")
-      }
-      var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": "/basedata/areas?pid="+pid,
-        "method": "GET",
-        "processData": false,
-        "headers": {
-          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
-          "cache-control": "no-cache",
-          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
-        }
-      }
-
-      $.ajax(settings).done(function (response) {
-        $("#"+id).html("");
-        $("#"+id).append("<option value='0'>请选择...</option>")
-        response.data.forEach(function (v,i) {
-          if(v.id==value){
-            $("#"+id).append("<option value='"+v.id+"' selected>"+v.area_name+"</option>")
-          }else {
-            $("#"+id).append("<option value='"+v.id+"'>"+v.area_name+"</option>")
-          }
-        })
-      });
-
-    }
-
-    function areas1(pid,id,value) {
-      if(id=="country"||id=="province"||id=="city"){
-        $("#district").html("");
-        $("#district").append("<option value='0'>请选择...</option>")
-      }
-      if(id=="province"||id=="country"){
-        $("#city").html("");
-        $("#city").append("<option value='0'>请选择...</option>")
-      }
-      if(id=="country"){
-        $("#province").html("");
-        $("#province").append("<option value='0'>请选择...</option>")
-      }
-      var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": "/basedata/areas?pid="+pid,
-        "method": "GET",
-        "processData": false,
-        "headers": {
-          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
-          "cache-control": "no-cache",
-          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
-        }
-      }
-
-      $.ajax(settings).done(function (response) {
-        $("#"+id).html("");
-        $("#"+id).append("<option value='0'>请选择...</option>")
-        response.data.forEach(function (v,i) {
-          if(v.id==value){
-            $("#"+id).append("<option value='"+v.id+"' selected>"+v.area_name+"</option>")
-          }else {
-            $("#"+id).append("<option value='"+v.id+"'>"+v.area_name+"</option>")
-          }
-
-        })
-      });
-    }
-
     init();
     function init() {
       var settings = {
@@ -527,7 +355,6 @@
 
 
 
-
       var settings = {
         "async": true,
         "crossDomain": true,
@@ -544,7 +371,9 @@
         if(response.status!=200){
           window.location.href="/system/nodata";
         }
-        $("#classname").html(response.data.brand_name+" | "+response.data.class_name+"      <button type=\"button\" onclick=\"save(1)\" style=\"float: right;\" class=\"mb-2 btn btn-sm btn-outline-warning mr-1\">  跳 过  </button>&nbsp;&nbsp;&nbsp;&nbsp;\n" +
+        var routh_paths=response.data.route_path.split("//")[1];
+        var routh_path=routh_paths.split("/");
+        $("#classname").html(routh_path[0]+">"+routh_path[1]+">"+routh_path[2]+">"+routh_path[3]+"  "+response.data.brand_name+" | "+response.data.class_name+"      <button type=\"button\" onclick=\"save(1)\" style=\"float: right;\" class=\"mb-2 btn btn-sm btn-outline-warning mr-1\">  跳 过  </button>&nbsp;&nbsp;&nbsp;&nbsp;\n" +
                 "              <button type=\"button\" onclick=\"save(2)\" style=\"float: right;\" class=\"mb-2 btn btn-outline-success mr-2\">  保 存  </button>&nbsp;&nbsp;");
         $("#coreid").val(response.data.id);
         if(null!=response.data.logo) {
@@ -557,202 +386,15 @@
         }else {
           $("#companylogo").attr("src", "https://iph.href.lu/500x500?text=%E9%9B%B6%E4%BB%B6%E9%82%A6&fg=666666&bg=CCCCCC");
         }
-        if(null!=response.data.brand_logo) {
-          $("#brandlogo").attr("src", "https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/brand/logo/" + response.data.brand_logo);
-        }else {
-          $("#brandlogo").attr("src", "https://iph.href.lu/500x500?text=%E9%9B%B6%E4%BB%B6%E9%82%A6&fg=666666&bg=CCCCCC");
-        }
-        var routh_paths=response.data.route_path.split("//")[1];
-        var routh_path=routh_paths.split("/");
-        $("#route_path").html("一级目录:[<span style='font-weight: bold;'> "+routh_path[0]+
-                " </span>]<br>二级目录:[<span style='font-weight: bold;'> "+routh_path[1]+
-                " </span>]<br>三级目录:[<span style='font-weight: bold;'> "+routh_path[2]+
-                " </span>]<br>四级目录:[<span style='font-weight: bold;'> "+routh_path[3]+" </span>]"
-        );
-        $("#company").html("所属公司:[<span style='font-weight: bold;'> "+response.data.company_name +" "+response.data.company_en+" </span>]<br>" +
-                "公司简介:[<span style='font-weight: bold;'> "+response.data.company_desc+" </span>]<br>"+
-                "公司地址:[<span style='font-weight: bold;'> "+response.data.company_addr+" </span>]");
-        $("#brand").html("所属品牌:[<span style='font-weight: bold;'> "+response.data.brand_name+" </span>]<br>" +
-                "品牌属地:[<span style='font-weight: bold;color: red;'> "+response.data.area_name+" </span>]");
+
+        $("#company").html("所属公司:[<span style='font-weight: bold;'> "+response.data.company_name +" </span>]<br>" +
+                "所属品牌:[<span style='font-weight: bold;'> "+response.data.brand_name+" </span>]");
         $("#add_user").html("创建者:["+response.data.add_user+"]");
+        $("#desc").val(response.data.class_desc);
 
-
-        var settings = {
-          "async": true,
-          "crossDomain": true,
-          "url": "/company/get?id="+response.data.company_id,
-          "method": "GET",
-          "processData": false,
-          "headers": {
-            "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
-            "cache-control": "no-cache",
-            "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
-          }
-        }
-
-        $.ajax(settings).done(function (response) {
-          if(response.status!=200){
-            window.location.href="/system/nodata";
-          }
-          $("#company_logo").attr("src", "https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/temp/" + response.data.company.logo);
-          $("#company_logo_url").val(response.data.company.logo);
-          $("#company_name_title").html(response.data.company.company_name);
-          $("#company_name").val(response.data.company.company_name);
-          $("#company_en").val(response.data.company.company_en);
-          $("#company_law").val(response.data.company.company_law);
-          $("#company_addr").val(response.data.company.company_addr);
-          $("#company_capital").val(response.data.company.company_capital);
-          $("#company_url").val(response.data.company.company_url);
-          $("#company_url1").val(response.data.company.company_url1);
-          $("#contact_man").val(response.data.company.contact_man);
-          $("#contact_phone").val(response.data.company.contact_phone);
-          $("#contact_phone1").val(response.data.company.contact_phone1);
-          $("#contact_email").val(response.data.company.contact_email);
-          $("#company_desc").html(response.data.company.company_desc);
-          $("#unified_code").val(response.data.company.unified_code);
-          $("#paper_code").val(response.data.company.paper_code);
-          $("#electron_code").val(response.data.company.electron_code);
-          $("#id").val(response.data.company.id);
-          areas1(0, "country", response.data.company.country);
-          areas1(response.data.company.country, "province", response.data.company.province);
-          areas1(response.data.company.province, "city", response.data.company.city);
-          areas1(response.data.company.city, "district", response.data.company.district);
-          response.data.brands.forEach(function (v,i) {
-            $("#data").append("  <tr>\n" +
-                    "                          <td><input style='width: 80px;' id=\"name"+v.id+"\" type='text' value='"+v.brand_name+"'></td>\n" +
-                    "                          <td><img style='width: 100%;' id='mylogo"+v.id+"' src='https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/brand/logo/"+v.brand_logo+"'>" +
-                    " <br><input onchange='sc("+v.id+",this)' type=\"file\" id=\"imgfile"+v.id+"\" style=\"width: 100%\"  /><input type='hidden' id='mylogourl"+v.id+"' value='"+v.brand_logo+"'></td>\n" +
-                    "                          <td id=\""+v.id+"country\"></td>\n" +
-                    "                          <td id=\""+v.id+"province\"></td>\n" +
-                    "                          <td id=\""+v.id+"city\"></td>\n" +
-                    "<td><button type=\"button\" class=\"mb-2 btn btn-outline-success mr-2\" onclick=\"gx("+v.id+")\">更新</button></td>"+
-                    "                        </tr>");
-            $("#"+v.id+"country").append(" <select  onchange=\"areas2(this.value,'province"+v.id+"',0,"+v.id+")\"  id=\"country"+v.id+"\" class=\"form-control\">\n" +
-                    "                                  </select>")
-            $("#"+v.id+"province").append(" <select  onchange=\"areas2(this.value,'city"+v.id+"',0,"+v.id+")\"  id=\"province"+v.id+"\" class=\"form-control\">\n" +
-                    "                                  </select>")
-            $("#"+v.id+"city").append(" <select    id=\"city"+v.id+"\" class=\"form-control\">\n" +
-                    "                                  </select>")
-
-            areas2(0, "country"+v.id,v.country_id,v.id);
-            areas2(v.country_id, "province"+v.id, v.province_id,v.id);
-            areas2(v.province_id, "city"+v.id, v.city_id,v.id);
-          });
-        });
         window.open("/system/fiveclassview?id="+response.data.id,"_blank" , "scrollbars=yes,resizable=1,modal=false,alwaysRaised=yes");
-      });
 
-
-
-
-
-
-    }
-
-    function areas2(pid,id,value,x) {
-
-      if(id=="province"+x||id=="country"+x){
-        $("#city"+x).html("");
-        $("#city"+x).append("<option value='0'>请选择...</option>")
-      }
-      if(id=="country"+x){
-        $("#province"+x).html("");
-        $("#province"+x).append("<option value='0'>请选择...</option>")
-      }
-      var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": "/basedata/areas?pid="+pid,
-        "method": "GET",
-        "processData": false,
-        "headers": {
-          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
-          "cache-control": "no-cache",
-          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
-        }
-      }
-
-      $.ajax(settings).done(function (response) {
-        $("#"+id).html("");
-        $("#"+id).append("<option value='0'>请选择...</option>")
-        response.data.forEach(function (v,i) {
-          if(v.id==value){
-            $("#"+id).append("<option value='"+v.id+"' selected>"+v.area_name+"</option>")
-          }else {
-            $("#"+id).append("<option value='"+v.id+"'>"+v.area_name+"</option>")
-          }
-
-        })
-      });
-
-    }
-
-    function update() {
-
-      var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": "/company/update",
-        "method": "PUT",
-        "processData": false,
-        "contentType":"application/json; charset=UTF-8",
-        "headers": {
-          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
-          "cache-control": "no-cache",
-          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
-        },
-        "data":JSON.stringify( {
-          "id":$("#id").val(),
-          "company_name":$("#company_name").val(),
-          "company_en":$("#company_en").val(),
-          "company_law":$("#company_law").val(),
-          "company_addr":$("#company_addr").val(),
-          "company_capital":$("#company_capital").val(),
-          "company_url":$("#company_url").val(),
-          "company_url1":$("#company_url1").val(),
-          "contact_man":$("#contact_man").val(),
-          "contact_phone":$("#contact_phone").val(),
-          "contact_phone1":$("#contact_phone1").val(),
-          "contact_email":$("#contact_email").val(),
-          "company_desc":$("#company_desc").val(),
-          "country":$("#country").val(),
-          "city":$("#city").val(),
-          "district":$("#district").val(),
-          "province":$("#province").val(),
-          "logo":$("#company_logo_url").val(),
-          "unified_code":$("#unified_code").val(),
-          "paper_code":$("#paper_code").val(),
-          "electron_code":$("#electron_code").val(),
-          "status":"2"
-        })
-      }
-
-
-      $.ajax(settings).done(function (response) {
-        alert("保存成功！");
-      });
-    }
-
-    function hg(status) {
-      var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": "/company/update",
-        "method": "PUT",
-        "processData": false,
-        "headers": {
-          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
-          "cache-control": "no-cache",
-          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
-        },
-        "data":JSON.stringify( {
-          "id":$("#id").val(),
-          "status":status
-        })
-      }
-      $.ajax(settings).done(function (response) {
-        window.location.reload();
-      });
+    });
 
     }
 
@@ -818,24 +460,7 @@
       }
     }
 
-    function gx(id) {
-      var settings = {
-        "url": "/brand/update",
-        "method": "PUT",
-        "contentType": "application/json",
-        "data":JSON.stringify( {
-          "id":id,
-          "brand_name":$("#name"+id).val(),
-          "country_id":$("#country"+id).val(),
-          "province_id":$("#province"+id).val(),
-          "city_id":$("#city"+id).val(),
-          "brand_logo":$("#mylogourl"+id).val()
-        })
-      }
-      $.ajax(settings).done(function (response) {
-        alert("更新成功！")
-      });
-    }
+
 
     function getObjectURL(file) {
       var url = null;
@@ -892,13 +517,57 @@
       xhr.send();
     }
 
+    function update() {
 
-    // $("#example").handsontable({
-      //   data: data,//初始化时候的数据
-      //   minSpareRows:5,//空出多少行
-      //   colHeaders:true,//显示表头　
-      //   contextMenu:true//显示表头下拉菜单
-      // })
+      var imgs=[];
+      $("#imgs input[type=hidden]").each(function () {
+        imgs.push(this.value);
+      })
+
+      var data ={"id":$("#coreid").val(),"desc":$("#desc").val(),"imgs":imgs};
+      var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "/productclass/updateDesc",
+        "method": "PUT",
+        "processData": false,
+        "data":JSON.stringify(data),
+        "contentType": "application/json",
+        "headers": {
+          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+          "cache-control": "no-cache",
+          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+        }
+      }
+      $.ajax(settings).done(function (response) {
+        alert("保存成功");
+      });
+
+    }
+
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "/productclass/getOne",
+      "method": "GET",
+      "processData": false,
+      "headers": {
+        "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+        "cache-control": "no-cache",
+        "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+      }
+    }
+
+    $.ajax(settings).done(function (response) {
+      if(response.status!=200){
+        window.location.href="/system/nodata";
+      }
+      $("#coreid").val(response.data.id);
+      $("#classname").html(response.data.brand_name+" | "+response.data.class_name);
+      $("#level5space").append(
+              "<object width=\"100%\" height=\"900px\" data=\""+"https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/pdf/"+response.data.pdf_file+"\"> \n" +
+              "</object>");
+    });
 
 
   </script>

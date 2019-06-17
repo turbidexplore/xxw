@@ -1,5 +1,6 @@
 package com.bangxuan.xxw.service;
 
+import com.bangxuan.xxw.dao.MailLogsMapper;
 import com.sun.mail.util.MailSSLSocketFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -93,6 +94,8 @@ public class MailService {
         }
     }
 
+    @Autowired
+    private MailLogsMapper mailLogsMapper;
 
     public void sendHtmlMail(String mail,String context){
         try {
@@ -113,6 +116,7 @@ public class MailService {
             mimeMessage.setSentDate(new Date());
             mimeMessage.saveChanges();
             Transport.send(mimeMessage);
+            mailLogsMapper.add(mail);
         }catch (Exception e){
 
         }

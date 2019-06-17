@@ -11,12 +11,12 @@ public class NavController {
 
     @RequestMapping("/")
     public String home(){
-        return "loginv1";
+        return "login";
     }
 
     @RequestMapping("/system/login")
     public String login(){
-        return "loginv1";
+        return "login";
     }
 
     @RequestMapping("/system/index")

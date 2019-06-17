@@ -28,7 +28,7 @@ public class OcrController {
     @ApiOperation("通过图片url获取识别信息")
     public Mono<Message> table(@RequestParam("url")String url) throws Exception {
 
-        return Mono.just(Message.SCUESSS("ok", ocrService.tablex(url)));
+        return Mono.just(Message.SCUESSS("ok", ocrService.table(url)));
     }
 //
 //    @PostMapping("/tabledata")

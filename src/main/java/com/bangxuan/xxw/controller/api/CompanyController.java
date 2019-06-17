@@ -129,22 +129,20 @@ public class CompanyController {
         outStream.write(file);
         //关闭输出流
         outStream.close();
-
         // 指定要上传到的存储桶
         String bucketName =tencentOSS.QCLOUD_FILE_BUCKET;
         // 指定要上传到 COS 上对象键
         String key = baseurl+value;
-
         PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, imageFile);
         COSClient cosClient=tencentOSS.getClient();
         PutObjectResult putObjectResult =cosClient .putObject(putObjectRequest);
-
         cosClient.shutdown();
         //程序结束时，删除临时文件
         deleteFile(imageFile);
 
         return value;
     }
+
     public static byte[] readInputStream(InputStream inStream) throws Exception{
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         //创建一个Buffer字符串
@@ -169,7 +167,6 @@ public class CompanyController {
             }
         }
     }
-
     @PutMapping(value = "/update")
     @ApiOperation("更新信息")
     public Mono<Message> update(@RequestBody Company company){

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.dao.ProductClassMapper;
 import com.bangxuan.xxw.entity.Company;
 import com.bangxuan.xxw.entity.ProductClass;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
@@ -204,6 +205,22 @@ public class ProductClassService {
     }
 
     public int updateStatus(String id) {
-        return productClassMapper.updateStatus(99,Integer.parseInt(id));
+        return productClassMapper.updateStatus(9,Integer.parseInt(id));
+    }
+
+    public int updateTaskLogo() {
+        return productClassMapper.updateTaskLogo();
+    }
+
+    public List<ProductClass> all() {
+        return productClassMapper.all();
+    }
+
+    public int addImage(String id, String img) {
+        return productClassMapper.addImage(id,img);
+    }
+
+    public int updateDesc(String desc,String id){
+        return productClassMapper.updateDesc(desc,id);
     }
 }
