@@ -135,9 +135,9 @@
             <!-- End Default Light Table -->
 
             <div class="row">
-              <div class="col-lg-5" >
+              <div class="col-lg-6" >
               <h6 class="m-0" id="classname" ></h6>
-              <div class="row">
+                <div class="col-lg-12">
                 <div class="col">
                   <form>
                     <div class="form-row">
@@ -177,7 +177,8 @@
                   </form>
                 </div>
               </div>
-                <div class="card card-small mb-4" onmouseout="this.style.borderStyle='none';" onmouseover="this.style.borderStyle='solid';">
+                <div class="col-lg-12">
+                <div class="card card-small mb-4" >
                   <div class="card-header border-bottom">
                     <h6 class="m-0">产品信息</h6>
                   </div>
@@ -200,8 +201,8 @@
                                 <SCRIPT>
 
                                   function addimg() {
-                                    if(null!=$("#images_url").val()&&""!=$("#images_url").val()) {
-                                      $("#imgs").append("<div onclick='rm(this)'  style='float: left;margin: 10px;'><input type='hidden' value='" + $("#images_url").val() + "'><img src=\"https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/temp/" + $("#images_url").val() + "\" alt=\"logo\"  width=\"100px;\"></div>");
+                                    if(null!=$("#mylogourl").val()&&""!=$("#mylogourl").val()) {
+                                      $("#imgs").append("<div onclick='rm(this)'  style='float: left;margin: 10px;'><input type='hidden' value='" + $("#mylogourl").val() + "'><img src=\"https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/temp/" + $("#mylogourl").val() + "\" alt=\"logo\"  width=\"100px;\"></div>");
                                     }else {
                                       alert("请粘贴图片");
                                     }
@@ -219,6 +220,7 @@
                       </div>
                     </li>
                   </ul>
+                </div>
                 </div>
                   <div class="col-lg-12">
                     <div class="card card-small mb-4 pt-3" id="myp" >
@@ -296,7 +298,7 @@
                   </div>
                 </div>
                 <!-- End Default Light Table -->
-              <div class="col-lg-7"  id="level5space" >
+              <div class="col-lg-6"  id="level5space" >
 
               </div>
             </div>
@@ -545,7 +547,7 @@
         var f = fileList[i];
         fd.append('file', f);
         $.ajax({
-          url:"/file/ocr",
+          url:"/file/uploadLogo",
           type: 'POST',
           dataType: 'json',
           data: fd,
@@ -557,8 +559,8 @@
             'Access-Control-Allow-Credentials': 'true'
           },
           success: function(result){
-            $("#images").attr("src","https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/ocr/"+result.data);
-            $("#images_url").val("https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/ocr/"+result.data);
+            $("#mylogo").attr("src","https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/images/"+result.data);
+            $("#mylogourl").val(result.data);
           },
           error: function(){
             alert("上传图片错误");
@@ -568,7 +570,7 @@
     }
 
     function shibie() {
-      if (null == $("#images_url").val()) {
+      if (null == $("#mylogourl").val()) {
         alert("请粘贴图片！")
         return;
       }
@@ -576,7 +578,7 @@
       var settings = {
         "async": true,
         "crossDomain": true,
-        "url": "/ocr/table?url=" + $("#images_url").val(),
+        "url": "/ocr/table?url=" + $("#mylogourl").val(),
         "method": "GET",
         "processData": false,
         "headers": {
@@ -597,7 +599,6 @@
                 });
       });
     }
-
 
 
 
@@ -662,7 +663,6 @@
 
 
 
-
     function getObjectURL(file) {
       var url = null;
       if (window.createObjcectURL != undefined) {
@@ -675,48 +675,7 @@
       return url;
     }
 
-    function sc(id,i) {
-      var blobURL = getObjectURL(i.files[0]);//这里的objURL就是input file的blob:路径
-      var imgUTL = '';
 
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', blobURL);
-      xhr.responseType = 'blob';
-
-      xhr.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
-          var imageBlob = this.response;
-          var imageType = imageBlob.type;
-          var imageName = null;
-// 根据文件的类型确定文件名，否则服务端得到的文件名为 blob，没有后缀
-          if (imageType.includes('png')) {
-            imageName = 'uploaded-image.png';
-          } else if (imageType.includes('gif')) {
-            imageName = 'uploaded-image.gif';
-          } else if (imageType.includes('bmp')) {
-            imageName = 'uploaded-image.bmp';
-          } else {
-            imageName = 'uploaded-image.jpg';
-          }
-// 上传 Blob 图片
-          var form = new FormData();
-          form.append('file', imageBlob, imageName); // 第三个参数为文件名
-          $.ajax({
-            type: 'POST',
-            url : "/file/uploadBrandLogo",
-            data: form ,
-            processData: false,
-            contentType: false,
-          }).done(function(result) {
-// 把服务器返回的图片 URL 插入到需要的地方
-            console.log(result);
-            $("#mylogo"+id).attr("src","https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/brand/logo/"+result.data);
-            $("#mylogourl"+id).val(result.data);
-          });
-        }
-      };
-      xhr.send();
-    }
 
     function update() {
 
