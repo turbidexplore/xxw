@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js h-100" lang="en">
+<html class="no-js h-100" lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -122,7 +122,7 @@
                             </table>
                             <div id="example"></div>
                           </form>
-                          <input type="hidden" id="coreid">
+                          <input type="hidden" id="coreid"  th:value="${id}">
                           <button type="submit" clps
                                   ass="btn btn-accent" onclick="savetable()">保存数据</button>
                         </div>
@@ -159,14 +159,43 @@
 
     var index=0;
 
+    function rmcss(obj) {
+      $(obj).css("border","0px solid #fff");
+    }
+
     function add() {
-      $("#addtd").remove()
-      $("#a").append("<td ondblclick='rm("+index+")' id='a"+index+"'><input type='text' style=\"border-style:none;width: 100px;\" placeholder='中文名称'></td> <td rowspan=\"5\" id=\"addtd\"><button type=\"button\" class=\"btn btn-sm btn-success \" onclick=\"add()\">+</button><br/> <button type=\"button\" class=\"btn btn-sm btn-danger \" onclick=\"saveadd()\">=</button></td>");
-      $("#b").append("<td ondblclick='rm("+index+")' id='b"+index+"'><input type='text' style=\"border-style:none;width: 100px;\" placeholder='英文名称'></td>");
-      $("#c").append("<td ondblclick='rm("+index+")' id='c"+index+"'><input type='text' style=\"border-style:none;width: 100px;\" placeholder='代码'></td>");
-      $("#d").append("<td ondblclick='rm("+index+")' id='d"+index+"'><input type='text' style=\"border-style:none;width: 100px;\" placeholder='单位'></td>");
-      $("#e").append("<td ondblclick='rm("+index+")' id='e"+index+"'><input type='text' style=\"border-style:none;width: 100px;\" placeholder='数据类型'></td>");
-      index=index+1;
+      $("#addtd").remove();
+
+      $("#a").append("<td ondblclick='rm("+index+")' id='a"+index+"'><input oninput='rmcss(this)' id='avalue"+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='中文名称'></td> <td rowspan=\"5\" id=\"addtd\"><button type=\"button\" class=\"btn btn-sm btn-success \" onclick=\"add()\">+</button><br/> <button type=\"button\" class=\"btn btn-sm btn-danger \" onclick=\"saveadd()\">=</button></td>");
+      $("#b").append("<td ondblclick='rm("+index+")' id='b"+index+"'><input oninput='rmcss(this)' id='bvalue"+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='英文名称'></td>");
+      $("#c").append("<td ondblclick='rm("+index+")' id='c"+index+"'><input oninput='rmcss(this)' id='cvalue"+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='代码'></td>");
+      var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "/basedata/parameter",
+        "method": "GET",
+        "processData": false
+      }
+
+      $.ajax(settings).done(function (response) {
+       var unit="<select id='dvalue"+index+"'>"
+        response.data.unit.forEach(function (value) {
+          unit=unit+"<option value='"+value.unit_name+"("+value.unit+")"+"'>"+value.unit_name+"("+value.unit+")"+"</option>"
+        });
+        unit=unit+"</select>";
+        $("#d").append("<td ondblclick='rm("+index+")' id='d"+index+"'>"+unit+"</td>");
+
+        var datatype="<select  id='evalue"+index+"'>"
+        response.data.datatype.forEach(function (value) {
+          datatype=datatype+"<option value='"+value.datatype+"'>"+value.datatype+"</option>"
+        });
+        datatype=datatype+"</select>";
+        $("#e").append("<td ondblclick='rm("+index+")' id='e"+index+"'>"+datatype+"</td>");
+        index=index+1;
+      });
+
+
+
     }
 
     function rm(obj) {
@@ -196,7 +225,7 @@
       ["-","参数代码", "d1", "d2", "", "L","G","","","","","",""],
       ["-","参数单位", "尺寸(mm)", "尺寸(mm)", "尺寸(mm)", "尺寸(mm)","尺寸(mm)","单位重量()","","","","",""],
       ["-","参数数据类型", "实数", "实数", "公差", "勾选","实数","实数","","","","",""],
-      ["型号值","PS3", "20", "14", "-0.025,-0.009", "100,200,300,400,500,600,700,800,900,1000,1200,1500,1800,2000,2500,3500,4000","1.5","1.34","","","","",""]
+      ["型号值","PS3", "20", "14", "-0.025,-0.009", "100,200","1.5","1.34","","","","",""]
 
     ];
     var container = document.getElementById('example');
@@ -340,14 +369,63 @@
       });
     }
 
-      // $("#example").handsontable({
-      //   data: data,//初始化时候的数据
-      //   minSpareRows:5,//空出多少行
-      //   colHeaders:true,//显示表头　
-      //   contextMenu:true//显示表头下拉菜单
-      // })
 
 
+    function saveadd() {
+      var mydata=[];
+      var a=["批量上传试例","参数中文名称"];
+      var b=["-","参数英文名称"];
+      var c=["-","参数英文名称"];
+      var d=["-","参数英文名称"];
+      var e=["-","参数英文名称"];
+      for(var i=0;i<index;i++){
+        if($("#avalue"+i).val()==""||$("#bvalue"+i).val()==""||$("#cvalue"+i).val()==""){
+          if($("#avalue"+i).val()==""){
+            $("#avalue"+i).css("border","1px solid red");
+          }
+          if($("#bvalue"+i).val()==""){
+            $("#bvalue"+i).css("border","1px solid red");
+          }
+          if($("#cvalue"+i).val()==""){
+            $("#cvalue"+i).css("border","1px solid red");
+          }
+          alert("数据不能为空");
+          return;
+        }
+        a.push($("#avalue"+i).val());
+        b.push($("#bvalue"+i).val())
+        c.push($("#cvalue"+i).val());
+        d.push($("#dvalue"+i).val());
+        e.push($("#evalue"+i).val());
+      }
+      mydata.push(a);
+      mydata.push(b);
+      mydata.push(c);
+      mydata.push(d);
+      mydata.push(e);
+
+      if(a.length<hot.getDataAtRow(5).length){
+        a.push("");
+        for (var i=0;i<hot.getDataAtRow(5).length-a.length;i++){
+          a.push("");
+        }
+      }
+      var count=hot.countRows();
+      for (i=5;i<=count;i++){
+        if(!hot.isEmptyRow(i)) {
+          mydata.push(hot.getDataAtRow(i));
+        }
+      }
+
+      $("#example").html("");
+      hot = new Handsontable(container,
+              {
+                data: mydata,
+                minSpareRows:2,//空出多少行
+                colHeaders:true,//显示表头　
+                contextMenu:true//显示表头下拉菜单
+              });
+    }
 
 
 

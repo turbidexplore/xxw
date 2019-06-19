@@ -2,6 +2,7 @@ package com.bangxuan.xxw.controller.api;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.bangxuan.xxw.dao.UnitMapper;
 import com.bangxuan.xxw.dao.UserMapper;
 import com.bangxuan.xxw.entity.*;
 import com.bangxuan.xxw.service.*;
@@ -313,8 +314,8 @@ public class BaseDataController {
 
 
     @SuppressWarnings("unchecked")
-    public static <T> void createXml(File file, List<T> list, Class<T> clz){
-        try{
+    public static <T> void createXml(File file, List<T> list, Class<T> clz) {
+        try {
             // 创建Document
             Document document = DocumentHelper.createDocument();
             // 创建根节点
@@ -324,18 +325,18 @@ public class BaseDataController {
             // 先把List<T>对象转成json字符串
             String str = JSONObject.toJSONString(list);
             // 把json字符串转换成List<Map<Object, Object>>
-            List<Map<Object, Object>> mapList = (List<Map<Object, Object>>)JSONArray.parse(str);
+            List<Map<Object, Object>> mapList = (List<Map<Object, Object>>) JSONArray.parse(str);
 
             Element element;
-            Map<Object,Object> map;
+            Map<Object, Object> map;
             // 迭代拼接xml节点数据
-            for (int i=0; i<mapList.size(); i++) {
+            for (int i = 0; i < mapList.size(); i++) {
                 // 在根节点下添加子节点
                 element = root.addElement(clz.getSimpleName());
                 // 获取Map<Object, Object>对象
                 map = mapList.get(i);
                 // 从map中获取数据，拼接xml
-                for(Field field : fields){
+                for (Field field : fields) {
                     // 在子节点下再添加子节点
                     element.addElement(field.getName())
                             .addAttribute("attr", field.getType().getName())
@@ -344,7 +345,7 @@ public class BaseDataController {
             }
             // 把xml内容输出到文件中
             OutputFormat format = OutputFormat.createPrettyPrint();
-            XMLWriter writer = new XMLWriter( new FileOutputStream(file), format);
+            XMLWriter writer = new XMLWriter(new FileOutputStream(file), format);
             writer.write(document);
             System.out.println("Dom4jUtils Create Xml success!");
         } catch (UnsupportedEncodingException e) {
@@ -354,5 +355,17 @@ public class BaseDataController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+    }
+
+    @Autowired
+    private UnitMapper unitMapper;
+
+    @GetMapping("/parameter")
+    public Mono<Message> getParameter(){
+        JSONObject data = new JSONObject();
+        data.put("unit",unitMapper.allubit());
+        data.put("datatype",unitMapper.alldatatype());
+        return Mono.just(Message.SCUESSS("ok",data));
     }
 }
