@@ -222,36 +222,7 @@
                   </ul>
                 </div>
                 </div>
-                  <div class="col-lg-12">
-                    <div class="card card-small mb-4 pt-3" id="myp" >
-                      <div class="card-header border-bottom">
-                        <h4 class="m-0"  style="font-weight: bold;color: red;"></h4>
-                      </div>
-                      <div class="card-header border-bottom text-center">
-                        <h4 class="mb-0" id="company_name_title">图片粘贴处<button type="button" class="mb-2 btn btn-outline-success mr-2" onclick="shibie()">识别</button></h4>
-                        <div class="mb-3 mx-auto">
-                          <input type="hidden" id="images_url">
-                          <img  src="" alt="无图片" width="100%" id="images"> </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-12">
-                    <div class="card card-small mb-4">
-                      <ul class="list-group list-group-flush">
-                        <li class="list-group-item p-3">
-                          <div class="row">
-                            <div class="col">
-                              <form>
-                                <div id="exampleshibie"></div>
-                              </form>
 
-                            </div>
-
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
 
                   <div class="col-lg-12">
                     <div class="card card-small mb-4">
@@ -465,18 +436,6 @@
     }
 
 
-    var dataa = [//四行五列
-      ["","", "", "", "", "","","","","","","",""],
-    ];
-    var containera = document.getElementById('exampleshibie');
-    var hota = new Handsontable(containera,
-            {
-              data: dataa,
-              minSpareRows:2,//空出多少行
-              colHeaders:true,//显示表头　
-              contextMenu:true//显示表头下拉菜单
-            });
-    console.log(hota);
     var data = [//四行五列
       ["批量上传试例","参数中文名称", "外径", "内径", "公差", "长度","长度硬化深度","单位重量","","","","",""],
       ["-","参数英文名称", "Out Dimater", "Inner Diameter", "Tolerance", "Length","","Unit Weight","","","","",""],
@@ -568,41 +527,6 @@
         });
       }
     }
-
-    function shibie() {
-      if (null == $("#mylogourl").val()) {
-        alert("请粘贴图片！")
-        return;
-      }
-
-      var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": "/ocr/table?url=" + $("#mylogourl").val(),
-        "method": "GET",
-        "processData": false,
-        "headers": {
-          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
-          "cache-control": "no-cache",
-          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
-        }
-      }
-
-      $.ajax(settings).done(function (response) {
-        $("#exampleshibie").html("");
-        hota = new Handsontable(containera,
-                {
-                  data: response.data,
-                  minSpareRows:2,//空出多少行
-                  colHeaders:true,//显示表头　
-                  contextMenu:true//显示表头下拉菜单
-                });
-      });
-    }
-
-
-
-
 
     function saveadd() {
       var mydata=[];
