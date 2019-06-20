@@ -149,14 +149,13 @@
                             <div class="form-row" >
                               <label>LOGO图片</label>
                               <div id="classlogo"  class="form-group col-md-12">
-                                <img src="" width="100px;" alt="logo" id="logo" >
+                                <img src="" width="80px;" alt="logo" id="logo" >
                             </div>
                             </div>
                             <div class="form-row"  >
                               <label>图片信息</label>
-                              <div id="imgs"  class="form-group col-md-12">
-                                <img src="https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/images/201906201756133105692658530968103.png" width="20px;"  >粘贴处
-                              </div>
+                              <span id="imgs"  class="form-group col-md-12">
+                                <img src="https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/images/201906201756133105692658530968103.png" width="20px;" style="margin-top: 30px;" ><span style="margin-top: 30px;">粘贴处</span>
                             </div>
                             <div class="form-row" >
                               <div class="form-group col-md-12">
@@ -318,7 +317,7 @@
                 "</object>");
 
         response.data.images.forEach(function (value){
-          $("#imgs").append("<div onclick='rmimgs(this)'  style='float: left;margin: 10px;'><input type='hidden' value='" + value.url + "'><img src=\"https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/images/" +value.url+ "\" alt=\"logo\"  width=\"100px;\"></div>");
+          $("#imgs").append("<div onclick='rmimgs(this)'  style='float: left;margin: 10px;'><input type='hidden' value='" + value.url + "'><img src=\"https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/images/" +value.url+ "\" alt=\"logo\"  width=\"80px;\"></div>");
 
         });
 
@@ -468,7 +467,7 @@
             'Access-Control-Allow-Credentials': 'true'
           },
           success: function(result){
-              $("#imgs").append("<div onclick='rmimgs(this)'  style='float: left;margin: 10px;'><input type='hidden' value='" + result.data + "'><img src=\"https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/images/" +result.data+ "\" alt=\"logo\"  width=\"100px;\"></div>");
+              $("#imgs").append("<div onclick='rmimgs(this)'  style='float: left;margin: 10px;'><input type='hidden' value='" + result.data + "'><img src=\"https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/images/" +result.data+ "\" alt=\"logo\"  width=\"80px;\"></div>");
           },
           error: function(){
             alert("上传图片错误");
