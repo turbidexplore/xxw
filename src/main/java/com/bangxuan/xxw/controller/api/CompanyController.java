@@ -19,13 +19,10 @@ import com.bangxuan.xxw.util.CodeLib;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.model.PutObjectRequest;
 import com.qcloud.cos.model.PutObjectResult;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
-@Api(value = "By Company",description = "公司")
 @RestController
 @RequestMapping("/company")
 @CrossOrigin
@@ -41,7 +38,6 @@ public class CompanyController {
     private CodeLib tencentOSS;
 
     @GetMapping("/getLogos")
-    @ApiOperation("获取最新入驻匹配logo")
     public Mono<Message> getLogos(){
         JSONObject data=new JSONObject();
         data.put("basicurl","https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/brand/logo/");
@@ -50,7 +46,6 @@ public class CompanyController {
     }
 
     @GetMapping("/incomplete")
-    @ApiOperation("获取信息不完整的企业信息")
     public Mono<Message> getIncomplete() throws Exception {
         JSONObject data=new JSONObject();
         Company company =companyService.getIncomplete();
@@ -82,7 +77,6 @@ public class CompanyController {
     }
 
     @GetMapping("/get")
-    @ApiOperation("获取信息不完整的企业信息")
     public Mono<Message> get(@RequestParam("id")String id) throws Exception {
         JSONObject data=new JSONObject();
         Company company =companyService.getById(id);
@@ -155,7 +149,6 @@ public class CompanyController {
     }
 
     @PutMapping(value = "/update")
-    @ApiOperation("更新信息")
     public Mono<Message> update(@RequestBody Company company){
         return Mono.just(Message.SCUESSS(Message.SECUESS,companyService.update(company)));
     }

@@ -5,14 +5,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.entity.Message;
 import com.bangxuan.xxw.entity.ProductClass;
 import com.bangxuan.xxw.service.ProductClassService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import java.util.List;
 
-@Api(value = "By ProductClass",description = "产品类型")
 @RestController
 @RequestMapping("/productclass")
 @CrossOrigin
@@ -22,7 +19,6 @@ public class ProductClassController {
     private ProductClassService productClassService;
 
     @GetMapping("/getByLevel")
-    @ApiOperation("获取菜单产品分类")
     public Mono<Message> getByLevel(){
         JSONArray data = new JSONArray();
         List<JSONObject> list =productClassService.getProductClass();
@@ -36,7 +32,6 @@ public class ProductClassController {
     }
 
     @GetMapping("/getByLevelHaveLogo")
-    @ApiOperation("获取菜单产品分类带LOGO")
     public Mono<Message> getByLevelAndLogo(){
         JSONArray data = new JSONArray();
         List<JSONObject> list =productClassService.getProductClassHaveLogo();
@@ -51,9 +46,7 @@ public class ProductClassController {
     }
 
     @GetMapping("/getNew")
-    @ApiOperation("获取最新产品")
     public Mono<Message> getNew(){
-
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.getNewTOP14()));
     }
 
@@ -69,14 +62,12 @@ public class ProductClassController {
     }
 
     @PostMapping("/getByLevelCondition")
-    @ApiOperation("组合查询")
     public Mono<Message> getByLevelCondition(@RequestBody ProductClass productClass){
 
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.getByLevelCondition(productClass)));
     }
 
     @PostMapping("/getByAuth")
-    @ApiOperation("组合查询")
     public Mono<Message> getByAuth(@RequestBody JSONObject jsonObject){
 
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.getByLevelAuth(jsonObject)));
@@ -89,42 +80,36 @@ public class ProductClassController {
     }
 
     @GetMapping("/getByText")
-    @ApiOperation("模糊查询")
     public Mono<Message> getByText(@RequestParam("text") String text){
 
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.getByText(text)));
     }
 
     @GetMapping("/levellogo")
-    @ApiOperation("模糊查询")
     public Mono<Message> getByLevelHaveLogo(@RequestParam("id") String id){
 
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.getByLevelHaveLogo(id)));
     }
 
     @GetMapping("/allOrderPinyin")
-    @ApiOperation("四级拼音排序")
     public Mono<Message> allOrderPinyin(@RequestParam("text")String text){
 
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.allOrderPinyin(text.toUpperCase())));
     }
 
     @GetMapping("/allNumber")
-    @ApiOperation("四级数字")
     public Mono<Message> allNumber(){
 
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.allNumber()));
     }
 
     @GetMapping("/allQt")
-    @ApiOperation("四级其他")
     public Mono<Message> allQt(){
 
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.allqt()));
     }
 
     @GetMapping("/getByCompanyId")
-    @ApiOperation("通过企业id获取产品信息")
     public Mono<Message> getByCompanyId(@RequestParam("companyid") String companyid,@RequestParam("pid") Integer pid){
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.getByCompanyId(companyid,pid)));
     }

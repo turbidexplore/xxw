@@ -20,7 +20,7 @@ public class AuthConfig extends AuthorizationServerConfigurerAdapter {
     private UserDetailsService userDetailsService;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+    public void configure(AuthorizationServerSecurityConfigurer security)  {
     }
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory().withClient("website")
@@ -29,7 +29,7 @@ public class AuthConfig extends AuthorizationServerConfigurerAdapter {
                 .scopes("web").scopes("mobile")
                 .accessTokenValiditySeconds(3600*24*30);
     }
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints)  {
         endpoints.authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService)
                 .accessTokenConverter(jwtAccessTokenConverter());

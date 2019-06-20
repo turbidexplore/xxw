@@ -6,29 +6,18 @@ import com.bangxuan.xxw.dao.UnitMapper;
 import com.bangxuan.xxw.dao.UserMapper;
 import com.bangxuan.xxw.entity.*;
 import com.bangxuan.xxw.service.*;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.XMLWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
-
-import java.io.*;
-import java.lang.reflect.Field;
 import java.math.RoundingMode;
 import java.security.Principal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
 
-@Api(value = "By basedata",description = "基础数据")
 @RestController
 @RequestMapping("/basedata")
 @CrossOrigin
@@ -60,7 +49,6 @@ public class BaseDataController {
     private UnitMapper unitMapper;
 
     @GetMapping("/getStatistics")
-    @ApiOperation("数据统计")
     public Mono<Message> getStatistics(){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("spareparts",productClassService.getSKUCount());
@@ -92,7 +80,6 @@ public class BaseDataController {
     }
 
     @GetMapping("/advertisement")
-    @ApiOperation("广告位")
     public Mono<Message> advertisement(){
         JSONObject data = new JSONObject();
         data.put("basicurl"," https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/ad/");
@@ -102,7 +89,6 @@ public class BaseDataController {
     }
 
     @GetMapping("/task")
-    @ApiOperation("任务")
     public Mono<Message> task(Principal principal,@RequestParam("level") String level){
         JSONObject data = new JSONObject();
         if(0==tasksService.getStatusCount(level,principal.getName(),"0")){
@@ -158,7 +144,6 @@ public class BaseDataController {
     }
 
     @PutMapping("/updatetask")
-    @ApiOperation("任务")
     public Mono<Message> updatetask(@RequestParam("url")String url,@RequestParam("id")String id){
         productClassService.updateLogo(url,id);
         tasksService.updateLogo(id);
@@ -166,7 +151,6 @@ public class BaseDataController {
     }
 
     @GetMapping("/tg")
-    @ApiOperation("任务")
     public Mono<Message> tg(Principal principal,@RequestParam("level")String level,@RequestParam("id")String id){
         JSONObject data = new JSONObject();
             tasksService.updatetg(id);
@@ -191,19 +175,16 @@ public class BaseDataController {
     }
 
     @GetMapping("/mytasks")
-    @ApiOperation("任务")
     public Mono<Message> mytasks(Principal principal,@RequestParam("page") int page,@RequestParam("size")int size,@RequestParam("text")String text){
         return Mono.just(Message.SCUESSS(String.valueOf(tasksService.getMyCount(principal.getName(),text)),tasksService.getMy(principal.getName(),page,size,text)));
     }
 
     @GetMapping("/areas")
-    @ApiOperation("地区信息")
     public Mono<Message> areas(@RequestParam("pid")String pid){
         return Mono.just(Message.SCUESSS(Message.SECUESS,areaService.getByPid(pid)));
     }
 
     @PutMapping("/fileLib")
-    @ApiOperation("采集资料")
     public Mono<Message> updatetask(@RequestBody FileLib fileLib){
         userSecurityService.findByAdmin().forEach(u->{
         userMapper.updateYBCount(userMapper.get(u).getYbcount()+1,u);
@@ -212,7 +193,6 @@ public class BaseDataController {
     }
 
     @GetMapping("/filelibs")
-    @ApiOperation("获取采集资料")
     public Mono<Message> fileLibs(Principal principal,int page){
         return Mono.just(Message.SCUESSS(String.valueOf(fileLibService.findCount()),fileLibService.findPage(page,20)));
     }

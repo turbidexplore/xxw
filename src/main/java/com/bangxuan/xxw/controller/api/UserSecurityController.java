@@ -9,8 +9,6 @@ import com.bangxuan.xxw.entity.values.UserType;
 import com.bangxuan.xxw.service.UserSecurityService;
 import com.bangxuan.xxw.service.UserService;
 import com.bangxuan.xxw.util.CodeLib;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -28,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.UUID;
 
-@Api(value = "By UserSecurity",description = "用户安全信息")
 @RestController
 @RequestMapping("/usersecurity")
 @CrossOrigin
@@ -46,7 +43,6 @@ public class UserSecurityController {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
-    @ApiOperation(value = "用户账号注册",notes="注册一个新的账号")
     @PutMapping("/register")
     public Mono<Message> register(@RequestBody UserSecurity userSecurity,@RequestParam("registertype")String registertype,HttpServletRequest httpServletRequest){
         UserSecurity info;
@@ -113,7 +109,6 @@ public class UserSecurityController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @ApiOperation(value = "用户登录",notes = "用户登录获取令牌")
     @PostMapping("/login")
     public Mono<Message> login(@RequestBody JSONObject jsonObject){
         try {
@@ -140,7 +135,6 @@ public class UserSecurityController {
         }
     }
 
-    @ApiOperation("发送验证码")
     @PutMapping("/sms")
     public Mono<Message> sendSMS(@RequestParam(value = "phone") String phone){
         int count=userSecurityService.findCountByPhone(phone);
@@ -162,7 +156,6 @@ public class UserSecurityController {
         }
     }
 
-    @ApiOperation("是否注册")
     @GetMapping("/isRegister")
     public Mono<Message> isRegister( @RequestParam("phone")String phone){
         if(null==userService.get(phone)){
@@ -172,7 +165,6 @@ public class UserSecurityController {
         }
     }
 
-    @ApiOperation("更改密码")
     @PutMapping("/changePassword")
     public Mono<Message> changePassword(Principal principal, @Param("password")String password){
         return Mono.just(Message.SCUESSS("成功", userSecurityService.changePassword(principal.getName(),password)));

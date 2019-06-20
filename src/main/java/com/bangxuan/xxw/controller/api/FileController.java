@@ -8,8 +8,6 @@ import com.bangxuan.xxw.service.DaypdfCountService;
 import com.bangxuan.xxw.service.FileService;
 import com.bangxuan.xxw.service.ProductClassService;
 import com.bangxuan.xxw.service.UserSecurityService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +16,6 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.security.Principal;
 
-@Api(value = "By File",description = "文件")
 @RestController
 @RequestMapping("/file")
 @CrossOrigin("*")
@@ -51,7 +48,6 @@ public class FileController {
     }
 
     @PostMapping(value = "/uploadUserhead")
-    @ApiOperation("上传用户头像")
     public Mono<Message> uploadUserhead(@RequestParam("file") MultipartFile filePart) {
         try {
             return Mono.just(Message.SCUESSS("上传成功", fileService.imagesUserHead(filePart)));
@@ -72,7 +68,6 @@ public class FileController {
     }
 
     @PostMapping(value = "/uploadBrandLogo")
-    @ApiOperation("上传品牌Logo")
     public Mono<Message> uploadBrandLogo(@RequestParam("file") MultipartFile filePart) {
         try {
             return Mono.just(Message.SCUESSS("上传成功", fileService.brandlogo(filePart)));
@@ -83,7 +78,6 @@ public class FileController {
     }
 
     @PostMapping(value = "/uploadCompanyLogo")
-    @ApiOperation("上传公司Logo")
     public Mono<Message> uploadCompanyLogo(@RequestParam("file") MultipartFile filePart) {
         try {
             return Mono.just(Message.SCUESSS("上传成功", fileService.companyLogo(filePart)));
@@ -94,7 +88,6 @@ public class FileController {
     }
 
     @PostMapping(value = "/ocr")
-    @ApiOperation("ocr图片存储")
     public Mono<Message> ocr(@RequestParam("file") MultipartFile filePart) {
         try {
 
@@ -112,7 +105,6 @@ public class FileController {
     private UserSecurityService userSecurityService;
 
     @GetMapping("/pdf")
-    @ApiOperation("获取PDF")
     public Mono<Message> getPDF(Principal principal, @RequestParam("id") String id){
         if(userSecurityService.findByPhone(principal.getName()).getType()== UserType.test){
             if(3<=daypdfCountService.todayCount(principal.getName())){
@@ -133,7 +125,6 @@ public class FileController {
     }
 
     @GetMapping("/workpdf")
-    @ApiOperation("获取PDF")
     public Mono<Message> workpdf( @RequestParam("id") String id){
 
         JSONObject data=new JSONObject();
@@ -145,7 +136,6 @@ public class FileController {
     }
 
     @GetMapping("/seo")
-    @ApiOperation("SEO")
     public Mono<Message> seo(){
         return Mono.just(Message.SCUESSS(Message.SECUESS,fileService.seo()));
     }

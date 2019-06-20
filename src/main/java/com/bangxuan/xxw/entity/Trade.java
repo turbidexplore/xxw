@@ -1,6 +1,5 @@
 package com.bangxuan.xxw.entity;
 
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.util.Date;
@@ -9,7 +8,6 @@ import java.util.Date;
  * 行业分类
  */
 @Data
-@ApiModel(value = "com.bangxuan.xxw.entity.Trade",description = "行业分类")
 public class Trade {
     private Long id;
 
