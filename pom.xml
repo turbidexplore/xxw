@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.bangxuan</groupId>
     <artifactId>xxw</artifactId>
-    <version>5-RELEASE</version>
+    <version>1</version>
     <name>xxw</name>
     <description>Demo project for Spring Boot</description>
 

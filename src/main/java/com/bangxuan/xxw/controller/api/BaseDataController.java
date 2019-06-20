@@ -134,7 +134,6 @@ public class BaseDataController {
         return Mono.just(Message.SCUESSS(Message.SECUESS,data));
     }
 
-
     public String accuracy(double total, double num, int scale){
         DecimalFormat df = (DecimalFormat) NumberFormat.getInstance();
         df.setMaximumFractionDigits(scale);
