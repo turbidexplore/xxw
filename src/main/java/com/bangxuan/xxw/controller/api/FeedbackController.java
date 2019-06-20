@@ -21,10 +21,8 @@ import java.security.Principal;
 @CrossOrigin
 public class FeedbackController {
 
-
     @Autowired
     private FeedbackService feedbackService;
-
 
     @Autowired
     private UserMapper userMapper;

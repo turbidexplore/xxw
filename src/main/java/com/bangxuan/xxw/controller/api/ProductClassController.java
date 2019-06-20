@@ -59,11 +59,6 @@ public class ProductClassController {
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.getNewTOP14()));
     }
 
-    /**
-     * 序列化数据
-     * @param productClassList
-     * @param jo
-     */
     public void setData(List<JSONObject> productClassList,JSONObject jo){
         JSONArray data =new JSONArray();
         productClassList.forEach(p->{
@@ -94,7 +89,6 @@ public class ProductClassController {
 
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.getByLevel5(id)));
     }
-
 
     @GetMapping("/getByText")
     @ApiOperation("模糊查询")

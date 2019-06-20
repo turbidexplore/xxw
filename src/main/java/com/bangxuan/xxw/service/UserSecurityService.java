@@ -51,10 +51,6 @@ public class UserSecurityService {
         return userSecurityMapper.findByAdmin();
     }
 
-    public List<UserSecurity> findByAdmina() {
-        return userSecurityMapper.findByAdmina();
-    }
-
     public Integer findUserdataCount() {
         return userSecurityMapper.findUserdataCount();
     }

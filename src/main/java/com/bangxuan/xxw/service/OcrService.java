@@ -44,10 +44,7 @@ public class OcrService {
     }
 
     public JSONArray table(String url) throws Exception {
-        // 传入可选参数调用接口
         HashMap<String, String> options = new HashMap<String, String>();
-
-
         URL httpurl = new URL(url);
         HttpURLConnection con = (HttpURLConnection)httpurl.openConnection();
         con .setRequestMethod("GET");
@@ -55,7 +52,6 @@ public class OcrService {
         InputStream inStream = con .getInputStream();//通过输入流获取图片数据
         byte file[] = readInputStream(inStream);
 
-//        tableRecognitionAsync
         JSONObject res = (JSONObject) JSONObject.parse(client.form(file, options).toString(2));
         System.out.println(res.toString());
         JSONArray result=res.getJSONArray("forms_result");
@@ -79,40 +75,11 @@ public class OcrService {
                 }
             });
 
-//            dv.getJSONArray("footer").forEach(value->{
-//                JSONObject sell=JSONObject.parseObject(value.toString());
-//                if(sell.getInteger("column")==0){
-//                    JSONArray row=new JSONArray();
-//                    row.add(sell.getString("words"));
-//                    table.add(row);
-//                }else {
-//                    int index=sell.getInteger("row")-1;
-//                    if(index==-1){
-//                        return;
-//                    }
-//                    JSONArray row= table.getJSONArray(index);
-//                    row.add(sell.getString("words"));
-//                }
-//            });
             data.add(table);
 
         });
         return (JSONArray) data.get(0);
     }
-
-//    public JSONObject tabledata(String requestId){
-//        HashMap<String, String> options = new HashMap<String, String>();
-//        options.put("result_type", "json");
-//
-//        // 表格识别结果
-//        JSONObject res = (JSONObject) JSONObject.parse(client.tableResultGet(requestId, options).toString(2));
-//        System.out.println(res.toString());
-//
-//
-//        return data;
-//    }
-
-
 
     @Autowired
     private MongoTemplate mt; //自动注入MongoTemplate
@@ -151,18 +118,11 @@ public class OcrService {
                             rowdata.add(celldata);
 
                         }
-//                        else {
-//                            rowdata=new JSONArray();
-//                            rowdata.add(celldata);
-//                            tabledata.put(celldata.getInteger("xec")+"-"+celldata.getInteger("yec"),rowdata);
-//                        }
-
                     }
 
                 });
 
             });
-//            mt.insert(tables,"tabledata");
             return tables;
         } catch (Exception e) {
             e.printStackTrace();
@@ -189,20 +149,14 @@ public class OcrService {
     public void Run(String url) {
 
         try{
-            // Load ABBYY FineReader Engine
             displayMessage( "Initializing Engine..." );
             engine = Engine.Load( SamplesConfig.GetDllFolder(), SamplesConfig.GetDeveloperSN() );
-            // Process with ABBYY FineReader Engine
-            // Setup FREngine
             displayMessage( "Loading predefined profile..." );
             engine.LoadPredefinedProfile( "DocumentConversion_Accuracy" );
-            // Process sample image
             processImage(url);
-
         } catch( Exception ex ) {
             displayMessage( ex.getMessage() );
         }finally {
-            // Unload ABBYY FineReader Engine
             unloadEngine();
         }
     }
@@ -210,44 +164,30 @@ public class OcrService {
     private void processImage(String url) {
         String imagePath = baseurl+url;
         try {
-            // Don't recognize PDF file with a textual content, just copy it
             if( engine.IsPdfWithTextualContent( imagePath, null ) ) {
                 displayMessage( "Copy results..." );
                 String resultPath = SamplesConfig.GetSamplesFolder() + "\\SampleImages\\Demo_copy.pdf";
                 Files.copy( Paths.get( imagePath ), Paths.get( resultPath ), StandardCopyOption.REPLACE_EXISTING );
                 return;
             }
-            // Create document
             IFRDocument document = engine.CreateFRDocument();
-
             try {
 
-                // Add image file to document
                 displayMessage( "Loading image..." );
                 document.AddImageFile( imagePath, null, null );
 
                 IDocumentProcessingParams processingParams= engine.CreateDocumentProcessingParams();
                 processingParams.getPageProcessingParams().getRecognizerParams().SetPredefinedTextLanguage("English,ChinesePRC");
-
-                // Process document
                 displayMessage( "Process..." );
                 document.Process( processingParams );
-
-                // Save results
                 displayMessage( "Saving results..." );
-
-//                // Save results to rtf with default parameters
-//                document.Export( baseurl+url.split("\\.")[0]+".xml", FileExportFormatEnum.FEF_XML, null);
-
                 IXLExportParams ixlExportParams=engine.CreateXLExportParams();
                 ixlExportParams.setXLFileFormat(XLFileFormatEnum.XLFF_BIFF8);
                 String aExportPath =baseurl+url.split("\\.")[0]+".xlsx";
                 document.Export( aExportPath, FileExportFormatEnum.FEF_XLSX, ixlExportParams);
-
             }catch (Exception e){
                 System.out.println(e);
             }finally {
-                // Close document
                 document.Close();
             }
         } catch( Exception ex ) {
@@ -271,25 +211,15 @@ public class OcrService {
 
 
     public void createFile(String url) throws Exception {
-        //new一个URL对象
         URL urla = new URL(url);
-        //打开链接
         HttpURLConnection conn = (HttpURLConnection)urla.openConnection();
-        //设置请求方式为"GET"
         conn.setRequestMethod("GET");
-        //超时响应时间为5秒
         conn.setConnectTimeout(5 * 1000);
-        //通过输入流获取图片数据
         InputStream inStream = conn.getInputStream();
-        //得到图片的二进制数据，以二进制封装得到数据，具有通用性
         byte[] data = readInputStream(inStream);
-        //new一个文件对象用来保存图片，默认保存当前工程根目录
         File imageFile = new File(baseurl+url.split("/")[4]);
-        //创建输出流
         FileOutputStream outStream = new FileOutputStream(imageFile);
-        //写入数据
         outStream.write(data);
-        //关闭输出流
         outStream.close();
     }
 
@@ -301,18 +231,12 @@ public class OcrService {
 
     public static byte[] readInputStream(InputStream inStream) throws Exception{
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        //创建一个Buffer字符串
         byte[] buffer = new byte[1024];
-        //每次读取的字符串长度，如果为-1，代表全部读取完毕
         int len = 0;
-        //使用一个输入流从buffer里把数据读取出来
         while( (len=inStream.read(buffer)) != -1 ){
-            //用输出流往buffer里写入数据，中间参数代表从哪个位置开始读，len代表读取的长度
             outStream.write(buffer, 0, len);
         }
-        //关闭输入流
         inStream.close();
-        //把outStream里的数据写入内存
         return outStream.toByteArray();
     }
 }

@@ -37,36 +37,28 @@ public class BaseDataController {
 
     @Autowired
     private CompanyService companyService;
-
     @Autowired
     private ProductClassService productClassService;
-
     @Autowired
     private AdvertisementService advertisementService;
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private FileLibService fileLibService;
-
     @Autowired
     private UserMapper userMapper;
-
     @Autowired
     private UserSecurityService userSecurityService;
-
     @Autowired
     private AreaService areaService;
-
     @Autowired
     private TasksService tasksService;
-
     @Autowired
     private MailService mailService;
-
     @Autowired
-    private MongoTemplate mt; //自动注入MongoTemplate
+    private MongoTemplate mt;
+    @Autowired
+    private UnitMapper unitMapper;
 
     @GetMapping("/getStatistics")
     @ApiOperation("数据统计")
@@ -158,12 +150,9 @@ public class BaseDataController {
     }
 
 
-
     public String accuracy(double total, double num, int scale){
         DecimalFormat df = (DecimalFormat) NumberFormat.getInstance();
-        //可以设置精确几位小数
         df.setMaximumFractionDigits(scale);
-        //模式 例如四舍五入
         df.setRoundingMode(RoundingMode.HALF_UP);
         double accuracy_num = num / total * 100;
         return df.format(accuracy_num)+"%";
@@ -239,7 +228,6 @@ public class BaseDataController {
 
     @GetMapping("/sitemap")
     public Mono<Message> sitemap() throws Exception {
-        //打印推送结果
         ProductClass productClass=new ProductClass();
         productClass.setLevel(Byte.valueOf("4"));
         File file=new File("/home/alex/images/sitemap.xml");
@@ -377,9 +365,6 @@ public class BaseDataController {
         }
 
     }
-
-    @Autowired
-    private UnitMapper unitMapper;
 
     @GetMapping("/parameter")
     public Mono<Message> getParameter(){

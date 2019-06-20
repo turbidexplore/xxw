@@ -114,22 +114,22 @@ public class FileController {
 
     @GetMapping("/pdf")
     @ApiOperation("获取PDF")
-    public Mono<Message> getPDF( @RequestParam("id") String id){
-//        if(userSecurityService.findByPhone(principal.getName()).getType()== UserType.test){
-//            if(3<=daypdfCountService.todayCount(principal.getName())){
-//                return Mono.just(Message.ERROR("您今日已查看3次！请登录查看更多"));
-//            }
-//        }else {
-//            if(50<=daypdfCountService.todayCount(principal.getName())){
-//                return Mono.just(Message.ERROR("您今日已查看50次！权限已用完"));
-//            }
-//        }
+    public Mono<Message> getPDF(Principal principal, @RequestParam("id") String id){
+        if(userSecurityService.findByPhone(principal.getName()).getType()== UserType.test){
+            if(3<=daypdfCountService.todayCount(principal.getName())){
+                return Mono.just(Message.ERROR("您今日已查看3次！请登录查看更多"));
+            }
+        }else {
+            if(50<=daypdfCountService.todayCount(principal.getName())){
+                return Mono.just(Message.ERROR("您今日已查看50次！权限已用完"));
+            }
+        }
         JSONObject data=new JSONObject();
         data.put("basicurl","https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/pdf/");
         data.put("data",productClassService.getPDF(id));
         data.put("company",productClassService.getCompany(id));
         data.put("brand",productClassService.getBrand(id));
-//        daypdfCountService.add(principal.getName());
+        daypdfCountService.add(principal.getName());
         return Mono.just(Message.SCUESSS(Message.SECUESS,data));
     }
 

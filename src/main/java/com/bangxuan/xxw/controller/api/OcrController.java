@@ -30,11 +30,5 @@ public class OcrController {
 
         return Mono.just(Message.SCUESSS("ok", ocrService.table(url)));
     }
-//
-//    @PostMapping("/tabledata")
-//    @ApiOperation("通过id获取识别信息")
-//    public Mono<Message> tabledata(@RequestParam("id")String id)  {
-//
-//        return Mono.just(Message.SCUESSS("ok",ocrService.tabledata(id)));
-//    }
+
 }
