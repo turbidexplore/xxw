@@ -142,5 +142,11 @@ public interface ProductClassMapper {
 
     @Insert("insert into filegroup(class_id,url) values(#{class_id},#{url})")
     int addImage(@Param("class_id") String class_id,@Param("url") String url);
+
+    @Insert("delete from filegroup where class_id=#{class_id}")
+    int delImage(@Param("class_id") String class_id);
+
+    @Select("select * from filegroup where class_id=#{id}")
+    List<JSONObject> getImages(@Param("id") String id);
 }
 

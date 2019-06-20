@@ -279,6 +279,7 @@ public class BaseDataController {
             }
         }
         rowjson.put("key",key);
+        int count=0;
         for (int i=1;i<lists.size();i++){
             List<JSONObject> row = new ArrayList<>();
             for (int a=0;a<lists.get(i).size();a++) {
@@ -290,7 +291,9 @@ public class BaseDataController {
                 }
             }
             rowjson.put(String.valueOf(i),row);
+            count++;
         }
+        rowjson.put("count",count);
         if(mt.find(new Query(new Criteria()),JSONObject.class,id).size()!=0){
             mt.remove(new Query(new Criteria()),id);
         }
@@ -298,9 +301,26 @@ public class BaseDataController {
         return Mono.just(Message.SCUESSS("保存成功",0));
     }
 
+
     @PostMapping("/getclassdata")
     public Mono<Message> getclassdata(@RequestParam("id")String id){
-        return Mono.just(Message.SCUESSS("ok",mt.find(new Query(new Criteria()),JSONObject.class,id)));
+        if(mt.find(new Query(new Criteria()),JSONObject.class,id).size()!=0){
+            JSONArray data=new JSONArray();
+
+          List<JSONObject> list= mt.find(new Query(new Criteria()),JSONObject.class,id);
+            data.add(list.get(0).getJSONArray("key"));
+              for (int i=1;i<list.get(0).getInteger("count")+1;i++){
+                  JSONArray row=new JSONArray();
+                  int finalI = i;
+                  list.get(0).getJSONArray(String.valueOf(finalI)).forEach(b->{
+                      JSONObject col= (JSONObject) b;
+                      row.add(col.getString("value"));
+                  });
+                  data.add(row);
+              }
+            return Mono.just(Message.SCUESSS("ok",data));
+        }
+        return Mono.just(Message.SCUESSS("ok",0));
     }
 
     @PostMapping("/sendmail")

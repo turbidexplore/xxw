@@ -219,8 +219,15 @@ public class ProductClassService {
     public int addImage(String id, String img) {
         return productClassMapper.addImage(id,img);
     }
+    public int delImage(String id) {
+        return productClassMapper.delImage(id);
+    }
 
     public int updateDesc(String desc,String id){
         return productClassMapper.updateDesc(desc,id);
+    }
+
+    public List<JSONObject> getImages(String id) {
+        return productClassMapper.getImages(id);
     }
 }
