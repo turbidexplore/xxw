@@ -1,13 +1,10 @@
 package com.bangxuan.xxw.service;
 
-import com.abbyy.FREngine.*;
 import com.alibaba.fastjson.JSONArray;
 import com.baidu.aip.ocr.AipOcr;
 
 import com.alibaba.fastjson.JSONObject;
-import com.bangxuan.xxw.config.SamplesConfig;
-import com.bangxuan.xxw.util.EexelToJson;
-import com.bangxuan.xxw.util.HttpUtils;
+import com.bangxuan.xxw.util.CodeLib;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +14,6 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 @Service
@@ -97,7 +91,7 @@ public class OcrService {
             headers.put("Content-Type", "application/json; charset=UTF-8");
             Map<String, String> querys = new HashMap<String, String>();
             String bodys = "{\"url\":\""+url+"\",\"prob\":false,\"charInfo\":false,\"rotate\":false,\"table\":true}";
-            HttpResponse response = HttpUtils.doPost(host, path, method, headers, querys, bodys);
+            HttpResponse response = CodeLib.doPost(host, path, method, headers, querys, bodys);
             System.out.println("AAAAAAAAAAAAAa"+response.toString());
             //获取response的body
             JSONObject res=(JSONObject) JSONObject.parse(EntityUtils.toString(response.getEntity()));
@@ -128,99 +122,6 @@ public class OcrService {
             e.printStackTrace();
             return null;
         }
-    }
-
-    String baseurl="/home/alex/images/";
-
-    public JSONArray tablex(String url){
-
-        try {
-            String path =url.split("/")[4];
-            createFile(url);
-            Run(path);
-            return EexelToJson.excel2jsona(baseurl+path.split("\\.")[0]+".xlsx");
-        }catch (Exception e){
-            System.out.println(e);
-        }
-        return null;
-    }
-
-
-    public void Run(String url) {
-
-        try{
-            displayMessage( "Initializing Engine..." );
-            engine = Engine.Load( SamplesConfig.GetDllFolder(), SamplesConfig.GetDeveloperSN() );
-            displayMessage( "Loading predefined profile..." );
-            engine.LoadPredefinedProfile( "DocumentConversion_Accuracy" );
-            processImage(url);
-        } catch( Exception ex ) {
-            displayMessage( ex.getMessage() );
-        }finally {
-            unloadEngine();
-        }
-    }
-
-    private void processImage(String url) {
-        String imagePath = baseurl+url;
-        try {
-            if( engine.IsPdfWithTextualContent( imagePath, null ) ) {
-                displayMessage( "Copy results..." );
-                String resultPath = SamplesConfig.GetSamplesFolder() + "\\SampleImages\\Demo_copy.pdf";
-                Files.copy( Paths.get( imagePath ), Paths.get( resultPath ), StandardCopyOption.REPLACE_EXISTING );
-                return;
-            }
-            IFRDocument document = engine.CreateFRDocument();
-            try {
-
-                displayMessage( "Loading image..." );
-                document.AddImageFile( imagePath, null, null );
-
-                IDocumentProcessingParams processingParams= engine.CreateDocumentProcessingParams();
-                processingParams.getPageProcessingParams().getRecognizerParams().SetPredefinedTextLanguage("English,ChinesePRC");
-                displayMessage( "Process..." );
-                document.Process( processingParams );
-                displayMessage( "Saving results..." );
-                IXLExportParams ixlExportParams=engine.CreateXLExportParams();
-                ixlExportParams.setXLFileFormat(XLFileFormatEnum.XLFF_BIFF8);
-                String aExportPath =baseurl+url.split("\\.")[0]+".xlsx";
-                document.Export( aExportPath, FileExportFormatEnum.FEF_XLSX, ixlExportParams);
-            }catch (Exception e){
-                System.out.println(e);
-            }finally {
-                document.Close();
-            }
-        } catch( Exception ex ) {
-            displayMessage( ex.getMessage() );
-        }
-    }
-
-    private void unloadEngine() {
-        displayMessage( "Deinitializing Engine..." );
-        engine = null;
-        System.gc();
-        System.runFinalization();
-        Engine.Unload();
-    }
-
-    private static void displayMessage( String message ) {
-        System.out.println( message );
-    }
-
-    private IEngine engine = null;
-
-
-    public void createFile(String url) throws Exception {
-        URL urla = new URL(url);
-        HttpURLConnection conn = (HttpURLConnection)urla.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setConnectTimeout(5 * 1000);
-        InputStream inStream = conn.getInputStream();
-        byte[] data = readInputStream(inStream);
-        File imageFile = new File(baseurl+url.split("/")[4]);
-        FileOutputStream outStream = new FileOutputStream(imageFile);
-        outStream.write(data);
-        outStream.close();
     }
 
     public String res(String path) throws IOException {

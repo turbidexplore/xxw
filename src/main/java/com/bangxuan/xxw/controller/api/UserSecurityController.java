@@ -9,12 +9,10 @@ import com.bangxuan.xxw.entity.values.UserType;
 import com.bangxuan.xxw.service.UserSecurityService;
 import com.bangxuan.xxw.service.UserService;
 import com.bangxuan.xxw.util.CodeLib;
-import com.bangxuan.xxw.util.SMS;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -156,7 +154,7 @@ public class UserSecurityController {
         }else {
             int update_status= userSecurityService.updateAuthcode(phone,authcode);
         }
-        int send_status = SMS.send(phone,authcode);
+        int send_status = CodeLib.send(phone,authcode);
         if(send_status==1) {
             return Mono.just(Message.SCUESSS("短信发送成功", null));
         }else {

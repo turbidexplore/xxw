@@ -1,8 +1,7 @@
 package com.bangxuan.xxw.service;
 
 import com.bangxuan.xxw.entity.ProductClass;
-import com.bangxuan.xxw.util.DateDealwith;
-import com.bangxuan.xxw.util.TencentOSS;
+import com.bangxuan.xxw.util.CodeLib;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.model.PutObjectRequest;
 import com.qcloud.cos.model.PutObjectResult;
@@ -20,7 +19,7 @@ public class FileService {
     private String imagespath;
 
     @Autowired
-    private TencentOSS tencentOSS;
+    private CodeLib tencentOSS;
 
     private String basicurl=" https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/";
 
@@ -31,7 +30,7 @@ public class FileService {
                 if ("BMP".equals(name[1]) || "JPG".equals(name[1])
                         || "JPEG".equals(name[1]) || "bmp".equals(name[1])
                         || "jpg".equals(name[1]) || "jpeg".equals(name[1])|| "PNG".equals(name[1])| "png".equals(name[1])) {
-                    File file = File.createTempFile(DateDealwith.getSHC() ,"."+name[1]);
+                    File file = File.createTempFile(CodeLib.getSHC() ,"."+name[1]);
                     multipartFile.transferTo(file);
                     String bucketName =tencentOSS.QCLOUD_FILE_BUCKET;
                     String key = "public/"+file.getName();
@@ -54,7 +53,7 @@ public class FileService {
                 if ("BMP".equals(name[1]) || "JPG".equals(name[1])
                         || "JPEG".equals(name[1]) || "bmp".equals(name[1])
                         || "jpg".equals(name[1]) || "jpeg".equals(name[1])|| "PNG".equals(name[1])| "png".equals(name[1])) {
-                    File file = File.createTempFile(DateDealwith.getSHC() ,"."+name[1]);
+                    File file = File.createTempFile(CodeLib.getSHC() ,"."+name[1]);
                    String filename=file.getName();
                     multipartFile.transferTo(file);
                     String bucketName =tencentOSS.QCLOUD_FILE_BUCKET;
@@ -78,7 +77,7 @@ public class FileService {
                 if ("BMP".equals(name[1]) || "JPG".equals(name[1])
                         || "JPEG".equals(name[1]) || "bmp".equals(name[1])
                         || "jpg".equals(name[1]) || "jpeg".equals(name[1])|| "PNG".equals(name[1])| "png".equals(name[1])) {
-                    File file = File.createTempFile(DateDealwith.getSHC() ,"."+name[1]);
+                    File file = File.createTempFile(CodeLib.getSHC() ,"."+name[1]);
                     String filename=file.getName();
                     multipartFile.transferTo(file);
                     String bucketName =tencentOSS.QCLOUD_FILE_BUCKET;
@@ -103,7 +102,7 @@ public class FileService {
                         || "JPEG".equals(name[1]) || "bmp".equals(name[1])
                         || "jpg".equals(name[1]) || "jpeg".equals(name[1])|| "PNG".equals(name[1])| "png".equals(name[1])) {
 
-                    File file = File.createTempFile(DateDealwith.getSHC() ,"."+name[1]);
+                    File file = File.createTempFile(CodeLib.getSHC() ,"."+name[1]);
                     String filename=file.getName();
                     multipartFile.transferTo(file);
                     String bucketName =tencentOSS.QCLOUD_FILE_BUCKET;
@@ -127,7 +126,7 @@ public class FileService {
                 if ("BMP".equals(name[1]) || "JPG".equals(name[1])
                         || "JPEG".equals(name[1]) || "bmp".equals(name[1])
                         || "jpg".equals(name[1]) || "jpeg".equals(name[1])|| "PNG".equals(name[1])| "png".equals(name[1])) {
-                    File file = File.createTempFile(DateDealwith.getSHC() ,"."+name[1]);
+                    File file = File.createTempFile(CodeLib.getSHC() ,"."+name[1]);
                     String filename=file.getName();
                     multipartFile.transferTo(file);
                     String bucketName =tencentOSS.QCLOUD_FILE_BUCKET;
@@ -151,7 +150,7 @@ public class FileService {
                 if ("BMP".equals(name[1]) || "JPG".equals(name[1])
                         || "JPEG".equals(name[1]) || "bmp".equals(name[1])
                         || "jpg".equals(name[1]) || "jpeg".equals(name[1])|| "PNG".equals(name[1])| "png".equals(name[1])) {
-                    File file = File.createTempFile(DateDealwith.getSHC() ,"."+name[1]);
+                    File file = File.createTempFile(CodeLib.getSHC() ,"."+name[1]);
                     String filename=file.getName();
                     multipartFile.transferTo(file);
                     String bucketName =tencentOSS.QCLOUD_FILE_BUCKET;
@@ -173,7 +172,7 @@ public class FileService {
         if (multipartFile != null) {
             if (multipartFile.getOriginalFilename() != null || "".equals(multipartFile.getOriginalFilename())) {
                 String[] name = multipartFile.getOriginalFilename().split("\\.");
-                    File file = File.createTempFile(DateDealwith.getSHC() ,"."+name[1]);
+                    File file = File.createTempFile(CodeLib.getSHC() ,"."+name[1]);
                     multipartFile.transferTo(file);
                     String bucketName =tencentOSS.QCLOUD_FILE_BUCKET;
                     String key = "filelib/"+file.getName();
@@ -194,13 +193,13 @@ public class FileService {
     public String seo(){
         try {
         File file = null;
-        file = File.createTempFile(DateDealwith.getSHC() ,".txt");
+        file = File.createTempFile(CodeLib.getSHC() ,".txt");
         FileService.createFile(file);
             ProductClass productClass=new ProductClass();
             productClass.setLevel(Byte.valueOf("4"));
             StringBuffer sb = new StringBuffer();
         productClassService.getByLevelCondition(productClass).forEach(p->{
-            sb.append("https://www.lingjianbang.com/level4/"+p.getId()+" "+DateDealwith.getCurrDateStr()+" ");
+            sb.append("https://www.lingjianbang.com/level4/"+p.getId()+" "+CodeLib.getCurrDateStr()+" ");
         });
         FileService.writeTxtFile(sb.toString(),file);
         String bucketName =tencentOSS.QCLOUD_FILE_BUCKET;

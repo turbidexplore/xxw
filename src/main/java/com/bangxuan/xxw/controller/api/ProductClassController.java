@@ -10,7 +10,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
-
 import java.util.List;
 
 @Api(value = "By ProductClass",description = "产品类型")
@@ -32,7 +31,6 @@ public class ProductClassController {
                 setData(list,l);
                 data.add(l);
             }
-
         });
         return Mono.just(Message.SCUESSS(Message.SECUESS,data));
     }

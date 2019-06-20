@@ -3,11 +3,7 @@ package com.bangxuan.xxw.controller.api;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.entity.Message;
-import com.bangxuan.xxw.entity.ProductClass;
-import com.bangxuan.xxw.service.ProductClassService;
 import com.bangxuan.xxw.service.TradeService;
-
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

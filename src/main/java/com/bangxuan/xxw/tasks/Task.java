@@ -6,8 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-
-import static com.bangxuan.xxw.util.HttpUtils.Post;
+import static com.bangxuan.xxw.util.CodeLib.Post;
 
 
 @Component

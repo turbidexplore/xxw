@@ -15,7 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
-import com.bangxuan.xxw.util.TencentOSS;
+import com.bangxuan.xxw.util.CodeLib;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.model.PutObjectRequest;
 import com.qcloud.cos.model.PutObjectResult;
@@ -38,7 +38,7 @@ public class CompanyController {
     private BrandService brandService;
 
     @Autowired
-    private TencentOSS tencentOSS;
+    private CodeLib tencentOSS;
 
     @GetMapping("/getLogos")
     @ApiOperation("获取最新入驻匹配logo")
@@ -119,7 +119,7 @@ public class CompanyController {
         HttpURLConnection con = (HttpURLConnection)httpurl.openConnection();
         con .setRequestMethod("GET");
         con .setConnectTimeout(4 * 1000);
-        InputStream inStream = con .getInputStream();//通过输入流获取图片数据
+        InputStream inStream = con .getInputStream();
         byte file[] = readInputStream(inStream);
         File imageFile = new File(value);
         FileOutputStream outStream = new FileOutputStream(imageFile);

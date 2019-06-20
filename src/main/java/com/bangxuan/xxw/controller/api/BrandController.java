@@ -2,7 +2,6 @@ package com.bangxuan.xxw.controller.api;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.entity.Brand;
-import com.bangxuan.xxw.entity.Company;
 import com.bangxuan.xxw.entity.Message;
 import com.bangxuan.xxw.service.BrandService;
 import io.swagger.annotations.Api;

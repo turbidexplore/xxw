@@ -1,30 +1,54 @@
 package com.bangxuan.xxw.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+import com.alibaba.fastjson.JSONArray;
+import com.qcloud.cos.COSClient;
+import com.qcloud.cos.ClientConfig;
+import com.qcloud.cos.auth.BasicCOSCredentials;
+import com.qcloud.cos.auth.COSCredentials;
+import com.qcloud.cos.region.Region;
+import io.micrometer.core.instrument.util.StringUtils;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFDataFormat;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.MessageDigest;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Component
 public class CodeLib {
 
-    /**
-     * 从Request对象中获得客户端IP，处理了HTTP代理服务器和Nginx的反向代理截取了ip
-     * @param request
-     * @return ip
-     */
     public static String getLocalIp(HttpServletRequest request) {
         String remoteAddr = request.getRemoteAddr();
         String forwarded = request.getHeader("X-Forwarded-For");
@@ -48,30 +72,6 @@ public class CodeLib {
             }
         }
         return ip;
-    }
-
-    public static String MD5(String value){
-        try {
-            // 得到一个信息摘要器
-            MessageDigest digest = MessageDigest.getInstance("md5");
-            byte[] result = digest.digest(value.getBytes());
-            StringBuffer buffer = new StringBuffer();
-            // 把没一个byte 做一个与运算 0xff;
-            for (byte b : result) {
-                // 与运算
-                int number = b & 0xff;// 加盐
-                String str = Integer.toHexString(number);
-                if (str.length() == 1) {
-                    buffer.append("0");
-                }
-                buffer.append(str);
-            }
-            // 标准的md5加密后的结果
-            return buffer.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return "";
-        }
     }
 
     public static String getAddressByIp(String ip) {
@@ -149,6 +149,268 @@ public class CodeLib {
         }
 
 
+    }
+
+    public static String getCurrDateStr() {
+        SimpleDateFormat std = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return std.format(new Date()).toString();
+    }
+
+    public static String getSHC() {
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        String str = sdf.format(date);
+        return str;
+    }
+
+    public static JSONArray excel2jsona(String path)  {
+        JSONArray jsonArray = new JSONArray();
+        try {
+            CellStyle cellStyle;
+            Workbook wb = new XSSFWorkbook(new FileInputStream(path));
+            XSSFDataFormat dataFormat = (XSSFDataFormat) wb.createDataFormat();
+            cellStyle = wb.createCellStyle();
+            cellStyle.setDataFormat(dataFormat.getFormat("@"));
+            Sheet sheet = wb.getSheetAt(0);
+            for (int j = 0; j <= sheet.getLastRowNum(); j++) {
+                JSONArray rowd = new JSONArray();
+                Row row = sheet.getRow(j);
+                try {
+                    for (int k = 0; k < row.getLastCellNum(); k++) {
+                        Cell cell = row.getCell(k);
+                        cell.setCellStyle(cellStyle);
+                        DecimalFormat df = new DecimalFormat("#");
+                        switch (cell.getCellType()) {
+                            case HSSFCell.CELL_TYPE_STRING:
+                                rowd.add(cell.getRichStringCellValue().getString().trim());
+                                break;
+                            case HSSFCell.CELL_TYPE_NUMERIC:
+                                rowd.add(df.format(cell.getNumericCellValue()));
+                                break;
+                            case HSSFCell.CELL_TYPE_BOOLEAN:
+                                rowd.add(String.valueOf(cell.getBooleanCellValue()).trim());
+                                break;
+                            case HSSFCell.CELL_TYPE_FORMULA:
+                                rowd.add(cell.getCellFormula());
+                                break;
+                            default:
+                                rowd.add("");
+                        }
+                    }
+                }catch (Exception e){
+
+                }finally {
+                    jsonArray.add(rowd);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return jsonArray;
+    }
+
+    private static String Url = "http://106.ihuyi.cn/webservice/sms.php?method=Submit";
+
+    public static int send(String phone,int mobile_code) {
+        HttpClient client = new HttpClient();
+        PostMethod method = new PostMethod(Url);
+        client.getParams().setContentCharset("GBK");
+        method.setRequestHeader("ContentType","application/x-www-form-urlencoded;charset=GBK");
+        String content = new String("您的验证码是：" + mobile_code + "。请不要把验证码泄露给其他人。");
+        NameValuePair[] data = {
+                new NameValuePair("account", "C12472183"),
+                new NameValuePair("password", "a558b2b9fb56c2ab7941653267169059"),
+                new NameValuePair("mobile", phone),
+                new NameValuePair("content", content),
+        };
+        method.setRequestBody(data);
+        try {
+            client.executeMethod(method);
+            String SubmitResult =method.getResponseBodyAsString();
+            Document doc = DocumentHelper.parseText(SubmitResult);
+            Element root = doc.getRootElement();
+            String code = root.elementText("code");
+            String msg = root.elementText("msg");
+            String smsid = root.elementText("smsid");
+            if("2".equals(code)){
+                return 1;
+            }
+        } catch (HttpException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        } finally{
+            method.releaseConnection();
+            client.getHttpConnectionManager().closeIdleConnections(0);
+        }
+        return 0;
+
+    }
+
+    /**
+     * 百度链接实时推送
+     *
+     * @param PostUrl
+     * @param Parameters
+     * @return
+     */
+    public static String Post(String PostUrl, String[] Parameters) {
+        if (null == PostUrl || null == Parameters || Parameters.length == 0) {
+            return null;
+        }
+        String result = "";
+        PrintWriter out = null;
+        BufferedReader in = null;
+        try {
+            //建立URL之间的连接
+            URLConnection conn = new URL(PostUrl).openConnection();
+            //设置通用的请求属性
+            conn.setRequestProperty("Host", "data.zz.baidu.com");
+            conn.setRequestProperty("User-Agent", "curl/7.12.1");
+            conn.setRequestProperty("Content-Length", "83");
+            conn.setRequestProperty("Content-Type", "text/plain");
+            //发送POST请求必须设置如下两行
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            //获取conn对应的输出流
+            out = new PrintWriter(conn.getOutputStream());
+            //发送请求参数
+            String param = "";
+            for (String s : Parameters) {
+                param += s + "\n";
+            }
+            out.print(param.trim());
+            //进行输出流的缓冲
+            out.flush();
+            //通过BufferedReader输入流来读取Url的响应
+            in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line;
+            while ((line = in.readLine()) != null) {
+                result += line;
+            }
+        } catch (Exception e) {
+            System.out.println("发送post请求出现异常！" + e);
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+
+    public static HttpResponse doPost(String host, String path, String method,
+                                      Map<String, String> headers,
+                                      Map<String, String> querys,
+                                      String body)
+            throws Exception {
+        org.apache.http.client.HttpClient httpClient = wrapClient(host);
+
+        HttpPost request = new HttpPost(buildUrl(host, path, querys));
+        for (Map.Entry<String, String> e : headers.entrySet()) {
+            request.addHeader(e.getKey(), e.getValue());
+        }
+
+        if (StringUtils.isNotBlank(body)) {
+            request.setEntity(new StringEntity(body, "utf-8"));
+        }
+
+        return httpClient.execute(request);
+    }
+
+
+    private static String buildUrl(String host, String path, Map<String, String> querys) throws UnsupportedEncodingException {
+        StringBuilder sbUrl = new StringBuilder();
+        sbUrl.append(host);
+        if (!StringUtils.isBlank(path)) {
+            sbUrl.append(path);
+        }
+        if (null != querys) {
+            StringBuilder sbQuery = new StringBuilder();
+            for (Map.Entry<String, String> query : querys.entrySet()) {
+                if (0 < sbQuery.length()) {
+                    sbQuery.append("&");
+                }
+                if (StringUtils.isBlank(query.getKey()) && !StringUtils.isBlank(query.getValue())) {
+                    sbQuery.append(query.getValue());
+                }
+                if (!StringUtils.isBlank(query.getKey())) {
+                    sbQuery.append(query.getKey());
+                    if (!StringUtils.isBlank(query.getValue())) {
+                        sbQuery.append("=");
+                        sbQuery.append(URLEncoder.encode(query.getValue(), "utf-8"));
+                    }
+                }
+            }
+            if (0 < sbQuery.length()) {
+                sbUrl.append("?").append(sbQuery);
+            }
+        }
+
+        return sbUrl.toString();
+    }
+
+    private static org.apache.http.client.HttpClient wrapClient(String host) {
+        org.apache.http.client.HttpClient httpClient = new DefaultHttpClient();
+        if (host.startsWith("https://")) {
+            sslClient(httpClient);
+        }
+
+        return httpClient;
+    }
+
+    private static void sslClient(org.apache.http.client.HttpClient httpClient) {
+        try {
+            SSLContext ctx = SSLContext.getInstance("TLS");
+            X509TrustManager tm = new X509TrustManager() {
+                public X509Certificate[] getAcceptedIssuers() {
+                    return null;
+                }
+                public void checkClientTrusted(X509Certificate[] xcs, String str) {
+
+                }
+                public void checkServerTrusted(X509Certificate[] xcs, String str) {
+
+                }
+            };
+            ctx.init(null, new TrustManager[] { tm }, null);
+            SSLSocketFactory ssf = new SSLSocketFactory(ctx);
+            ssf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+            ClientConnectionManager ccm = httpClient.getConnectionManager();
+            SchemeRegistry registry = ccm.getSchemeRegistry();
+            registry.register(new Scheme("https", 443, ssf));
+        } catch (KeyManagementException ex) {
+            throw new RuntimeException(ex);
+        } catch (NoSuchAlgorithmException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Value("${com.turbid.tencentoss.qcloud_file_accesskey}")
+    private  String ACCESSKEY;
+    @Value("${com.turbid.tencentoss.qcloud_file_secretkey}")
+    private  String SECRETKEY;
+    @Value("${com.turbid.tencentoss.qcloud_file_region}")
+    private  String REGION_NAME;
+    @Value("${com.turbid.tencentoss.qcloud_file_bucket}")
+    public   String QCLOUD_FILE_BUCKET;
+
+    public COSClient getClient()
+    {
+        COSCredentials cred = new BasicCOSCredentials(ACCESSKEY, SECRETKEY);
+        ClientConfig clientConfig = new ClientConfig(new Region(REGION_NAME));
+        COSClient cosClient = new COSClient(cred, clientConfig);
+        return cosClient;
     }
 
 

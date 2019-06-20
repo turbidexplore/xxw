@@ -6,7 +6,6 @@ import com.bangxuan.xxw.dao.UnitMapper;
 import com.bangxuan.xxw.dao.UserMapper;
 import com.bangxuan.xxw.entity.*;
 import com.bangxuan.xxw.service.*;
-import com.bangxuan.xxw.util.FileOperation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.dom4j.Document;
@@ -226,36 +225,6 @@ public class BaseDataController {
         return Mono.just(Message.SCUESSS("ok",null));
     }
 
-    @GetMapping("/sitemap")
-    public Mono<Message> sitemap() throws Exception {
-        ProductClass productClass=new ProductClass();
-        productClass.setLevel(Byte.valueOf("4"));
-        File file=new File("/home/alex/images/sitemap.xml");
-        FileOperation.createFile(file);
-        List<SiteMap> sb =new ArrayList<>();
-        productClassService.getByLevelCondition(productClass).forEach(p->{
-            try {
-                SiteMap test=new SiteMap();
-                test.setUrl("https://www.lingjianbang.com/level4/"+p.getId());
-                sb.add(test);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        productClass.setLevel(Byte.valueOf("3"));
-        productClassService.getByLevelCondition(productClass).forEach(p->{
-            try {
-                SiteMap test=new SiteMap();
-                test.setUrl("https://www.lingjianbang.com/level3/"+p.getId());
-                sb.add(test);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        createXml(file,sb, SiteMap.class);
-        return null;
-    }
-
     @PutMapping("/saveclassdata")
     public Mono<Message> saveclassdata(@RequestBody JSONArray jsonArray,@RequestParam("id")String id){
         List<List> lists= jsonArray.toJavaList(List.class);
@@ -321,50 +290,6 @@ public class BaseDataController {
     }
 
 
-    @SuppressWarnings("unchecked")
-    public static <T> void createXml(File file, List<T> list, Class<T> clz) {
-        try {
-            // 创建Document
-            Document document = DocumentHelper.createDocument();
-            // 创建根节点
-            Element root = document.addElement("root");
-            // 获取类中所有的字段
-            Field[] fields = clz.getDeclaredFields();
-            // 先把List<T>对象转成json字符串
-            String str = JSONObject.toJSONString(list);
-            // 把json字符串转换成List<Map<Object, Object>>
-            List<Map<Object, Object>> mapList = (List<Map<Object, Object>>) JSONArray.parse(str);
-
-            Element element;
-            Map<Object, Object> map;
-            // 迭代拼接xml节点数据
-            for (int i = 0; i < mapList.size(); i++) {
-                // 在根节点下添加子节点
-                element = root.addElement(clz.getSimpleName());
-                // 获取Map<Object, Object>对象
-                map = mapList.get(i);
-                // 从map中获取数据，拼接xml
-                for (Field field : fields) {
-                    // 在子节点下再添加子节点
-                    element.addElement(field.getName())
-                            .addAttribute("attr", field.getType().getName())
-                            .addText(String.valueOf(map.get(field.getName())));
-                }
-            }
-            // 把xml内容输出到文件中
-            OutputFormat format = OutputFormat.createPrettyPrint();
-            XMLWriter writer = new XMLWriter(new FileOutputStream(file), format);
-            writer.write(document);
-            System.out.println("Dom4jUtils Create Xml success!");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     @GetMapping("/parameter")
     public Mono<Message> getParameter(){
