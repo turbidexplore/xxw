@@ -1,6 +1,5 @@
 package com.bangxuan.xxw.service;
 
-import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.dao.UserSecurityMapper;
 import com.bangxuan.xxw.entity.UserSecurity;
 import org.springframework.beans.factory.annotation.Autowired;

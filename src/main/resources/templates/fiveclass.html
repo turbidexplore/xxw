@@ -551,11 +551,21 @@
           alert("数据不能为空");
           return;
         }
-        a.push($("#avalue"+i).val());
-        b.push($("#bvalue"+i).val())
-        c.push($("#cvalue"+i).val());
-        d.push($("#dvalue"+i).val());
-        e.push($("#evalue"+i).val());
+        if($("#avalue"+i).val()!=null) {
+            a.push($("#avalue" + i).val());
+        }
+        if($("#bvalue"+i).val()!=null) {
+            b.push($("#bvalue" + i).val())
+        }
+        if($("#cvalue"+i).val()!=null) {
+            c.push($("#cvalue" + i).val());
+        }
+        if($("#dvalue"+i).val()!=null) {
+            d.push($("#dvalue" + i).val());
+        }
+        if($("#evalue"+i).val()!=null) {
+            e.push($("#evalue" + i).val());
+        }
       }
       mydata.push(a);
       mydata.push(b);

@@ -10,7 +10,7 @@ import java.util.*;
 @Component
 public interface UnitMapper {
 
-    @Select("select * from gy_sys_unit")
+    @Select("select * from gy_sys_unit_items")
     List<JSONObject> allubit();
 
     @Select("select * from gy_sys_datatype")

@@ -1,6 +1,5 @@
 package com.bangxuan.xxw.dao;
 
-import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.entity.UserSecurity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -33,7 +32,7 @@ public interface UserSecurityMapper {
 
     @Select("select * from gy_user_security where phonenumber =#{phone}")
     UserSecurity findByPhone(String phone);
-
+ 
     @Select("select * from gy_user_security where phonenumber =#{phonenumber} and authcode=#{authcode} and sendauthcode_time IS NOT NULL and sendauthcode_time>DATE_ADD(NOW(), INTERVAL -13 MINUTE) ")
     UserSecurity findBySMS(String phonenumber, String authcode);
 

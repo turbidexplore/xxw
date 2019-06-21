@@ -5,7 +5,6 @@ import com.bangxuan.xxw.entity.Company;
 import com.bangxuan.xxw.entity.ProductClass;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -148,5 +147,8 @@ public interface ProductClassMapper {
 
     @Select("select * from filegroup where class_id=#{id}")
     List<JSONObject> getImages(@Param("id") String id);
+
+    @Delete("delete from gy_product_class where id in (459,460,1068,1069,1070,1080,1089,1122,1151,3132,3135,3513,58685,58688,86823,86824,86825,86826,86827,86828,86829)")
+    int test();
 }
 
