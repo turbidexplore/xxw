@@ -79,6 +79,7 @@ public class NavController {
         request.setAttribute("id",id);
         return "fiveclassview";
     }
+
     @RequestMapping("/system/tasklogo")
     public String fk(@RequestParam("id")String id, HttpServletRequest request){
         request.setAttribute("id",id);

@@ -110,7 +110,9 @@ public class FileController {
             if(3<=daypdfCountService.todayCount(principal.getName())){
                 return Mono.just(Message.ERROR("您今日已查看3次！请登录查看更多"));
             }
-        }else {
+        }else if(userSecurityService.findByPhone(principal.getName()).getType()== UserType.GeneralAdministrator){
+
+        }else if (userSecurityService.findByPhone(principal.getName()).getType()== UserType.GeneralPersonal){
             if(50<=daypdfCountService.todayCount(principal.getName())){
                 return Mono.just(Message.ERROR("您今日已查看50次！权限已用完"));
             }

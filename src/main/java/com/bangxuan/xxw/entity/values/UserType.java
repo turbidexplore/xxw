@@ -4,7 +4,6 @@ package com.bangxuan.xxw.entity.values;
  * 用户类型
  */
 public enum UserType {
-
     SeniorAdministrator(0),//高级管理员
     GeneralAdministrator(1),//普通管理员
     GeneralPersonal(2),//个人用户

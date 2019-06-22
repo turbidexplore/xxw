@@ -269,7 +269,6 @@ public class BaseDataController {
     }
 
 
-
     @GetMapping("/parameter")
     public Mono<Message> getParameter(){
         JSONObject data = new JSONObject();
