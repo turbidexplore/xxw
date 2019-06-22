@@ -259,6 +259,31 @@ public class BaseDataController {
         return Mono.just(Message.SCUESSS("ok",0));
     }
 
+    @GetMapping("/classdata")
+    public Mono<Message> classdata(@RequestParam("id")String id){
+        if(mt.find(new Query(new Criteria()),JSONObject.class,id).size()!=0){
+            List<JSONObject> list= mt.find(new Query(new Criteria()),JSONObject.class,id);
+            JSONArray data= new JSONArray();
+            for (int i=5;i<list.get(0).getInteger("count")+1;i++){
+                JSONObject sku=new JSONObject();
+                sku.put("name",list.get(0).getJSONArray(String.valueOf(i)).getObject(1,JSONObject.class).getString("value"));
+                JSONArray row=new JSONArray();
+                for (int j=2;j<list.get(0).getJSONArray(String.valueOf(i)).size();j++) {
+                    JSONObject col=list.get(0).getJSONArray(String.valueOf(i)).getObject(j,JSONObject.class);
+                    col.put("en",list.get(0).getJSONArray(String.valueOf(1)).getObject(j,JSONObject.class).getString("value"));
+                    col.put("code",list.get(0).getJSONArray(String.valueOf(2)).getObject(j,JSONObject.class).getString("value"));
+                    col.put("unit",list.get(0).getJSONArray(String.valueOf(3)).getObject(j,JSONObject.class).getString("value"));
+                    col.put("datatype",list.get(0).getJSONArray(String.valueOf(4)).getObject(j,JSONObject.class).getString("value"));
+                    row.add(col);
+                }
+                sku.put("data",row);
+                data.add(sku);
+            }
+            return Mono.just(Message.SCUESSS("ok",data));
+        }
+        return Mono.just(Message.SCUESSS("ok",0));
+    }
+
     @PostMapping("/sendmail")
     public Mono<Message> sendmail(@RequestBody JSONArray jsonArray){
         String text=jsonArray.get(0).toString().replace("ondrag=\"changeurl(this)\"","").replace("onclick=\"changeimg(this)\"","").replace("onclick=\"changeword(this)\"","").replace("border: 2px solid green;","");
