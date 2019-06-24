@@ -38,6 +38,7 @@
         border-color: #666666;
         background-color: #ffffff;
       }
+      .clear { clear: both; }
     </style>
   </head>
   <body class="h-100">
@@ -54,87 +55,21 @@
               </div>
             </div>
             <div class="row">
-
-              <div class="col-lg-4">
-                <div class="card card-small mb-4 pt-3" id="myp" >
-                  <div class="card-header border-bottom">
-                    <h4 class="m-0" id="classname" style="font-weight: bold;color: red;"></h4>
-                  </div>
-                  <div class="card-header border-bottom text-center">
-                    <h4 class="mb-0" id="company_name_title">图片粘贴处<button type="button" class="mb-2 btn btn-outline-success mr-2" onclick="shibie()">识别</button></h4>
-                    <div class="mb-3 mx-auto">
-                      <input type="hidden" id="images_url">
-                      <img  src="" alt="无图片" width="100%" id="images"> </div>
-                  </div>
-                </div>
-              </div>
-                <div class="col-lg-8">
-                <div class="card card-small mb-4">
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item p-3">
-                      <div class="row">
-                        <div class="col">
-                          <form>
-                            <div id="exampleshibie"></div>
-                          </form>
-
-                        </div>
-
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="row">
               <div class="col-lg-12">
-                <div class="card card-small mb-4">
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item p-3">
-                      <div class="row">
-                        <div class="col">
-                          <form>
-                            <div class="custom-control custom-toggle custom-toggle-sm mb-1">
-                              <input onchange="edittable(this)" type="checkbox" id="customToggle2" name="customToggle2" class="custom-control-input" >
-                              <label class="custom-control-label" for="customToggle2">开启表头编辑</label>
-                            </div>
-                            <table  class="gridtable" id="gridtable" >
-                              <tr id="a">
-                                <td>参数中文名称</td>
-
-                                <td rowspan="5" id="addtd">
-                                  <button type="button" class="btn btn-sm btn-success " onclick="add(this)">+</button>
-                                  <br/><button type="button" class="btn btn-sm btn-danger " onclick="saveadd()">=</button>
-                                </td>
-                              </tr>
-                              <tr id="b">
-                                <td>参数英文名称</td>
-                              </tr>
-                              <tr id="c">
-                                <td>参数代码</td>
-                              </tr>
-                              <tr id="d">
-                                <td>参数单位</td>
-                              </tr>
-                              <tr id="e">
-                                <td>参数数据类型</td>
-                              </tr>
-                            </table>
-                            <div id="example"></div>
-                          </form>
-                          <input type="hidden" id="coreid"  th:value="${id}">
-                          <button type="submit" clps
-                                  ass="btn btn-accent" onclick="savetable()">保存数据</button>
+                <div id="bds" style="width: 100%;">
+                  <button type="submit" style="float: left;" class="btn btn-accent" onclick="addtable()">添加表达式</button><span id="bdsword" style="margin-left: 10px;margin-top:6px;font-weight: bold;"></span>
+                  <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+                <hr>
+                <form id="tables">
+                </form>
+                <div class="clear"></div>
+                <input type="hidden" id="coreid"  th:value="${id}">
+                <button type="submit" class="btn btn-accent" onclick="save()">保存数据</button>
                         </div>
                       </div>
-                    </li>
-                  </ul>
-                </div>
               </div>
-            </div>
-            <!-- End Default Light Table -->
-          </div>
-
       </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -148,27 +83,65 @@
     <script src="/scripts/jquery.cookie.min.js" type="text/javascript"></script>
     <script src="/scripts/handsontable.full.js"></script>
   <script>
-    $("#gridtable").hide();
-    function edittable(obj){
-    if(obj.checked==true){
-      $("#gridtable").show();
-    }else {
-      $("#gridtable").hide();
-    }
-    }
 
-    var index=0;
+    var data=[];
 
-    function rmcss(obj) {
-      $(obj).css("border","0px solid #fff");
+    function changecodename(obj,value) {
+      $("#codename"+value).html(obj.value);
+      bdsword();
     }
 
-    function add() {
-      $("#addtd").remove();
+    function addtable() {
+      data.push({"index":1,"colsize":2,"rowsize":0});
+      $("#bds").append("<div id=\"bds"+data.length+"\" style=\"margin: 10px;width: 82px;border: 1px solid grey;float: left;\">" +
+              "<select style=\"width: 80px;border-style:none;\" id='bdstype"+data.length+"' onchange='bdsword()'>\n" +
+              "                    <option value=\"\">默认</option>\n" +
+              "                    <option value=\".\">.</option>\n" +
+              "                    <option value=\"-\">-</option>\n" +
+              "                    <option value=\"*\">*</option>\n" +
+              "                  </select><br>\n" +
+              "                    <input id='bdsname"+data.length+"' oninput='changecodename(this,"+data.length+")' style=\"width: 80px;border-style:none;\" value='A"+data.length+"' type='text'  placeholder='中文名称'>\n" +
+              "<button type=\"button\" style=\"width: 80px;border-style:none;border-radius: 0\" class=\"btn btn-sm btn-danger \" onclick=\"rmbds("+data.length+")\">删除</button>"+
+              "                  </div>");
+      $("#tables").append(" <table  class=\"gridtable\" style='float: left;margin: 10px;' id=\"gridtable"+data.length+"\" >\n" +
+              "                              <tr id=\"a"+data.length+"\">\n" +
+              "                                <td><span style='font-weight: bold;color: red;' id='codename"+data.length+"'>[A"+data.length+"]</span>/中文名称</td>\n" +
+              "\n" +
+              "                                <td rowspan=\"5\" id=\"addtd"+data.length+"\">\n" +
+              "                                  <button type=\"button\" class=\"btn btn-sm btn-success \" onclick=\"addcs('"+data.length+"')\">+</button>\n" +
+              "                                </td>\n" +
+              "                              </tr>\n" +
+              "                              <tr id=\"b"+data.length+"\">\n" +
+              "                                <td>英文名称</td>\n" +
+              "                              </tr>\n" +
+              "                              <tr id=\"c"+data.length+"\">\n" +
+              "                                <td>代码</td>\n" +
+              "                              </tr>\n" +
+              "                              <tr id=\"d"+data.length+"\">\n" +
+              "                                <td>单位</td>\n" +
+              "                              </tr>\n" +
+              "                              <tr id=\"e"+data.length+"\">\n" +
+              "                                <td>数据类型</td>\n" +
+              "                              </tr>\n" +
+              "                              <tr id=\"addth"+data.length+"\">\n" +
+              "                                <td colspan=\"2\"><center> <button type=\"button\" class=\"btn btn-sm btn-success \" onclick=\"addrow('"+data.length+"')\" >+</button></center></td>\n" +
+              "                              </tr>\n" +
+              "                            </table>")
+          bdsword();
+    }
 
-      $("#a").append("<td ondblclick='rm("+index+")' id='a"+index+"'><input oninput='rmcss(this)' id='avalue"+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='中文名称'></td> <td rowspan=\"5\" id=\"addtd\"><button type=\"button\" class=\"btn btn-sm btn-success \" onclick=\"add()\">+</button><br/> <button type=\"button\" class=\"btn btn-sm btn-danger \" onclick=\"saveadd()\">=</button></td>");
-      $("#b").append("<td ondblclick='rm("+index+")' id='b"+index+"'><input oninput='rmcss(this)' id='bvalue"+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='英文名称'></td>");
-      $("#c").append("<td ondblclick='rm("+index+")' id='c"+index+"'><input oninput='rmcss(this)' id='cvalue"+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='代码'></td>");
+
+    function addcs(value) {
+     var colsize=data[value-1].colsize= data[value-1].colsize+1;
+      var index=data[value-1].index;
+      $("#addtd"+value).remove();
+      $("#addth"+value).remove();
+      $("#gridtable"+value).append(" <tr id=\"addth"+value+"\">\n" +
+              "                                <td colspan=\""+colsize+"\"><center> <button type=\"button\" class=\"btn btn-sm btn-success \" onclick=\"addrow("+value+")\">+</button></center></td>\n" +
+              "                              </tr>");
+      $("#a"+value).append("<td  id='a"+value+index+"'><input  id='avalue"+value+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='中文名称'></td> <td rowspan=\"5\" id=\"addtd"+value+"\"><button type=\"button\" class=\"btn btn-sm btn-success \" onclick=\"addcs("+value+")\">+</button></td>");
+      $("#b"+value).append("<td  id='b"+value+index+"'><input  id='bvalue"+value+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='英文名称'></td>");
+      $("#c"+value).append("<td id='c"+value+index+"'><input  id='cvalue"+value+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='代码'></td>");
       var settings = {
         "async": true,
         "crossDomain": true,
@@ -176,259 +149,104 @@
         "method": "GET",
         "processData": false
       }
-
       $.ajax(settings).done(function (response) {
-       var unit="<select id='dvalue"+index+"'>"
-        response.data.unit.forEach(function (value) {
-          unit=unit+"<option value='"+value.unit_name+"("+value.unit+")"+"'>"+value.unit_name+"("+value.unit+")"+"</option>"
+        var unit="<select id='dvalue"+value+index+"'>"
+        response.data.unit.forEach(function (val) {
+          unit=unit+"<option value='"+val.unit_name+"("+val.unit+")"+"'>"+val.unit_name+"("+val.unit+")"+"</option>"
         });
         unit=unit+"</select>";
-        $("#d").append("<td ondblclick='rm("+index+")' id='d"+index+"'>"+unit+"</td>");
+        $("#d"+value).append("<td  id='d"+value+index+"'>"+unit+"</td>");
 
-        var datatype="<select  id='evalue"+index+"'>"
-        response.data.datatype.forEach(function (value) {
-          datatype=datatype+"<option value='"+value.datatype+"'>"+value.datatype+"</option>"
+        var datatype="<select  id='evalue"+value+index+"'>"
+        response.data.datatype.forEach(function (val) {
+          datatype=datatype+"<option value='"+val.datatype+"'>"+val.datatype+"</option>"
         });
         datatype=datatype+"</select>";
-        $("#e").append("<td ondblclick='rm("+index+")' id='e"+index+"'>"+datatype+"</td>");
-        index=index+1;
+        $("#e"+value).append("<td ondblclick='rm("+value+index+","+value+")' id='e"+value+index+"'>"+datatype+"</td>");
+        data[value-1].index=data[value-1].index+1;
       });
-
-
-
+    }
+    function addrow(value) {
+      var tds="";
+      for (var i=0;i< data[value-1].colsize-1;i++){
+        tds+="<td  id='cs"+value+data[value-1].rowsize+i+"'><input id='csvalue"+value+data[value-1].rowsize+i+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='参数'></td>";
+      }
+      tds+="<td  id='cs"+value+data[value-1].rowsize+i+"'><button type=\"button\" class=\"btn btn-sm btn-danger \" onclick=\"rmrow('csrow"+value+data[value-1].rowsize+"')\">X</button></td>";
+      $("#gridtable"+value).append(" <tr id=\"csrow"+value+data[value-1 ].rowsize+"\">"+tds+"</tr>");
+      data[value-1].rowsize=data[value-1].rowsize+1;
+      $("#addth"+value).remove();
+      $("#gridtable"+value).append(" <tr id=\"addth"+value+"\">\n" +
+              "                                <td colspan=\""+data[value-1].colsize+"\"><center> <button type=\"button\" class=\"btn btn-sm btn-success \" onclick=\"addrow("+value+")\">+</button></center></td>\n" +
+              "                              </tr>");
     }
 
-    function rm(obj) {
+    function rm(obj,value) {
       $("#a"+obj).remove()
       $("#b"+obj).remove()
       $("#c"+obj).remove()
       $("#d"+obj).remove()
       $("#e"+obj).remove()
+      var colsize=data[value-1].colsize= data[value-1].colsize-1;
+      $("#addth"+value).remove();
+      $("#gridtable"+value).append(" <tr id=\"addth"+value+"\">\n" +
+              "                                <td colspan=\""+colsize+"\"><center> <button type=\"button\" class=\"btn btn-sm btn-success \" onclick=\"addrow("+value+")\">+</button></center></td>\n" +
+              "                              </tr>");
     }
 
-
-    var dataa = [//四行五列
-      ["","", "", "", "", "","","","","","","",""],
-    ];
-    var containera = document.getElementById('exampleshibie');
-    var hota = new Handsontable(containera,
-            {
-              data: dataa,
-              minSpareRows:2,//空出多少行
-              colHeaders:true,//显示表头　
-              contextMenu:true//显示表头下拉菜单
-            });
-    console.log(hota);
-    var data = [//四行五列
-      ["批量上传试例","参数中文名称", "外径", "内径", "公差", "长度","长度硬化深度","单位重量","","","","",""],
-      ["-","参数英文名称", "Out Dimater", "Inner Diameter", "Tolerance", "Length","","Unit Weight","","","","",""],
-      ["-","参数代码", "d1", "d2", "", "L","G","","","","","",""],
-      ["-","参数单位", "尺寸(mm)", "尺寸(mm)", "尺寸(mm)", "尺寸(mm)","尺寸(mm)","单位重量()","","","","",""],
-      ["-","参数数据类型", "实数", "实数", "公差", "勾选","实数","实数","","","","",""],
-      ["型号值","PS3", "20", "14", "-0.025,-0.009", "100,200","1.5","1.34","","","","",""]
-
-    ];
-    var container = document.getElementById('example');
-    var hot = new Handsontable(container,
-            {
-              data: data,
-              minSpareRows:2,//空出多少行
-              colHeaders:true,//显示表头　
-              contextMenu:true//显示表头下拉菜单
-            });
-
-
-    function savetable() {
-      var count=hot.countRows();
-      var data=[];
-      for (i=0;i<=count;i++){
-        if(!hot.isEmptyRow(i)) {
-          data.push(hot.getDataAtRow(i));
-        }
-      }
-
-      if (data.length>0){
-        var settings = {
-          "async": true,
-          "crossDomain": true,
-          "url": "/basedata/saveclassdata?id="+$("#coreid").val(),
-          "method": "PUT",
-          "processData": false,
-          "data":JSON.stringify(data),
-          "contentType": "application/json"
-        }
-
-        $.ajax(settings).done(function (response) {
-          alert(response.message);
-          window.opener = null;
-          // JS重写当前页面
-          window.open("", "_self", "");
-          // 顺理成章的关闭当前被重写的窗口
-          window.close();
-        });
-      }
+    function rmrow(value) {
+      $("#"+value).remove()
     }
 
-    $("#myp").on('paste', function(eventObj) {
-      // 处理粘贴事件
-      var event = eventObj.originalEvent;
-      var imageRe = new RegExp(/image\/.*/);
-      var fileList = $.map(event.clipboardData.items, function (o) {
-        if(!imageRe.test(o.type)){ return }
-        var blob = o.getAsFile();
-        return blob;
-      });
-      if(fileList.length <= 0){ return }
-      upload(fileList);
-      //阻止默认行为即不让剪贴板内容在div中显示出来
-      event.preventDefault();
-    });
-    function upload(fileList) {
-      for(var i = 0, l = fileList.length; i < l; i++){
-        var fd = new FormData();
-        var f = fileList[i];
-        fd.append('file', f);
-        $.ajax({
-          url:"/file/ocr",
-          type: 'POST',
-          dataType: 'json',
-          data: fd,
-          processData: false,
-          contentType: false,
-          xhrFields: { withCredentials: true },
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Credentials': 'true'
-          },
-          success: function(result){
-            $("#images").attr("src","https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/ocr/"+result.data);
-            $("#images_url").val("https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/ocr/"+result.data);
-          },
-          error: function(){
-            alert("上传图片错误");
-          }
-        });
-      }
+    function rmbds(value) {
+      $("#bds"+value).remove();
+      $("#gridtable"+value).remove();
+      bdsword();
     }
 
-    function shibie() {
-      if (null == $("#images_url").val()) {
-        alert("请粘贴图片！")
-        return;
-      }
-
-      var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": "/ocr/table?url=" + $("#images_url").val(),
-        "method": "GET",
-        "processData": false,
-        "headers": {
-          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
-          "cache-control": "no-cache",
-          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+    function bdsword() {
+      var word="   ";
+      for (var i=1;i<=data.length;i++){
+        if($("#bdsname"+i).val()!=""&&$("#bdsname"+i).val()!=undefined) {
+          word += $("#bdstype"+i).val() + "  {" + $("#bdsname"+i).val() + "}  ";
         }
       }
-
-      $.ajax(settings).done(function (response) {
-        $("#exampleshibie").html("");
-        hota = new Handsontable(containera,
-                {
-                  data: response.data,
-                  minSpareRows:2,//空出多少行
-                  colHeaders:true,//显示表头　
-                  contextMenu:true//显示表头下拉菜单
-                });
-      });
+      $("#bdsword").html(word);
     }
+    
+    function save() {
+      for (var x=0;x<data.length;x++){
+        var a=[""];
+        var b=[""];
+        var c=[""];
+        var d=[""];
+        var e=[""];
 
-
-    init();
-    function init() {
-      var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": "/user/get",
-        "method": "GET",
-        "processData": false,
-        "headers": {
-          "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
-          "cache-control": "no-cache",
-          "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+        for(var i=1;i<=data[x].index;i++){
+            a.push($("#avalue" +(x+1)+i).val());
+            b.push($("#bvalue" +(x+1)+i).val())
+            c.push($("#cvalue" +(x+1)+i).val());
+            d.push($("#dvalue" +(x+1)+i).val());
+            e.push($("#evalue" +(x+1)+i).val());
         }
+        var bdsdata=[];
+        for(var i=0;i<=data[x].rowsize;i++){
+           var skudata=[];
+            for (var s=1;s<data[x].colsize-1;s++){
+              var rowdata={};
+              rowdata.sku=$("#csvalue"+x+i+0).val();
+              rowdata.value=$("#csvalue"+x+i+s).val();
+              rowdata.a=a[s];
+              rowdata.b=b[s];
+              rowdata.c=c[s];
+              rowdata.d=d[s];
+              rowdata.e=e[s];
+              skudata.push(rowdata);
+            }
+            bdsdata.push(skudata);
+        }
+        console.log(bdsdata);
       }
-
-
-      $.ajax(settings).done(function (response) {
-        if (response.status != 200) {
-          window.location.href = "/system/login";
-        } else {
-          $("#userimage").attr("src", response.data.headportrait);
-          $("#username").html(response.data.name);
-        }
-      });
     }
-
-
-
-    function saveadd() {
-      var mydata=[];
-      var a=["批量上传试例","参数中文名称"];
-      var b=["-","参数英文名称"];
-      var c=["-","参数英文名称"];
-      var d=["-","参数英文名称"];
-      var e=["-","参数英文名称"];
-      for(var i=0;i<index;i++){
-        if($("#avalue"+i).val()==""||$("#bvalue"+i).val()==""||$("#cvalue"+i).val()==""){
-          if($("#avalue"+i).val()==""){
-            $("#avalue"+i).css("border","1px solid red");
-          }
-          if($("#bvalue"+i).val()==""){
-            $("#bvalue"+i).css("border","1px solid red");
-          }
-          if($("#cvalue"+i).val()==""){
-            $("#cvalue"+i).css("border","1px solid red");
-          }
-          alert("数据不能为空");
-          return;
-        }
-        a.push($("#avalue"+i).val());
-        b.push($("#bvalue"+i).val())
-        c.push($("#cvalue"+i).val());
-        d.push($("#dvalue"+i).val());
-        e.push($("#evalue"+i).val());
-      }
-      mydata.push(a);
-      mydata.push(b);
-      mydata.push(c);
-      mydata.push(d);
-      mydata.push(e);
-
-      if(a.length<hot.getDataAtRow(5).length){
-        a.push("");
-        for (var i=0;i<hot.getDataAtRow(5).length-a.length;i++){
-          a.push("");
-        }
-      }
-      var count=hot.countRows();
-      for (i=5;i<=count;i++){
-        if(!hot.isEmptyRow(i)) {
-          mydata.push(hot.getDataAtRow(i));
-        }
-      }
-
-      $("#example").html("");
-      hot = new Handsontable(container,
-              {
-                data: mydata,
-                minSpareRows:2,//空出多少行
-                colHeaders:true,//显示表头　
-                contextMenu:true//显示表头下拉菜单
-              });
-    }
-
-
-
 
 
 

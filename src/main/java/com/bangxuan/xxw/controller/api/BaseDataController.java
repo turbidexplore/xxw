@@ -263,7 +263,9 @@ public class BaseDataController {
     public Mono<Message> classdata(@RequestParam("id")String id){
         if(mt.find(new Query(new Criteria()),JSONObject.class,id).size()!=0){
             List<JSONObject> list= mt.find(new Query(new Criteria()),JSONObject.class,id);
-            JSONArray data= new JSONArray();
+            JSONObject data =new JSONObject();
+            data.put("images", productClassService.getImages(id));
+            JSONArray array= new JSONArray();
             for (int i=5;i<list.get(0).getInteger("count")+1;i++){
                 JSONObject sku=new JSONObject();
                 sku.put("name",list.get(0).getJSONArray(String.valueOf(i)).getObject(1,JSONObject.class).getString("value"));
@@ -277,8 +279,9 @@ public class BaseDataController {
                     row.add(col);
                 }
                 sku.put("data",row);
-                data.add(sku);
+                array.add(sku);
             }
+            data.put("data",array);
             return Mono.just(Message.SCUESSS("ok",data));
         }
         return Mono.just(Message.SCUESSS("ok",0));
