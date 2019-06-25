@@ -172,7 +172,7 @@
                </div>
                 <div class="col-lg-12" style="overflow:auto;">
                   <div class="custom-control custom-toggle custom-toggle-sm mb-1">
-                    <button type="submit" style="float: right; margin-right: 80px;" class="btn btn-accent" onclick="savetable()">保存SKU数据</button> <button type="button" class="btn btn-sm btn-success " onclick="update()">表达式</button><input onchange="edittable(this)" type="checkbox" id="customToggle2" name="customToggle2" class="custom-control-input" >
+                    <button type="submit" style="float: right; margin-right: 80px;" class="btn btn-accent" onclick="savetable()">保存SKU数据</button> <button type="button" class="btn btn-sm btn-success " onclick="gobds()">表达式</button><input onchange="edittable(this)" type="checkbox" id="customToggle2" name="customToggle2" class="custom-control-input" >
                     <label class="custom-control-label" for="customToggle2">开启表头编辑</label>
                   </div>
                   <table  class="gridtable" id="gridtable" >
@@ -618,6 +618,9 @@
       $.ajax(settings).done(function (response) {});
     }
 
+    function gobds(){
+        window.open("/system/fiveclassview?id="+$("#coreid").val(), "_blank", "scrollbars=yes,resizable=1,modal=false,alwaysRaised=yes");
+    }
 
 
   </script>

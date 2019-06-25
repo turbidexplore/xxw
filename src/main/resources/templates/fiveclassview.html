@@ -90,9 +90,9 @@
       $("#codename"+value).html(obj.value);
       bdsword();
     }
-
+    addtable();
     function addtable() {
-      data.push({"index":1,"colsize":2,"rowsize":0});
+      data.push({"index":1,"col":[],"colsize":2,"rowsize":0});
       $("#bds").append("<div id=\"bds"+data.length+"\" style=\"margin: 10px;width: 82px;border: 1px solid grey;float: left;\">" +
               "<select style=\"width: 80px;border-style:none;\" id='bdstype"+data.length+"' onchange='bdsword()'>\n" +
               "                    <option value=\"\">默认</option>\n" +
@@ -168,10 +168,15 @@
     }
     function addrow(value) {
       var tds="";
-
-      for (var i=0;i< data[value-1].colsize-1;i++){
-        tds+="<td  id='cs"+value+data[value-1].rowsize+i+"'><input id='csvalue"+value+data[value-1].rowsize+i+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='参数'></td>";
-      }
+        for(var i=0;i<data[value-1].col.length;i++){
+            var index= data[value-1].col[i];
+            if($("#avalue"+value+index).length>0){
+                if(i==0){
+                    tds+="<td  id='cs"+value+data[value-1].rowsize+index+i+"h'><input id='csvalue"+value+data[value-1].rowsize+index+i+"h' type='text' style=\"border-style:none;width: 100px;\" placeholder='参数'></td>";
+                }
+                tds+="<td  id='cs"+value+data[value-1].rowsize+index+i+"'><input id='csvalue"+value+data[value-1].rowsize+index+i+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='参数'></td>";
+            }
+        }
       tds+="<td  id='cs"+value+data[value-1].rowsize+i+"'><button type=\"button\" class=\"btn btn-sm btn-danger \" onclick=\"rmrow('csrow"+value+data[value-1].rowsize+"')\">X</button></td>";
       $("#gridtable"+value).append(" <tr id=\"csrow"+value+data[value-1 ].rowsize+"\">"+tds+"</tr>");
       data[value-1].rowsize=data[value-1].rowsize+1;
@@ -215,37 +220,29 @@
     }
     
     function save() {
+      var bdsdata=[];
       for (var x=0;x<data.length;x++){
-        var a=[""];
-        var b=[""];
-        var c=[""];
-        var d=[""];
-        var e=[""];
-        for(var i=1;i<=data[x].index;i++){
-            a.push($("#avalue" +(x+1)+i).val());
-            b.push($("#bvalue" +(x+1)+i).val())
-            c.push($("#cvalue" +(x+1)+i).val());
-            d.push($("#dvalue" +(x+1)+i).val());
-            e.push($("#evalue" +(x+1)+i).val());
-        }
-        var bdsdata=[];
-        for(var i=0;i<=data[x].rowsize;i++){
-           var skudata=[];
-            for (var s=1;s<data[x].colsize-1;s++){
-              var rowdata={};
-              rowdata.sku=$("#csvalue"+x+i+0).val();
-              rowdata.value=$("#csvalue"+x+i+s).val();
-              // rowdata.a=a[s];
-              // rowdata.b=b[s];
-              // rowdata.c=c[s];
-              // rowdata.d=d[s];
-              // rowdata.e=e[s];
-              skudata.push(rowdata);
+        var skudata = [];
+        for(var i=0;i<data[x].rowsize;i++){
+                var rowdata = [];
+                for (var a = 0; a < data[x].col.length; a++) {
+                    if($("#avalue" +(x+1)+data[x].col[a]).length>0) {
+                    var coldata = {};
+                        coldata.sku = $("#csvalue" + (x+1)+i+data[x].col[0]+ "0h").val();
+                        coldata.value = $("#csvalue" + (x+1)+ i+data[x].col[a]+ a).val();
+                        coldata.a=$("#avalue" +(x+1)+data[x].col[a]).val();
+                        coldata.b=$("#bvalue" +(x+1)+data[x].col[a]).val();
+                        coldata.c=$("#cvalue" +(x+1)+data[x].col[a]).val();
+                        coldata.d=$("#dvalue" +(x+1)+data[x].col[a]).val();
+                        coldata.e=$("#evalue" +(x+1)+data[x].col[a]).val();
+                    rowdata.push(coldata);
+                }
             }
-            bdsdata.push(skudata);
+            skudata.push(rowdata);
         }
-        console.log(bdsdata);
+          bdsdata.push(skudata);
       }
+        console.log(bdsdata);
     }
 
   </script>
