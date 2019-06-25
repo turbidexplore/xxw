@@ -130,10 +130,10 @@
           bdsword();
     }
 
-
     function addcs(value) {
      var colsize=data[value-1].colsize= data[value-1].colsize+1;
       var index=data[value-1].index;
+      data[value-1].col.push(index);
       $("#addtd"+value).remove();
       $("#addth"+value).remove();
       $("#gridtable"+value).append(" <tr id=\"addth"+value+"\">\n" +
@@ -168,6 +168,7 @@
     }
     function addrow(value) {
       var tds="";
+
       for (var i=0;i< data[value-1].colsize-1;i++){
         tds+="<td  id='cs"+value+data[value-1].rowsize+i+"'><input id='csvalue"+value+data[value-1].rowsize+i+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='参数'></td>";
       }
@@ -220,7 +221,6 @@
         var c=[""];
         var d=[""];
         var e=[""];
-
         for(var i=1;i<=data[x].index;i++){
             a.push($("#avalue" +(x+1)+i).val());
             b.push($("#bvalue" +(x+1)+i).val())
@@ -235,11 +235,11 @@
               var rowdata={};
               rowdata.sku=$("#csvalue"+x+i+0).val();
               rowdata.value=$("#csvalue"+x+i+s).val();
-              rowdata.a=a[s];
-              rowdata.b=b[s];
-              rowdata.c=c[s];
-              rowdata.d=d[s];
-              rowdata.e=e[s];
+              // rowdata.a=a[s];
+              // rowdata.b=b[s];
+              // rowdata.c=c[s];
+              // rowdata.d=d[s];
+              // rowdata.e=e[s];
               skudata.push(rowdata);
             }
             bdsdata.push(skudata);
@@ -247,9 +247,6 @@
         console.log(bdsdata);
       }
     }
-
-
-
 
   </script>
   </body>
