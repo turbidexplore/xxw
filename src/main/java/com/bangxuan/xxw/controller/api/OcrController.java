@@ -16,13 +16,11 @@ public class OcrController {
 
     @GetMapping("/word")
     public Mono<Message> word(@RequestParam("url")String url){
-
         return Mono.just(Message.SCUESSS("ok",ocrService.word(url)));
     }
 
     @GetMapping("/table")
     public Mono<Message> table(@RequestParam("url")String url) throws Exception {
-
         return Mono.just(Message.SCUESSS("ok", ocrService.table(url)));
     }
 

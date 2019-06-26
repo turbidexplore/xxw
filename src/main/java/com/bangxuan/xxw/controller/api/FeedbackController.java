@@ -38,7 +38,6 @@ public class FeedbackController {
 
     @GetMapping("/all")
     public Mono<Message> all(Principal principal){
-
         return Mono.just(Message.SCUESSS(Message.SECUESS,feedbackService.getAll()));
     }
 
