@@ -27,10 +27,6 @@ public class CompanyService {
         return companyMapper.getIncomplete();
     }
 
-    public List<Company> getIncompleteALL() {
-        return companyMapper.getIncompleteAll();
-    }
-
     @Transactional
     public int update(Company company) {
         return companyMapper.updateByPrimaryKeySelective(company);

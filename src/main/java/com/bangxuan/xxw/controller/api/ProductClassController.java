@@ -40,7 +40,6 @@ public class ProductClassController {
                 setData(list,l);
                 data.add(l);
             }
-
         });
         return Mono.just(Message.SCUESSS(Message.SECUESS,data));
     }
@@ -63,19 +62,16 @@ public class ProductClassController {
 
     @PostMapping("/getByLevelCondition")
     public Mono<Message> getByLevelCondition(@RequestBody ProductClass productClass){
-
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.getByLevelCondition(productClass)));
     }
 
     @PostMapping("/getByAuth")
     public Mono<Message> getByAuth(@RequestBody JSONObject jsonObject){
-
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.getByLevelAuth(jsonObject)));
     }
 
     @PostMapping("/getAuthLevel5")
     public Mono<Message> getAuthLevel5(@RequestParam("id") String id){
-
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.getByLevel5(id)));
     }
 
@@ -87,25 +83,21 @@ public class ProductClassController {
 
     @GetMapping("/levellogo")
     public Mono<Message> getByLevelHaveLogo(@RequestParam("id") String id){
-
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.getByLevelHaveLogo(id)));
     }
 
     @GetMapping("/allOrderPinyin")
     public Mono<Message> allOrderPinyin(@RequestParam("text")String text){
-
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.allOrderPinyin(text.toUpperCase())));
     }
 
     @GetMapping("/allNumber")
     public Mono<Message> allNumber(){
-
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.allNumber()));
     }
 
     @GetMapping("/allQt")
     public Mono<Message> allQt(){
-
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.allqt()));
     }
 

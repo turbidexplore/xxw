@@ -22,8 +22,6 @@ public interface TradeMapper {
 
     int updateByPrimaryKeySelective(Trade record);
 
-    int updateByPrimaryKeyWithBLOBs(Trade record);
-
     int updateByPrimaryKey(Trade record);
 
     @Select("select id,name,pcode from sys_trade order by order_no DESC")

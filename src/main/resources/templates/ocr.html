@@ -305,32 +305,7 @@
           "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
         }
       }
-      // //ABBYY
-      // $.ajax(settings).done(function (response) {
-      //   $("#data").html("");
-      //   $("#data").append(" <div class=\"card-body p-0 pb-3 bg-light text-center\">\n" +
-      //           "              <table class=\"table table-light mb-0\">\n" +
-      //           "              <thead class=\"thead-light\" id=\"tablethead\">\n" +
-      //           "              </thead>\n" +
-      //           "              <tbody id=\"tabletbody\">\n" +
-      //           "              </tbody>\n" +
-      //           "              </table>\n" +
-      //           "               </div>  ");
-      //
-      //   response.data.forEach(function (row,i) {
-      //     if(i==0){
-      //       $("#tablethead").append("<tr id=\"tablerow"+i+"tr\"></tr>");
-      //       row.forEach(function (cell) {
-      //         $("#tablerow"+i+"tr").append("<th >"+cell+"</th>")
-      //       });
-      //     }else {
-      //       $("#tabletbody").append("<tr id=\"tablerow"+i+"tr\"></tr>");
-      //       row.forEach(function (cell) {
-      //         $("#tablerow"+i+"tr").append("<td>"+cell+"</td>")
-      //       });
-      //     }
-      //   });
-      // });
+
 
       $.ajax(settings).done(function (response) {
         var data = [//四行五列
@@ -339,12 +314,6 @@
           ["2009", 20, 11, 14, 13],
           ["2010", 30, 15, 12, 13]
         ];
-        // $("#example").handsontable({
-        //   data: data,//初始化时候的数据
-        //   minSpareRows:5,//空出多少行
-        //   colHeaders:true,//显示表头　
-        //   contextMenu:true//显示表头下拉菜单
-        // })
 
         var container = document.getElementById('example');
         var hot = new Handsontable(container,
@@ -357,32 +326,7 @@
         console.log(hot)
       });
 
-      // $.ajax(settings).done(function (response) {
-      //   $("#data").html("");
-      //   response.data.forEach(function (table,index) {
-      //     $("#data").append(" <div class=\"card-body p-0 pb-3 bg-light text-center\">\n" +
-      //             "              <table class=\"table table-light mb-0\">\n" +
-      //             "              <thead class=\"thead-light\" id=\"table"+index+"thead\">\n" +
-      //             "              </thead>\n" +
-      //             "              <tbody id=\"table"+index+"tbody\">\n" +
-      //             "              </tbody>\n" +
-      //             "              </table>\n" +
-      //             "               </div>  ");
-      //     table.forEach(function (row,i) {
-      //       if(i==0){
-      //         $("#table"+index+"thead").append("<tr id=\"table"+index+"row"+i+"tr\"></tr>");
-      //         row.forEach(function (cell) {
-      //           $("#table"+index+"row"+i+"tr").append("<th >"+cell.word+"</th>")
-      //         });
-      //       }else {
-      //         $("#table"+index+"tbody").append("<tr id=\"table"+index+"row"+i+"tr\"></tr>");
-      //         row.forEach(function (cell) {
-      //           $("#table"+index+"row"+i+"tr").append("<td>"+cell.word+"</td>")
-      //         });
-      //       }
-      //     });
-      //   });
-      // });
+
     }
 
   </script>

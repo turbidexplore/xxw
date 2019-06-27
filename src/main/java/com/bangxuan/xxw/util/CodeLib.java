@@ -53,7 +53,6 @@ public class CodeLib {
         String remoteAddr = request.getRemoteAddr();
         String forwarded = request.getHeader("X-Forwarded-For");
         String realIp = request.getHeader("X-Real-IP");
-
         String ip = null;
         if (realIp == null) {
             if (forwarded == null) {
@@ -114,7 +113,6 @@ public class CodeLib {
     public String getNikeName(StringRedisTemplate stringRedisTemplate){
 
         String[] strNow = new SimpleDateFormat("yyyy-MM-dd").format(new Date()).toString().split("-");
-
         Integer year = Integer.parseInt(strNow[0].substring(2,4));
         Integer month = Integer.parseInt(strNow[1]);
         Integer day = Integer.parseInt(strNow[2]);
@@ -124,7 +122,6 @@ public class CodeLib {
             stringRedisTemplate.opsForValue().set(key, "1");
             return "U"+code[year]+code[month]+code[day]+"0001";
         }
-
         Integer value=Integer.parseInt(stringRedisTemplate.opsForValue().get(key))+1;
         String count= getCode("",value);
         System.out.println(count.length());
@@ -133,7 +130,6 @@ public class CodeLib {
                 count="0"+count;
             }
         }
-
         stringRedisTemplate.opsForValue().set(key,value.toString());
         return "U"+code[year]+code[month]+code[day]+count;
     }
@@ -144,7 +140,6 @@ public class CodeLib {
            str= str+code[value-(number*code.length)];
             return getCode(str,number);
         }else {
-
             return code[value]+str;
         }
 
@@ -163,51 +158,6 @@ public class CodeLib {
         return str;
     }
 
-    public static JSONArray excel2jsona(String path)  {
-        JSONArray jsonArray = new JSONArray();
-        try {
-            CellStyle cellStyle;
-            Workbook wb = new XSSFWorkbook(new FileInputStream(path));
-            XSSFDataFormat dataFormat = (XSSFDataFormat) wb.createDataFormat();
-            cellStyle = wb.createCellStyle();
-            cellStyle.setDataFormat(dataFormat.getFormat("@"));
-            Sheet sheet = wb.getSheetAt(0);
-            for (int j = 0; j <= sheet.getLastRowNum(); j++) {
-                JSONArray rowd = new JSONArray();
-                Row row = sheet.getRow(j);
-                try {
-                    for (int k = 0; k < row.getLastCellNum(); k++) {
-                        Cell cell = row.getCell(k);
-                        cell.setCellStyle(cellStyle);
-                        DecimalFormat df = new DecimalFormat("#");
-                        switch (cell.getCellType()) {
-                            case HSSFCell.CELL_TYPE_STRING:
-                                rowd.add(cell.getRichStringCellValue().getString().trim());
-                                break;
-                            case HSSFCell.CELL_TYPE_NUMERIC:
-                                rowd.add(df.format(cell.getNumericCellValue()));
-                                break;
-                            case HSSFCell.CELL_TYPE_BOOLEAN:
-                                rowd.add(String.valueOf(cell.getBooleanCellValue()).trim());
-                                break;
-                            case HSSFCell.CELL_TYPE_FORMULA:
-                                rowd.add(cell.getCellFormula());
-                                break;
-                            default:
-                                rowd.add("");
-                        }
-                    }
-                }catch (Exception e){
-
-                }finally {
-                    jsonArray.add(rowd);
-                }
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return jsonArray;
-    }
 
     private static String Url = "http://106.ihuyi.cn/webservice/sms.php?method=Submit";
 

@@ -56,8 +56,6 @@ public class BaseDataController {
         jsonObject.put("brand",companyService.getCount());
         jsonObject.put("pdf",productClassService.getPDFCount());
         jsonObject.put("threeD",productClassService.get3DCount());
-
-
         return Mono.just(Message.SCUESSS(Message.SECUESS,jsonObject));
     }
 

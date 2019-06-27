@@ -46,9 +46,7 @@ public class UserSecurityController {
     @PutMapping("/register")
     public Mono<Message> register(@RequestBody UserSecurity userSecurity,@RequestParam("registertype")String registertype,HttpServletRequest httpServletRequest){
         UserSecurity info;
-
         try {
-
         switch (registertype){
             case "0":
                 httpServletRequest.getParameter("navigator");
@@ -65,7 +63,6 @@ public class UserSecurityController {
                 map.add("login_type","password");
                 map.add("username",a);
                 map.add("password","123456");
-
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
                 headers.setBasicAuth("website","turbid");
@@ -98,7 +95,6 @@ public class UserSecurityController {
             case "2":
                 break;
             }
-
         }catch (Exception e){
             System.out.println(e);
             return Mono.just(Message.ERROR("系统异常"));

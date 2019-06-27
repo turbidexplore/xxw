@@ -30,8 +30,6 @@ public class BrandService {
         return brandMapper.areas(ids);
     }
 
-
-
     public List<Brand> getByCompanyId(String id) {
         return brandMapper.getByCompanyId(id);
     }

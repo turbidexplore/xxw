@@ -2,9 +2,6 @@ package com.bangxuan.xxw.entity;
 
 import lombok.Data;
 
-/**
- * 产品类型
- */
 @Data
 public class ProductClass {
 

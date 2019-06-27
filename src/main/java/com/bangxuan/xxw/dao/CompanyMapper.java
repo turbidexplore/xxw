@@ -19,7 +19,7 @@ public interface CompanyMapper {
 
     Company selectByPrimaryKey(Integer id);
 
-    int         updateByPrimaryKeySelective(Company record);
+    int updateByPrimaryKeySelective(Company record);
 
     int updateByPrimaryKey(Company record);
 
@@ -31,9 +31,6 @@ public interface CompanyMapper {
 
     @Select("select * from gy_company  where status is null or status!=2 order by status asc LIMIT 0,1")
     Company getIncomplete();
-
-    @Select("select * from gy_company ")
-    List<Company> getIncompleteAll();
 
     @Select("select * from gy_company where id=#{id} ")
     Company getById(@Param("id") String id);

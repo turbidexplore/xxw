@@ -7,9 +7,6 @@ import lombok.Data;
 
 import java.util.UUID;
 
-/**
- * 用户安全信息
- */
 @Data
 public class UserSecurity {
 

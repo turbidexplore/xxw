@@ -85,18 +85,6 @@ public interface ProductClassMapper {
     @Select("select id,level,pid,logo,class_name,route_path,company_id from gy_product_class a where a.id in (select b.pid from gy_product_class b where b.id in (select c.pid from gy_product_class c where c.id in (select d.pid from gy_product_class d where d.id in (select e.pid from gy_product_class e where e.company_id=#{companyid}))))")
     List<JSONObject> getlevel1ByCompanyId(@Param("companyid") String companyid);
 
-    @Select("select id,level,pid,logo,class_name,route_path,company_id from gy_product_class where company_id=#{companyid}")
-    List<JSONObject> getlevel5ByCompanyId1(@Param("companyid") String companyid);
-
-    @Select("select id,level,pid,logo,class_name,route_path,company_id from gy_product_class d where d.id in (select e.pid from gy_product_class e where e.company_id=#{companyid} )")
-    List<JSONObject> getlevel4ByCompanyId1(@Param("companyid") String companyid);
-
-    @Select("select id,level,pid,logo,class_name,route_path,company_id from gy_product_class c where c.id in (select d.pid from gy_product_class d where d.id in (select e.pid from gy_product_class e where e.company_id=#{companyid} ))")
-    List<JSONObject> getlevel3ByCompanyId1(@Param("companyid") String companyid);
-
-    @Select("select id,level,pid,logo,class_name,route_path,company_id from gy_product_class b where b.id in (select c.pid from gy_product_class c where c.id in (select d.pid from gy_product_class d where d.id in (select e.pid from gy_product_class e where e.company_id=#{companyid} )))")
-    List<JSONObject> getlevel2ByCompanyId1(@Param("companyid") String companyid);
-
     @Select("select * from gy_product_class where id =#{id}")
     JSONObject getById(@Param("id") String id);
 
@@ -112,12 +100,6 @@ public interface ProductClassMapper {
     @Select("select * from gy_product_class where level=4 and pinyin_index not in ('0','1','2','3','4','5','6','7','8','9','A','B','C'" +
             ",'D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z') order by pinyin_index asc")
     List<JSONObject> allqt();
-
-    @Select("select id,class_name from gy_product_class where pinyin_index is null ")
-    List<JSONObject> allClass();
-
-    @Update("update gy_product_class set pinyin_index=#{pinyin_index} where id=#{id}")
-    Integer updatepinyin_index(@Param("pinyin_index")String pinyin_index, @Param("id")String id);
 
     List<JSONObject> selectByConditionAuth(JSONObject jsonObject);
 

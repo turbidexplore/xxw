@@ -12,13 +12,10 @@ public class Message {
 
     public final static String ERROR="ERROR";
 
-    //状态
     private Integer status;
 
-    //消息
     private String message;
 
-    //数据
     private Object data;
 
     public static Message SCUESSS(String msg,Object data){

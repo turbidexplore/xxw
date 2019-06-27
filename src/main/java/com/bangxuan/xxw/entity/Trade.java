@@ -4,14 +4,9 @@ import lombok.Data;
 
 import java.util.Date;
 
-/***
- * 行业分类
- */
 @Data
 public class Trade {
     private Long id;
-
-
 
     private String name;
 

@@ -42,9 +42,6 @@ public interface UserSecurityMapper {
     @Select("select phonenumber from gy_user_security where type='GeneralAdministrator'")
     List<String> findByAdmin();
 
-    @Select("select phonenumber from gy_user_security where to_days(create_time) = to_days(now()) ")
-    List<String> findTodayUser();
-
     @Select("select count(*) from gy_user_security a,gy_user b where a.user_code=b.code ")
     Integer findUserdataCount();
 
@@ -54,6 +51,4 @@ public interface UserSecurityMapper {
     @Update("update gy_user_security set password=#{password} where phonenumber=#{phone} ")
     int changePassword(@Param("phone") String phone, @Param("password") String password);
 
-    @Select("select * from gy_user_security where type='GeneralAdministrator'")
-    List<UserSecurity> findByAdmina();
 }

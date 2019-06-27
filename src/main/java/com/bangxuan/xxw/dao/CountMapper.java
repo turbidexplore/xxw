@@ -12,9 +12,6 @@ public interface CountMapper {
     @Select("select count(*) from gy_company")
     Integer companyCount();
 
-    @Select("select count(*) from gy_company where level=#{level}")
-    Integer companyCountByLevel(@Param("level") String level);
-
     @Select("select count(*) from gy_company_brand")
     Integer brandCount();
 
