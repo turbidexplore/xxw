@@ -161,13 +161,13 @@
             var index= data[value-1].col[i];
             if($("#avalue"+value+index).length>0){
                 if(i==0){
-                    tds+="<td  id='cs"+value+data[value-1].rowsize+index+i+"h'><input id='csvalue"+value+data[value-1].rowsize+index+i+"h' type='text' style=\"border-style:none;width: 100px;\" placeholder='参数'></td>";
+                    tds+="<td id='cs"+value+data[value-1].rowsize+index+i+"h'><input  id='csvalue"+value+data[value-1].rowsize+index+i+"h' type='text' style=\"border-style:none;width: 100px;\" placeholder='参数'></td>";
                 }
-                tds+="<td  id='cs"+value+data[value-1].rowsize+index+i+"'><input id='csvalue"+value+data[value-1].rowsize+index+i+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='参数'></td>";
+                tds+="<td id='cs"+value+data[value-1].rowsize+index+i+"'><input  id='csvalue"+value+data[value-1].rowsize+index+i+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='参数'></td>";
             }
         }
       tds+="<td id='cs"+value+data[value-1].rowsize+i+"'><button type=\"button\" class=\"btn btn-sm btn-danger \" onclick=\"rmrow('csrow"+value+data[value-1].rowsize+"')\">X</button></td>";
-      $("#gridtable"+value).append("<tr id=\"csrow"+value+data[value-1 ].rowsize+"\">"+tds+"</tr>");
+      $("#gridtable"+value).append("<tr ondblclick='yueshu(this,"+value+","+data[value-1 ].rowsize+")'  id=\"csrow"+value+data[value-1 ].rowsize+"\">"+tds+"</tr>");
       data[value-1].rowsize=data[value-1].rowsize+1;
       $("#addth"+value).remove();
       $("#gridtable"+value).append("<tr id=\"addth"+value+"\"><td colspan=\""+data[value-1].colsize+"\"><center><button type=\"button\" class=\"btn btn-sm btn-success \" onclick=\"addrow("+value+")\">+</button></center></td></tr>");
@@ -302,7 +302,6 @@
           data.push(hot.getDataAtRow(i));
         }
       }
-
       if (data.length>0){
         var settings = {
           "async": true,
@@ -316,6 +315,28 @@
         $.ajax(settings).done(function (response) {
           alert(response.message);
         });
+      }
+    }
+
+    var a=0;
+    var b=0;
+    var index=0;
+    function yueshu(obj,value,rowsize) {
+      if(index<2) {
+        if (a == 0) {
+          a = value;
+          index++;
+        } else {
+          if (a == value) {
+            $(obj).css("border","0px solid #fff");
+            return;
+          }else {
+            b=value;
+            index++;
+          }
+        }
+      alert(value+"/"+rowsize);
+      $(obj).css("border","2px solid red");
       }
     }
   </script>

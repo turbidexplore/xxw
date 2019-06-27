@@ -301,10 +301,20 @@ public class BaseDataController {
     @PostMapping("/sendmail")
     public Mono<Message> sendmail(@RequestBody JSONArray jsonArray){
         String text=jsonArray.get(0).toString().replace("ondrag=\"changeurl(this)\"","").replace("onclick=\"changeimg(this)\"","").replace("onclick=\"changeword(this)\"","").replace("border: 2px solid green;","");
+        if(mt.find(new Query(new Criteria()),JSONObject.class,"email").size()!=0){
+            mt.remove(new Query(new Criteria()),"email");
+        }
+        mt.insert(jsonArray.get(0).toString(), "email");
         jsonArray.forEach(a->{
             mailService.sendHtmlMail(a.toString(), text);
         });
         return Mono.just(Message.SCUESSS("发送成功",0));
+    }
+
+    @GetMapping("/getemail")
+    public Mono<Message> getemail(){
+        List<String> value= mt.find(new Query(new Criteria()),String.class,"email");
+        return Mono.just(Message.SCUESSS("发送成功",value.get(0)));
     }
 
 

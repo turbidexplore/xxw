@@ -1,6 +1,5 @@
 package com.bangxuan.xxw.util;
 
-import com.alibaba.fastjson.JSONArray;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.auth.BasicCOSCredentials;
@@ -19,10 +18,6 @@ import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFDataFormat;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -42,7 +37,6 @@ import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -199,13 +193,7 @@ public class CodeLib {
 
     }
 
-    /**
-     * 百度链接实时推送
-     *
-     * @param PostUrl
-     * @param Parameters
-     * @return
-     */
+
     public static String Post(String PostUrl, String[] Parameters) {
         if (null == PostUrl || null == Parameters || Parameters.length == 0) {
             return null;
@@ -214,27 +202,20 @@ public class CodeLib {
         PrintWriter out = null;
         BufferedReader in = null;
         try {
-            //建立URL之间的连接
             URLConnection conn = new URL(PostUrl).openConnection();
-            //设置通用的请求属性
             conn.setRequestProperty("Host", "data.zz.baidu.com");
             conn.setRequestProperty("User-Agent", "curl/7.12.1");
             conn.setRequestProperty("Content-Length", "83");
             conn.setRequestProperty("Content-Type", "text/plain");
-            //发送POST请求必须设置如下两行
             conn.setDoInput(true);
             conn.setDoOutput(true);
-            //获取conn对应的输出流
             out = new PrintWriter(conn.getOutputStream());
-            //发送请求参数
             String param = "";
             for (String s : Parameters) {
                 param += s + "\n";
             }
             out.print(param.trim());
-            //进行输出流的缓冲
             out.flush();
-            //通过BufferedReader输入流来读取Url的响应
             in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line;
             while ((line = in.readLine()) != null) {
@@ -355,8 +336,7 @@ public class CodeLib {
     @Value("${com.turbid.tencentoss.qcloud_file_bucket}")
     public   String QCLOUD_FILE_BUCKET;
 
-    public COSClient getClient()
-    {
+    public COSClient getClient() {
         COSCredentials cred = new BasicCOSCredentials(ACCESSKEY, SECRETKEY);
         ClientConfig clientConfig = new ClientConfig(new Region(REGION_NAME));
         COSClient cosClient = new COSClient(cred, clientConfig);

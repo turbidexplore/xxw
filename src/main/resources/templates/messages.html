@@ -393,6 +393,19 @@
         }
       });
 
+      var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "/user/get",
+        "method": "GET",
+        "processData": false
+      }
+
+
+      $.ajax(settings).done(function (response) {
+
+      });
+
     }
 
     function savetable() {
