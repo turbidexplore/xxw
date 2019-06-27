@@ -235,6 +235,19 @@ public class BaseDataController {
         return Mono.just(Message.SCUESSS("保存成功",0));
     }
 
+    @PutMapping("/bdsclassdata")
+    public Mono<Message> bdsclassdata(@RequestBody JSONArray jsonArray,@RequestParam("id")String id,@RequestParam("text")String text){
+        List<List> lists= jsonArray.toJavaList(List.class);
+        JSONObject rowjson=new JSONObject();
+        rowjson.put("data",lists);
+        rowjson.put("bds",text);
+        if(mt.find(new Query(new Criteria()),JSONObject.class,id).size()!=0){
+            mt.remove(new Query(new Criteria()),id);
+        }
+        mt.insert(rowjson, id);
+        return Mono.just(Message.SCUESSS("保存成功",0));
+    }
+
 
     @PostMapping("/getclassdata")
     public Mono<Message> getclassdata(@RequestParam("id")String id){
