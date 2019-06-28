@@ -24,7 +24,7 @@ public interface ProductClassMapper {
     List<JSONObject> selectByLevelHaveLogo();
 
     @Select("select * from gy_product_class a,gy_class_pdf b\n" +
-            "                         where a.id=b.class_id and a.level=5 and a.logo!='' order by a.id desc LIMIT 0,14 ")
+            "                         where a.id=b.class_id and a.level=5 and a.logo!='' group by a.pid order by a.pid,a.id desc LIMIT 0,14 ")
     List<ProductClass> selectNewTOP14();
 
     List<ProductClass> selectByCondition(ProductClass productClass);
