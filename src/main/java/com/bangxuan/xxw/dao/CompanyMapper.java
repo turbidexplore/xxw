@@ -1,6 +1,5 @@
 package com.bangxuan.xxw.dao;
 
-import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.entity.Company;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
