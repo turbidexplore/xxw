@@ -40,7 +40,7 @@ public class FileService {
                     PutObjectResult putObjectResult =cosClient .putObject(putObjectRequest);
                     cosClient.shutdown();
                     CodeLib.deleteFile(file);
-                    return " https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/"+key;
+                    return file.getName();
                 }
             }
         }

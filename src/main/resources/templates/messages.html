@@ -110,45 +110,11 @@
                   <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> </div>
               </form>
               <ul class="navbar-nav border-left flex-row ">
-                <li class="nav-item border-right dropdown notifications">
-                  <a class="nav-link nav-link-icon text-center" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <div class="nav-link-icon__wrapper">
-                      <i class="material-icons">&#xE7F4;</i>
-                      <span class="badge badge-pill badge-danger">2</span>
-                    </div>
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-small" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="#">
-                      <div class="notification__icon-wrapper">
-                        <div class="notification__icon">
-                          <i class="material-icons">&#xE6E1;</i>
-                        </div>
-                      </div>
-                      <div class="notification__content">
-                        <span class="notification__category">Analytics</span>
-                        <p>Your website’s active users count increased by
-                          <span class="text-success text-semibold">28%</span> in the last week. Great job!</p>
-                      </div>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                      <div class="notification__icon-wrapper">
-                        <div class="notification__icon">
-                          <i class="material-icons">&#xE8D1;</i>
-                        </div>
-                      </div>
-                      <div class="notification__content">
-                        <span class="notification__category">Sales</span>
-                        <p>Last week your store’s sales count decreased by
-                          <span class="text-danger text-semibold">5.52%</span>. It could have been worse!</p>
-                      </div>
-                    </a>
-                    <a class="dropdown-item notification__all text-center" href="#"> View all Notifications </a>
-                  </div>
-                </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown" ondblclick="logout()">
                   <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <img class="user-avatar rounded-circle mr-2" id="userimage" src="" alt="无图片" >
-                    <span class="d-none d-md-inline-block" id="username">Sierra Brooks</span>
+                    <img class="user-avatar rounded-circle mr-2" id="userimage" src="" alt="无图片">
+                    <span class="d-none d-md-inline-block" id="username">登录</span>
+                    <span style="color: #2d53fe;">双击退出</span>
                   </a>
                 </li>
               </ul>
@@ -347,6 +313,11 @@
     <script src="/scripts/handsontable.full.js"></script>
   <script>
 
+    function logout() {
+      $.removeCookie("ACCESS_TOKEN", {path:"/",domain:"chuanqi.lingjianbang.com"});
+      window.location.href="/system/login";
+    }
+
     var data = [//四行五列
       ["", "", "", "", "","",""],
 
@@ -409,34 +380,35 @@
 
     function savetable() {
       var count=hot.countRows();
-      var data=[];
-      data.push($("#context").html());
+
       for (i=0;i<=count;i++){
         if(!hot.isEmptyRow(i)) {
           var scount=hot.getDataAtRow(i).length;
           for(a=0;a<=scount;a++){
-            if(""!=hot.getDataAtRow(i)[a]&&null!=hot.getDataAtRow(i)[a]) {
+            if(""!=hot.getDataAtRow(i)[a]&&null!=hot.getDataAtRow(i)[a]&&"发送成功"!=hot.getDataAtRow(i)[a]) {
+              var data=[];
+              data.push($("#context").html());
               data.push(hot.getDataAtRow(i)[a]);
+                var settings = {
+                    "async": true,
+                    "crossDomain": true,
+                    "url": "/basedata/sendmail",
+                    "method": "POST",
+                    "processData": false,
+                    "data":JSON.stringify(data),
+                    "contentType": "application/json"
+                }
+
+                $.ajax(settings).done(function (response) {
+
+                });
+              hot.setDataAtCell(i,(a+1),"发送成功","");
+
             }
           }
         }
       }
-      if (data.length>0){
 
-        var settings = {
-          "async": true,
-          "crossDomain": true,
-          "url": "/basedata/sendmail",
-          "method": "POST",
-          "processData": false,
-          "data":JSON.stringify(data),
-          "contentType": "application/json"
-        }
-
-        $.ajax(settings).done(function (response) {
-          alert(response.message);
-        });
-      }
      }
 
     $("#myp").on('paste', function(eventObj) {

@@ -109,45 +109,11 @@
                   <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> </div>
               </form>
               <ul class="navbar-nav border-left flex-row ">
-                <li class="nav-item border-right dropdown notifications">
-                  <a class="nav-link nav-link-icon text-center" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <div class="nav-link-icon__wrapper">
-                      <i class="material-icons">&#xE7F4;</i>
-                      <span class="badge badge-pill badge-danger">2</span>
-                    </div>
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-small" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="#">
-                      <div class="notification__icon-wrapper">
-                        <div class="notification__icon">
-                          <i class="material-icons">&#xE6E1;</i>
-                        </div>
-                      </div>
-                      <div class="notification__content">
-                        <span class="notification__category">Analytics</span>
-                        <p>Your website’s active users count increased by
-                          <span class="text-success text-semibold">28%</span> in the last week. Great job!</p>
-                      </div>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                      <div class="notification__icon-wrapper">
-                        <div class="notification__icon">
-                          <i class="material-icons">&#xE8D1;</i>
-                        </div>
-                      </div>
-                      <div class="notification__content">
-                        <span class="notification__category">Sales</span>
-                        <p>Last week your store’s sales count decreased by
-                          <span class="text-danger text-semibold">5.52%</span>. It could have been worse!</p>
-                      </div>
-                    </a>
-                    <a class="dropdown-item notification__all text-center" href="#"> View all Notifications </a>
-                  </div>
-                </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown" ondblclick="logout()">
                   <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <img class="user-avatar rounded-circle mr-2" id="userimage" src="https://iph.href.lu/500x500?text=%E9%9B%B6%E4%BB%B6%E9%82%A6&fg=666666&bg=CCCCCC" alt="User Avatar">
-                    <span class="d-none d-md-inline-block" id="username">未登录</span>
+                    <img class="user-avatar rounded-circle mr-2" id="userimage" src="" alt="无图片">
+                    <span class="d-none d-md-inline-block" id="username">登录</span>
+                    <span style="color: #2d53fe;">双击退出</span>
                   </a>
                 </li>
               </ul>
@@ -342,6 +308,11 @@
 
   <script>
 
+    function logout() {
+      $.removeCookie("ACCESS_TOKEN", {path:"/",domain:"chuanqi.lingjianbang.com"});
+      window.location.href="/system/login";
+    }
+
     var settings = {
       "async": true,
       "crossDomain": true,
@@ -401,52 +372,52 @@
         $("#level5b").html(response.data.level5b);
         response.data.todaydata.forEach(function (v,i) {
           if(i==0){
-            $("#todaydata").append("<div class=\"col-lg-2 col-md-6 col-sm-12 mb-4\" >\n" +
+            $("#todaydata").append("<div class=\"col-lg-1 col-md-6 col-sm-12 mb-4\" >\n" +
                     "                <div class=\"card card-small card-post card-post--1\">\n" +
                     "                  <div class=\"card-post__image\" style=\"background-image: url("+v.headportrait+");\">\n" +
-                    "                    <a href=\"#\" class=\"card-post__category badge badge-pill badge-warning\"> 总数:"+v.all+" </a>\n" +
+                    "                    <a href=\"#\" class=\"card-post__category badge badge-pill badge-warning\" style='margin-top: 120px;'> 总数:"+v.all+" </a>\n" +
                     "                  </div>\n" +
                     "                    <h5 class=\"card-title\" style=\"padding-top: 15px;padding-left: 15px;\">\n" +
-                    "                      <a class=\"text-fiord-blue\" href=\"#\"> "+v.name+" | <span style='color: #cc9000;'>✿✿✿</span> <br>  <span style='font-size: 15px;font-weight: normal;'>今日完成"+v.today+"个任务</span></a>\n" +
+                    "                      <a class=\"text-fiord-blue\" href=\"#\"> "+v.name+" <br> <span style='font-size: 15px;font-weight: normal;'>完成"+v.today+"个</span></a>\n" +
                     "                    </h5>\n" +
                     "<a class=\"btn btn-sm btn-white\" style='background-color: #cc9000;color: white;' href=\"#\">\n" +
                     "                        ♛ 今日之星 </a>"+
                     "                </div>\n" +
                     "              </div>");
           }else if(i==1){
-            $("#todaydata").append("<div class=\"col-lg-2 col-md-6 col-sm-12 mb-4\" >\n" +
+            $("#todaydata").append("<div class=\"col-lg-1 col-md-6 col-sm-12 mb-4\" >\n" +
                     "                <div class=\"card card-small card-post card-post--1\">\n" +
                     "                  <div class=\"card-post__image\" style=\"background-image: url("+v.headportrait+");\">\n" +
-                    "                    <a href=\"#\" class=\"card-post__category badge badge-pill badge-info\"> 总数:"+v.all+" </a>\n" +
+                    "                    <a href=\"#\" class=\"card-post__category badge badge-pill badge-info\" style='margin-top: 120px;'> 总数:"+v.all+" </a>\n" +
                     "                  </div>\n" +
                     "                    <h5 class=\"card-title\" style=\"padding-top: 15px;padding-left: 15px;\">\n" +
-                    "                      <a class=\"text-fiord-blue\" href=\"#\">"+v.name+" | <span style='color: #cc9000;'>✿✿</span><br>  <span style='font-size: 15px;font-weight: normal;'>今日完成"+v.today+"个任务</span></a>\n" +
+                    "                      <a class=\"text-fiord-blue\" href=\"#\">"+v.name+" <br> <span style='font-size: 15px;font-weight: normal;'>完成"+v.today+"个</span></a>\n" +
                     "                    </h5>\n" +
                     "<a class=\"btn btn-sm btn-white\" href=\"#\">\n" +
                     "                        <i class=\"far fa-bookmark mr-1\"></i> No."+(i+1)+" </a>"+
                     "                </div>\n" +
                     "              </div>");
           }else if(i==2){
-            $("#todaydata").append("<div class=\"col-lg-2 col-md-6 col-sm-12 mb-4\" >\n" +
+            $("#todaydata").append("<div class=\"col-lg-1 col-md-6 col-sm-12 mb-4\" >\n" +
                     "                <div class=\"card card-small card-post card-post--1\">\n" +
                     "                  <div class=\"card-post__image\" style=\"background-image: url("+v.headportrait+");\">\n" +
-                    "                    <a href=\"#\" class=\"card-post__category badge badge-pill badge-info\"> 总数:"+v.all+" </a>\n" +
+                    "                    <a href=\"#\" class=\"card-post__category badge badge-pill badge-info\" style='margin-top: 120px;'> 总数:"+v.all+" </a>\n" +
                     "                  </div>\n" +
                     "                    <h5 class=\"card-title\" style=\"padding-top: 15px;padding-left: 15px;\">\n" +
-                    "                      <a class=\"text-fiord-blue\" href=\"#\">"+v.name+" | <span style='color: #cc9000;'>✿</span><br>  <span style='font-size: 15px;font-weight: normal;'>今日完成"+v.today+"个任务</span></a>\n" +
+                    "                      <a class=\"text-fiord-blue\" href=\"#\">"+v.name+" <br>  <span style='font-size: 15px;font-weight: normal;'>完成"+v.today+"个</span></a>\n" +
                     "                    </h5>\n" +
                     "<a class=\"btn btn-sm btn-white\" href=\"#\">\n" +
                     "                        <i class=\"far fa-bookmark mr-1\"></i> No."+(i+1)+" </a>"+
                     "                </div>\n" +
                     "              </div>");
           }else {
-            $("#todaydata").append("<div class=\"col-lg-2 col-md-6 col-sm-12 mb-4\" >\n" +
+            $("#todaydata").append("<div class=\"col-lg-1 col-md-6 col-sm-12 mb-4\" >\n" +
                     "                <div class=\"card card-small card-post card-post--1\">\n" +
                     "                  <div class=\"card-post__image\" style=\"background-image: url("+v.headportrait+");\">\n" +
-                    "                    <a href=\"#\" class=\"card-post__category badge badge-pill badge-dark\"> 总数:"+v.all+" </a>\n" +
+                    "                    <a href=\"#\" class=\"card-post__category badge badge-pill badge-dark\" style='margin-top: 120px;'> 总数:"+v.all+" </a>\n" +
                     "                  </div>\n" +
                     "                    <h5 class=\"card-title\" style=\"padding-top: 15px;padding-left: 15px;\">\n" +
-                    "                      <a class=\"text-fiord-blue\" href=\"#\">"+v.name+"<br>  <span style='font-size: 15px;font-weight: normal;'>今日完成"+v.today+"个任务</span></a>\n" +
+                    "                      <a class=\"text-fiord-blue\" href=\"#\">"+v.name+" <br>  <span style='font-size: 15px;font-weight: normal;'>完成"+v.today+"个</span></a>\n" +
                     "                    </h5>\n" +
                     "<a class=\"btn btn-sm btn-white\" href=\"#\">\n" +
                     "                        <i class=\"far fa-bookmark mr-1\"></i> No."+(i+1)+" </a>"+

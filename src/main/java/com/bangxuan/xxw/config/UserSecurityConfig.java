@@ -29,7 +29,7 @@ public class UserSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().disable().csrf().disable().formLogin().loginPage("/system/login").permitAll().successForwardUrl("/system/index")
                 .and().authorizeRequests().antMatchers("/system/login").permitAll()
-                .antMatchers("/system/**").authenticated() .antMatchers("/file/pdf").authenticated()      // 任何请求,登录后可以访问
+                .antMatchers("/system/**").authenticated() .antMatchers("/file/pdf").authenticated()
                 .anyRequest().permitAll();
     }
     @Override

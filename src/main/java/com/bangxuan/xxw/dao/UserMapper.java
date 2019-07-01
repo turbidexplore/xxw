@@ -29,7 +29,7 @@ public interface UserMapper {
     @Select("select * from gy_user where code =(select user_code from gy_user_security where phonenumber=#{phone})")
     User get(@Param("phone") String phone);
 
-    @Select("select u.name,u.headportrait,us.phonenumber from gy_user_security us,gy_user u where u.code=us.user_code and us.type ='GeneralAdministrator' and u.name is not null group by us.phonenumber LiMIT 0,6")
+    @Select("select u.name,u.headportrait,us.phonenumber from gy_user_security us,gy_user u where u.code=us.user_code and us.type ='GeneralAdministrator'  group by us.phonenumber limit 0,12")
     List<JSONObject> getAllAdminData();
 
     @Select("select b.name,b.headportrait,b.nikename,b.create_time,a.status,a.type,a.phonenumber from gy_user_security a,gy_user b " +

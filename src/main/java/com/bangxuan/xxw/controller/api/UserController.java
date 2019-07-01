@@ -24,11 +24,6 @@ public class UserController {
     @Autowired
     private UserSecurityService userSecurityService;
 
-    @PutMapping("/putinfo")
-    public Mono<Message> addinfo(@RequestBody User user){
-        return Mono.just(Message.SCUESSS(Message.SECUESS,null));
-    }
-
     @PutMapping("/update")
     public Mono<Message> update(Principal principal,@RequestBody User user){
         user.setCode(userSecurityService.findUserCodeByPhone(principal.getName()));
@@ -54,7 +49,7 @@ public class UserController {
     @GetMapping("/getUserCount")
     public Mono<Message> getUserCount(){
         JSONArray data=new JSONArray();
-        String[] strNow = new SimpleDateFormat("yyyy-MM-dd").format(new Date()).toString().split("-");
+        String[] strNow = new SimpleDateFormat("yyyy-MM-dd").format(new Date()).split("-");
         data.add(userService.getUserCountByTime("-"));
         data.add(userService.getUserCountByTime(strNow[0]));
         data.add(userService.getUserCountByTime(strNow[0]+"-"+strNow[1]));

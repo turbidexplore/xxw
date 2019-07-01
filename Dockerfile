@@ -4,7 +4,7 @@ VOLUME /tmp
 
 RUN echo "Asia/shanghai" > /etc/timezone;
 
-ADD target/xxw-1.jar api.jar
+ADD target/xxw-41.jar api.jar
 RUN bash -c 'touch /api.jar'
 
 EXPOSE 10001

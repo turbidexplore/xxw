@@ -1,13 +1,7 @@
 package com.bangxuan.xxw.entity;
 
-import lombok.Data;
 import java.util.UUID;
 
-
-/**
- * 用户信息
- */
-@Data
 public class User {
 
     public User(){
@@ -57,5 +51,173 @@ public class User {
     private int fkcount;
 
     private int ybcount;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getNikename() {
+        return nikename;
+    }
+
+    public void setNikename(String nikename) {
+        this.nikename = nikename;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getHeadportrait() {
+        return headportrait;
+    }
+
+    public void setHeadportrait(String headportrait) {
+        this.headportrait = headportrait;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public String getDegree() {
+        return degree;
+    }
+
+    public void setDegree(String degree) {
+        this.degree = degree;
+    }
+
+    public String getCollege() {
+        return college;
+    }
+
+    public void setCollege(String college) {
+        this.college = college;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getCompany_country() {
+        return company_country;
+    }
+
+    public void setCompany_country(String company_country) {
+        this.company_country = company_country;
+    }
+
+    public String getCompany_province() {
+        return company_province;
+    }
+
+    public void setCompany_province(String company_province) {
+        this.company_province = company_province;
+    }
+
+    public String getCompany_city() {
+        return company_city;
+    }
+
+    public void setCompany_city(String company_city) {
+        this.company_city = company_city;
+    }
+
+    public String getCompany_area() {
+        return company_area;
+    }
+
+    public void setCompany_area(String company_area) {
+        this.company_area = company_area;
+    }
+
+    public String getCompany_name() {
+        return company_name;
+    }
+
+    public void setCompany_name(String company_name) {
+        this.company_name = company_name;
+    }
+
+    public String getCompany_address() {
+        return company_address;
+    }
+
+    public void setCompany_address(String company_address) {
+        this.company_address = company_address;
+    }
+
+    public String getCreate_time() {
+        return create_time;
+    }
+
+    public void setCreate_time(String create_time) {
+        this.create_time = create_time;
+    }
+
+    public int getFkcount() {
+        return fkcount;
+    }
+
+    public void setFkcount(int fkcount) {
+        this.fkcount = fkcount;
+    }
+
+    public int getYbcount() {
+        return ybcount;
+    }
+
+    public void setYbcount(int ybcount) {
+        this.ybcount = ybcount;
+    }
 }
 

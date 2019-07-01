@@ -1,6 +1,5 @@
 package com.bangxuan.xxw.controller.api;
 
-
 import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.util.Message;;
 import com.bangxuan.xxw.entity.values.UserType;
@@ -27,10 +26,16 @@ public class FileController {
     @Autowired
     private ProductClassService productClassService;
 
+    @Autowired
+    private DaypdfCountService daypdfCountService;
+
+    @Autowired
+    private UserSecurityService userSecurityService;
+
     @PostMapping(value = "/upload")
     public Mono<Message> images(@RequestParam("file") MultipartFile filePart) {
         try {
-            return Mono.just(Message.SCUESSS("上传成功", fileService.images(filePart,"public/")));
+            return Mono.just(Message.SCUESSS("上传成功", "https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/public/"+fileService.images(filePart,"public/")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -40,7 +45,7 @@ public class FileController {
     @PostMapping(value = "/filelib")
     public Mono<Message> filelib(@RequestParam("file") MultipartFile filePart) {
         try {
-            return Mono.just(Message.SCUESSS("上传成功", fileService.images(filePart,"filelib/")));
+            return Mono.just(Message.SCUESSS("上传成功","https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/filelib/"+ fileService.images(filePart,"filelib/")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -50,7 +55,7 @@ public class FileController {
     @PostMapping(value = "/uploadUserhead")
     public Mono<Message> uploadUserhead(@RequestParam("file") MultipartFile filePart) {
         try {
-            return Mono.just(Message.SCUESSS("上传成功", fileService.images(filePart,"userinfo/")));
+            return Mono.just(Message.SCUESSS("上传成功","https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/userinfo/"+ fileService.images(filePart,"userinfo/")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -98,12 +103,6 @@ public class FileController {
         return null;
     }
 
-    @Autowired
-    private DaypdfCountService daypdfCountService;
-
-    @Autowired
-    private UserSecurityService userSecurityService;
-
     @GetMapping("/pdf")
     public Mono<Message> getPDF(Principal principal, @RequestParam("id") String id){
         if(userSecurityService.findByPhone(principal.getName()).getType()== UserType.test){
@@ -128,12 +127,10 @@ public class FileController {
 
     @GetMapping("/workpdf")
     public Mono<Message> workpdf( @RequestParam("id") String id){
-
         JSONObject data=new JSONObject();
         data.put("basicurl","https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/pdf/");
         data.put("data",productClassService.getPDF(id));
         data.put("company",productClassService.getCompany(id));
-
         return Mono.just(Message.SCUESSS(Message.SECUESS,data));
     }
 

@@ -1,31 +1,6 @@
-// \lkj20180323
+
 var canGetCookie = 1;//是否支持存储Cookie 0 不支持 1 支持
-var ajaxmockjax = 1;//是否启用虚拟Ajax的请求响 0 不启用  1 启用
-//默认账号密码
 
-var truelogin = "admin";
-var truepwd = "admin123";
-
-var CodeVal = 0;
-// Code();
-// function Code() {
-//     if(canGetCookie == 1){
-//         createCode("AdminCode");
-//         var AdminCode = getCookieValue("AdminCode");
-//         showCheck(AdminCode);
-//     }else{
-//         showCheck(createCode(""));
-//     }
-// }
-function showCheck(a) {
-    CodeVal = a;
-    var c = document.getElementById("myCanvas");
-    var ctx = c.getContext("2d");
-    ctx.clearRect(0, 0, 1000, 1000);
-    ctx.font = "80px 'Hiragino Sans GB'";
-    ctx.fillStyle = "#E8DFE8";
-    ctx.fillText(a, 0, 100);
-}
 $(document).keypress(function (e) {
     // 回车键事件
     if (e.which == 13) {
@@ -115,9 +90,7 @@ layui.use('layer', function () {
 
                 if (response.status==200) {
                     var token = response.data.access_token||response.data.value;
-                    $.cookie("ACCESS_TOKEN","", {expires: -1,path:"/",domain:"chuanqi.lingjianbang.com"});
                     $.cookie("ACCESS_TOKEN", token, {expires: 7,path:"/",domain:"chuanqi.lingjianbang.com"});
-                    $.cookie("ACCESS_TOKEN", token,{expires: 7,path:"/"});
                     setTimeout(function () {
                         window.location.href="/system/index";
                     }, 1000);

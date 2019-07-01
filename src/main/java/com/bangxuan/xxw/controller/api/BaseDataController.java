@@ -193,7 +193,7 @@ public class BaseDataController {
     }
 
     @GetMapping("/filelibs")
-    public Mono<Message> fileLibs(Principal principal,int page){
+    public Mono<Message> fileLibs(int page){
         return Mono.just(Message.SCUESSS(String.valueOf(fileLibService.findCount()),fileLibService.findPage(page,20)));
     }
 
