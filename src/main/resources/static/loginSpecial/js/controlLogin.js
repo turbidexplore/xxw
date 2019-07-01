@@ -87,10 +87,11 @@ layui.use('layer', function () {
             }
 
             $.ajax(settings).done(function (response) {
-
                 if (response.status==200) {
                     var token = response.data.access_token||response.data.value;
+                    $.cookie("ACCESS_TOKEN","", {expires: -1,path:"/",domain:"chuanqi.lingjianbang.com"});
                     $.cookie("ACCESS_TOKEN", token, {expires: 7,path:"/",domain:"chuanqi.lingjianbang.com"});
+                    $.cookie("ACCESS_TOKEN", token,{expires: 7,path:"/"});
                     setTimeout(function () {
                         window.location.href="/system/index";
                     }, 1000);

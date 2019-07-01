@@ -393,7 +393,7 @@
               }
               return url;
           }
-          var blobURL = getObjectURL(this.files[0]);//这里的objURL就是input file的blob:路径
+          var blobURL = getObjectURL(this.files[0]);
           var imgUTL = '';
 
           var xhr = new XMLHttpRequest();
@@ -405,7 +405,6 @@
                   var imageBlob = this.response;
                   var imageType = imageBlob.type;
                   var imageName = null;
-// 根据文件的类型确定文件名，否则服务端得到的文件名为 blob，没有后缀
                   if (imageType.includes('png')) {
                       imageName = 'uploaded-image.png';
                   } else if (imageType.includes('gif')) {
@@ -415,7 +414,6 @@
                   } else {
                       imageName = 'uploaded-image.jpg';
                   }
-// 上传 Blob 图片
                   var form = new FormData();
                   form.append('file', imageBlob, imageName); // 第三个参数为文件名
                   $.ajax({
@@ -425,7 +423,6 @@
                       processData: false,
                       contentType: false,
                   }).done(function(result) {
-// 把服务器返回的图片 URL 插入到需要的地方
                       console.log(result);
                       $("#mylogo").attr("src","https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/images/"+result.data);
                       $("#mylogourl").val(result.data);
