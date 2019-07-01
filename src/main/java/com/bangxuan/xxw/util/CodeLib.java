@@ -43,6 +43,60 @@ import java.util.*;
 @Component
 public class CodeLib {
 
+    public static boolean createFile(File fileName)throws Exception{
+        boolean flag=false;
+        try{
+            if(!fileName.exists()){
+                fileName.createNewFile();
+                flag=true;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+
+    public static boolean writeTxtFile(String content,File  fileName)throws Exception{
+        RandomAccessFile mm=null;
+        boolean flag=false;
+        FileOutputStream o=null;
+        try {
+            o = new FileOutputStream(fileName);
+            o.write(content.getBytes("GBK"));
+            o.close();
+            flag=true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally{
+            if(mm!=null){
+                mm.close();
+            }
+        }
+        return flag;
+    }
+
+
+    public static void deleteFile(File... files) {
+        for (File file : files) {
+            if (file.exists()) {
+                file.delete();
+            }
+        }
+    }
+
+
+    public static byte[] readInputStream(InputStream inStream) throws Exception{
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int len = 0;
+        while( (len=inStream.read(buffer)) != -1 ){
+            outStream.write(buffer, 0, len);
+        }
+        inStream.close();
+        return outStream.toByteArray();
+    }
+
     public static String getLocalIp(HttpServletRequest request) {
         String remoteAddr = request.getRemoteAddr();
         String forwarded = request.getHeader("X-Forwarded-For");

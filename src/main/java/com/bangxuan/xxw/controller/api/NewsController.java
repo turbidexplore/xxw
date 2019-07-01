@@ -2,7 +2,7 @@ package com.bangxuan.xxw.controller.api;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.bangxuan.xxw.entity.Message;
+import com.bangxuan.xxw.util.Message;
 import com.bangxuan.xxw.service.NewsClassService;
 import com.bangxuan.xxw.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,10 +1,6 @@
-package com.bangxuan.xxw.entity;
+package com.bangxuan.xxw.util;
 
 import lombok.Data;
-
-/**
- *消息返回
- */
 @Data
 public class Message {
 

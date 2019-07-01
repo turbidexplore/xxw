@@ -1,7 +1,7 @@
 package com.bangxuan.xxw.controller.api;
 
 import com.alibaba.fastjson.JSONObject;
-import com.bangxuan.xxw.entity.Message;
+import com.bangxuan.xxw.util.Message;
 import com.bangxuan.xxw.entity.User;
 import com.bangxuan.xxw.entity.UserSecurity;
 import com.bangxuan.xxw.entity.values.UserStatus;
@@ -163,7 +163,7 @@ public class UserSecurityController {
 
     @PutMapping("/changePassword")
     public Mono<Message> changePassword(Principal principal, @Param("password")String password){
-        return Mono.just(Message.SCUESSS("成功", userSecurityService.changePassword(principal.getName(),password)));
+        return Mono.just(Message.SCUESSS("SECUESS", userSecurityService.changePassword(principal.getName(),password)));
     }
 
     @GetMapping("/userdata_count")

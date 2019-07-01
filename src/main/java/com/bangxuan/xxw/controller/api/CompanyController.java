@@ -3,18 +3,15 @@ package com.bangxuan.xxw.controller.api;
 import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.entity.Brand;
 import com.bangxuan.xxw.entity.Company;
-import com.bangxuan.xxw.entity.Message;
+import com.bangxuan.xxw.util.Message;
 import com.bangxuan.xxw.service.BrandService;
 import com.bangxuan.xxw.service.CompanyService;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
-
 import com.bangxuan.xxw.util.CodeLib;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.model.PutObjectRequest;
@@ -103,7 +100,6 @@ public class CompanyController {
         }
         data.put("brands",brands);
         data.put("company",company);
-
         return Mono.just(Message.SCUESSS(Message.SECUESS,data));
     }
 
@@ -114,7 +110,7 @@ public class CompanyController {
         con .setRequestMethod("GET");
         con .setConnectTimeout(4 * 1000);
         InputStream inStream = con .getInputStream();
-        byte file[] = readInputStream(inStream);
+        byte file[] = CodeLib.readInputStream(inStream);
         File imageFile = new File(value);
         FileOutputStream outStream = new FileOutputStream(imageFile);
         outStream.write(file);
@@ -125,28 +121,10 @@ public class CompanyController {
         COSClient cosClient=tencentOSS.getClient();
         PutObjectResult putObjectResult =cosClient .putObject(putObjectRequest);
         cosClient.shutdown();
-        deleteFile(imageFile);
+        CodeLib.deleteFile(imageFile);
         return value;
     }
 
-    public static byte[] readInputStream(InputStream inStream) throws Exception{
-        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        int len = 0;
-        while( (len=inStream.read(buffer)) != -1 ){
-            outStream.write(buffer, 0, len);
-        }
-        inStream.close();
-        return outStream.toByteArray();
-    }
-
-    private void deleteFile(File... files) {
-        for (File file : files) {
-            if (file.exists()) {
-                file.delete();
-            }
-        }
-    }
 
     @PutMapping(value = "/update")
     public Mono<Message> update(@RequestBody Company company){

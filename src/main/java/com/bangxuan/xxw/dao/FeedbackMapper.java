@@ -12,6 +12,7 @@ import java.util.List;
 @Mapper
 @Component
 public interface FeedbackMapper {
+
     int deleteByPrimaryKey(Integer id);
 
     int insert(Feedback record);

@@ -31,7 +31,7 @@ public class CountService {
         data.put("class5",countMapper.productClass5Count());
         data.put("user",countMapper.userCount());
 
-        String[] strNow = new SimpleDateFormat("yyyy-MM-dd").format(new Date()).toString().split("-");
+        String[] strNow = new SimpleDateFormat("yyyy-MM-dd").format(new Date()).split("-");
         data.put("duser",countMapper.userCountByTime(strNow[0]+"-"+strNow[1]+"-"+strNow[2]));
         data.put("muser",countMapper.userCountByTime(strNow[0]+"-"+strNow[1]));
         data.put("yuser",countMapper.userCountByTime(strNow[0]));

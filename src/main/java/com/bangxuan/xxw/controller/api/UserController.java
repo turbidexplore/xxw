@@ -1,7 +1,7 @@
 package com.bangxuan.xxw.controller.api;
 
 import com.alibaba.fastjson.JSONArray;
-import com.bangxuan.xxw.entity.Message;
+import com.bangxuan.xxw.util.Message;
 import com.bangxuan.xxw.entity.User;
 import com.bangxuan.xxw.service.UserSecurityService;
 import com.bangxuan.xxw.service.UserService;

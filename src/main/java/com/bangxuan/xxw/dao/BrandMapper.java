@@ -60,8 +60,6 @@ public interface BrandMapper {
     })
     List<JSONObject> areas(@Param("ids")String[] ids);
 
-
-
     @Select("select * from gy_company_brand where company_id=#{id}")
     List<Brand> getByCompanyId(@Param("id")String id);
 

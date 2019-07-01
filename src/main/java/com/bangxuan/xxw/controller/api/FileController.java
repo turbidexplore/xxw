@@ -2,7 +2,7 @@ package com.bangxuan.xxw.controller.api;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.bangxuan.xxw.entity.Message;;
+import com.bangxuan.xxw.util.Message;;
 import com.bangxuan.xxw.entity.values.UserType;
 import com.bangxuan.xxw.service.DaypdfCountService;
 import com.bangxuan.xxw.service.FileService;
@@ -30,7 +30,7 @@ public class FileController {
     @PostMapping(value = "/upload")
     public Mono<Message> images(@RequestParam("file") MultipartFile filePart) {
         try {
-            return Mono.just(Message.SCUESSS("上传成功", fileService.images(filePart)));
+            return Mono.just(Message.SCUESSS("上传成功", fileService.images(filePart,"public/")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -40,7 +40,7 @@ public class FileController {
     @PostMapping(value = "/filelib")
     public Mono<Message> filelib(@RequestParam("file") MultipartFile filePart) {
         try {
-            return Mono.just(Message.SCUESSS("上传成功", fileService.filelib(filePart)));
+            return Mono.just(Message.SCUESSS("上传成功", fileService.images(filePart,"filelib/")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -50,7 +50,7 @@ public class FileController {
     @PostMapping(value = "/uploadUserhead")
     public Mono<Message> uploadUserhead(@RequestParam("file") MultipartFile filePart) {
         try {
-            return Mono.just(Message.SCUESSS("上传成功", fileService.imagesUserHead(filePart)));
+            return Mono.just(Message.SCUESSS("上传成功", fileService.images(filePart,"userinfo/")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -60,7 +60,7 @@ public class FileController {
     @PostMapping(value = "/uploadLogo")
     public Mono<Message> uploadLogo(@RequestParam("file") MultipartFile filePart) {
         try {
-            return Mono.just(Message.SCUESSS("上传成功", fileService.logo(filePart)));
+            return Mono.just(Message.SCUESSS("上传成功", fileService.images(filePart,"product_class/images/")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -70,7 +70,7 @@ public class FileController {
     @PostMapping(value = "/uploadBrandLogo")
     public Mono<Message> uploadBrandLogo(@RequestParam("file") MultipartFile filePart) {
         try {
-            return Mono.just(Message.SCUESSS("上传成功", fileService.brandlogo(filePart)));
+            return Mono.just(Message.SCUESSS("上传成功", fileService.images(filePart,"brand/logo/")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,7 +80,7 @@ public class FileController {
     @PostMapping(value = "/uploadCompanyLogo")
     public Mono<Message> uploadCompanyLogo(@RequestParam("file") MultipartFile filePart) {
         try {
-            return Mono.just(Message.SCUESSS("上传成功", fileService.companyLogo(filePart)));
+            return Mono.just(Message.SCUESSS("上传成功", fileService.images(filePart,"temp/")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -91,7 +91,7 @@ public class FileController {
     public Mono<Message> ocr(@RequestParam("file") MultipartFile filePart) {
         try {
 
-            return Mono.just(Message.SCUESSS("上传成功", fileService.ocr(filePart)));
+            return Mono.just(Message.SCUESSS("上传成功", fileService.images(filePart,"ocr/")));
         } catch (IOException e) {
             e.printStackTrace();
         }

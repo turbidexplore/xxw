@@ -21,12 +21,10 @@ public class BrandService {
     }
 
     public List<JSONObject> all(String[] ids) {
-
         return brandMapper.all(ids);
     }
 
     public List<JSONObject> areas(String[] ids) {
-
         return brandMapper.areas(ids);
     }
 

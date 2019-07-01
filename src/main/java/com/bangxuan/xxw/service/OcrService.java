@@ -30,7 +30,6 @@ public class OcrService {
         options.put("detect_language", "true");
         options.put("probability", "true");
 
-
         // 通用文字识别, 图片参数为远程url图片
         JSONObject res = (JSONObject) JSONObject.parse(client.basicGeneralUrl(url, options).toString(2));
         System.out.println(res.toString());
@@ -44,7 +43,7 @@ public class OcrService {
         con .setRequestMethod("GET");
         con .setConnectTimeout(4 * 1000);
         InputStream inStream = con .getInputStream();//通过输入流获取图片数据
-        byte file[] = readInputStream(inStream);
+        byte file[] = CodeLib.readInputStream(inStream);
 
         JSONObject res = (JSONObject) JSONObject.parse(client.form(file, options).toString(2));
         System.out.println(res.toString());
@@ -68,15 +67,11 @@ public class OcrService {
                     row.add(sell.getString("words"));
                 }
             });
-
             data.add(table);
-
         });
         return (JSONArray) data.get(0);
     }
 
-    @Autowired
-    private MongoTemplate mt; //自动注入MongoTemplate
 
     public JSONArray table1(String url){
         try {
@@ -92,7 +87,6 @@ public class OcrService {
             Map<String, String> querys = new HashMap<String, String>();
             String bodys = "{\"url\":\""+url+"\",\"prob\":false,\"charInfo\":false,\"rotate\":false,\"table\":true}";
             HttpResponse response = CodeLib.doPost(host, path, method, headers, querys, bodys);
-            System.out.println("AAAAAAAAAAAAAa"+response.toString());
             //获取response的body
             JSONObject res=(JSONObject) JSONObject.parse(EntityUtils.toString(response.getEntity()));
             JSONArray tables=new JSONArray();
@@ -100,7 +94,6 @@ public class OcrService {
                LinkedHashMap<String,Object> tabledata=new LinkedHashMap<>();
                 JSONObject.parseObject(table.toString()).getJSONArray("cellInfos").forEach(cell->{
                     JSONObject celldata= JSONObject.parseObject(cell.toString());
-                    System.out.println(celldata);
                     if (celldata.getInteger("xec")==0){
                         JSONArray rowdata=new JSONArray();
                         rowdata.add(celldata);
@@ -110,10 +103,8 @@ public class OcrService {
                         JSONArray rowdata= (JSONArray) tabledata.get("0-"+celldata.getInteger("yec"));
                         if(null!=rowdata){
                             rowdata.add(celldata);
-
                         }
                     }
-
                 });
 
             });
@@ -130,15 +121,6 @@ public class OcrService {
         return br.readLine();
     }
 
-    public static byte[] readInputStream(InputStream inStream) throws Exception{
-        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        int len = 0;
-        while( (len=inStream.read(buffer)) != -1 ){
-            outStream.write(buffer, 0, len);
-        }
-        inStream.close();
-        return outStream.toByteArray();
-    }
+
 }
 

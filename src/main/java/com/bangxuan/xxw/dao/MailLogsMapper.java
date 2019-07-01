@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 public interface MailLogsMapper {
 
-    @Insert("install into mail_logs(emia,create_timel) values(#{email}, date_format(now(),'%Y-%m-%d %H:%i:%s'))")
+    @Insert("insert into mail_logs(email,create_time) values(#{email}, date_format(now(),'%Y-%m-%d %H:%i:%s'))")
     int add(@Param("email")String email);
 }

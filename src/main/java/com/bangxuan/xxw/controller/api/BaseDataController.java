@@ -2,14 +2,17 @@ package com.bangxuan.xxw.controller.api;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.bangxuan.xxw.dao.MailInfoMapper;
 import com.bangxuan.xxw.dao.UnitMapper;
 import com.bangxuan.xxw.dao.UserMapper;
 import com.bangxuan.xxw.entity.*;
 import com.bangxuan.xxw.service.*;
+import com.bangxuan.xxw.util.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import java.math.RoundingMode;
@@ -298,13 +301,14 @@ public class BaseDataController {
         return Mono.just(Message.SCUESSS("ok",0));
     }
 
+    @Autowired
+    private MailInfoMapper mailInfoMapper;
+
     @PostMapping("/sendmail")
+    @Transactional
     public Mono<Message> sendmail(@RequestBody JSONArray jsonArray){
         String text=jsonArray.get(0).toString().replace("ondrag=\"changeurl(this)\"","").replace("onclick=\"changeimg(this)\"","").replace("onclick=\"changeword(this)\"","").replace("border: 2px solid green;","");
-        if(mt.find(new Query(new Criteria()),JSONObject.class,"email").size()!=0){
-            mt.remove(new Query(new Criteria()),"email");
-        }
-        mt.insert(jsonArray.get(0).toString(), "email");
+        mailInfoMapper.install(jsonArray.get(0).toString().replace("border: 2px solid green;",""));
         jsonArray.forEach(a->{
             mailService.sendHtmlMail(a.toString(), text);
         });
@@ -313,8 +317,7 @@ public class BaseDataController {
 
     @GetMapping("/getemail")
     public Mono<Message> getemail(){
-        List<String> value= mt.find(new Query(new Criteria()),String.class,"email");
-        return Mono.just(Message.SCUESSS("发送成功",value.get(0)));
+        return Mono.just(Message.SCUESSS("发送成功",mailInfoMapper.select()));
     }
 
 

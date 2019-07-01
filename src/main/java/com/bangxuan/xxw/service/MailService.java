@@ -5,6 +5,7 @@ import com.sun.mail.util.MailSSLSocketFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -71,6 +72,7 @@ public class MailService {
 
     public void sendHtmlMail(String mail,String context){
         try {
+
             MimeMessage mimeMessage=mimeMessage();
             Multipart mainPart = new MimeMultipart();
             BodyPart html = new MimeBodyPart();
@@ -85,7 +87,7 @@ public class MailService {
             Transport.send(mimeMessage);
             mailLogsMapper.add(mail);
         }catch (Exception e){
-
+        e.printStackTrace();
         }
     }
 

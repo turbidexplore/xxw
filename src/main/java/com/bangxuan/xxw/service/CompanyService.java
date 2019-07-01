@@ -15,7 +15,6 @@ public class CompanyService {
     private CompanyMapper companyMapper;
 
     public List<String> getLogos() {
-
         return companyMapper.selectLogos();
     }
 

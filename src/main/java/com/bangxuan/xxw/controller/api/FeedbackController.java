@@ -2,7 +2,7 @@ package com.bangxuan.xxw.controller.api;
 
 import com.bangxuan.xxw.dao.UserMapper;
 import com.bangxuan.xxw.entity.Feedback;
-import com.bangxuan.xxw.entity.Message;
+import com.bangxuan.xxw.util.Message;
 import com.bangxuan.xxw.service.FeedbackService;
 import com.bangxuan.xxw.service.UserSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class FeedbackController {
     }
 
     @GetMapping("/all")
-    public Mono<Message> all(Principal principal){
+    public Mono<Message> all(){
         return Mono.just(Message.SCUESSS(Message.SECUESS,feedbackService.getAll()));
     }
 

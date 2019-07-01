@@ -396,14 +396,13 @@
       var settings = {
         "async": true,
         "crossDomain": true,
-        "url": "/user/get",
+        "url": "/basedata/getemail",
         "method": "GET",
         "processData": false
       }
 
-
       $.ajax(settings).done(function (response) {
-
+        $("#context").html(response.data);
       });
 
     }

@@ -61,7 +61,6 @@ public class ProductClassService {
         return productClassMapper.allqt();
     }
 
-
     public Integer getCount() {
         return productClassMapper.selectCount();
     }
