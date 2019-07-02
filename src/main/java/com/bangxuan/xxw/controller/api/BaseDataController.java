@@ -216,6 +216,7 @@ public class BaseDataController {
             }
         }
         rowjson.put("key",key);
+        rowjson.put("type","pl");
         int count=0;
         for (int i=1;i<lists.size();i++){
             List<JSONObject> row = new ArrayList<>();
@@ -244,6 +245,7 @@ public class BaseDataController {
         JSONObject rowjson=new JSONObject();
         rowjson.put("data",lists);
         rowjson.put("bds",text);
+        rowjson.put("type","bds");
         if(mt.find(new Query(new Criteria()),JSONObject.class,id).size()!=0){
             mt.remove(new Query(new Criteria()),id);
         }
@@ -258,7 +260,8 @@ public class BaseDataController {
             JSONArray data=new JSONArray();
 
           List<JSONObject> list= mt.find(new Query(new Criteria()),JSONObject.class,id);
-            data.add(list.get(0).getJSONArray("key"));
+          if(list.get(0).getString("type")=="pl"){
+              data.add(list.get(0).getJSONArray("key"));
               for (int i=1;i<list.get(0).getInteger("count")+1;i++){
                   JSONArray row=new JSONArray();
                   int finalI = i;
@@ -268,7 +271,10 @@ public class BaseDataController {
                   });
                   data.add(row);
               }
-            return Mono.just(Message.SCUESSS("ok",data));
+              return Mono.just(Message.SCUESSS("ok",data));
+            }else if(list.get(0).getString("type")=="bds"){
+
+          }
         }
         return Mono.just(Message.SCUESSS("ok",0));
     }

@@ -84,6 +84,72 @@
     <script src="/scripts/jquery.cookie.min.js" type="text/javascript"></script>
     <script src="/scripts/handsontable.full.js"></script>
   <script>
+
+    var yss=[];
+    var ys=[];
+    var a=0;
+    var b=0;
+    var ao=null;
+    var bo=null;
+    var color=["#FFFF00","#FFA500","#FF4040"," #FF1493","#FA8072","#D1EEEE",
+      "#CAFF70","#8B8B00","#8B1A1A","#32CD32","#0D0D0D","#0000EE"," #8B1A1A"," #8B8378","#9AC0CD","#B03060","#EED8AE"];
+    function yueshu(obj,value,rowsize) {
+      if (a == value) {
+        $(obj).css("border","0px solid #fff");
+        ys[0]=null;
+        a=0;
+        ao=null;
+        return;
+      }
+      if (b==value) {
+        $(obj).css("border","0px solid #fff");
+        ys[1]=null;
+        b=0;
+        bo=null;
+        return;
+      }
+      if (a == 0) {
+        a = value;
+        ao=obj;
+        ys.push("csvalue"+value+""+rowsize)
+        $(obj).css("border", "2px solid red");
+      } else {
+        b = value;
+        bo=obj;
+        ys.push("csvalue"+value + "" + rowsize)
+        $(obj).css("border", "2px solid red");
+      }
+
+      if(ao!=null&&bo!=null){
+        $(ao).css("border","0px solid #fff");
+        $(bo).css("border","0px solid #fff");
+        a=0;
+        b=0;
+        var aoo=ao;
+        var boo=bo;
+        ao=null;
+        bo=null;
+        var isok=0;
+        yss.forEach(function (value1) {
+          if(value1[0]==ys[0]&&value1[1]==ys[1]||value1[0]==ys[1]&&value1[1]==ys[0]){
+            isok++;
+          }
+        });
+        if(isok>0){
+          alert("约束已存在");
+          return;
+        }
+        $(aoo).css("border","2px solid "+color[yss.length]);
+        $(boo).css("border","2px solid "+color[yss.length]);
+        yss.push(ys);
+        alert("已添加约束");
+        ys=[];
+      }
+
+
+    }
+
+
     var data=[];
     function changecodename(obj,value) {
       $("#codename"+value).html(obj.value);
@@ -221,6 +287,7 @@
                         coldata.c=$("#cvalue" +(x+1)+data[x].col[a]).val();
                         coldata.d=$("#dvalue" +(x+1)+data[x].col[a]).val();
                         coldata.e=$("#evalue" +(x+1)+data[x].col[a]).val();
+                        coldata.data="csvalue"+(x+1)+ i;
                     rowdata.push(coldata);
                 }
             }
@@ -233,16 +300,24 @@
           if(i<a) {
             for (var b=0;b<bdsdata[i].length;b++){
               for (var d=0;d<bdsdata[a].length;d++){
-                var tsku = [];
-                var ad = bdsdata[i][b];
-                ad.forEach(function (v, c) {
-                  tsku.push(v);
+               var isok=0;
+                yss.forEach(function (value) {
+                  if(value[0]==bdsdata[i][b][0].data&&value[1]==bdsdata[a][d][0].data||value[0]==bdsdata[a][d][0].data&&value[1]==bdsdata[i][b][0].data){
+                    isok++;
+                  }
                 });
-                var cd = bdsdata[a][d];
-                cd.forEach(function (v, c) {
-                  tsku.push(v);
-                });
-                sku.push(tsku);
+                if(isok==0){
+                  var tsku = [];
+                  var ad = bdsdata[i][b];
+                  ad.forEach(function (v, c) {
+                    tsku.push(v);
+                  });
+                  var cd = bdsdata[a][d];
+                  cd.forEach(function (v, c) {
+                    tsku.push(v);
+                  });
+                  sku.push(tsku);
+                }
               }
             }
           }
@@ -318,27 +393,7 @@
       }
     }
 
-    var a=0;
-    var b=0;
-    var index=0;
-    function yueshu(obj,value,rowsize) {
-      if(index<2) {
-        if (a == 0) {
-          a = value;
-          index++;
-        } else {
-          if (a == value) {
-            $(obj).css("border","0px solid #fff");
-            return;
-          }else {
-            b=value;
-            index++;
-          }
-        }
-      alert(value+"/"+rowsize);
-      $(obj).css("border","2px solid red");
-      }
-    }
+
   </script>
   </body>
 </html>
