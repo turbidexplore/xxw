@@ -87,7 +87,6 @@ public class BaseDataController {
         JSONObject data = new JSONObject();
         data.put("basicurl"," https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/ad/");
         data.put("data",advertisementService.all());
-
         return Mono.just(Message.SCUESSS(Message.SECUESS,data));
     }
 
@@ -255,7 +254,6 @@ public class BaseDataController {
         return Mono.just(Message.SCUESSS("保存成功",0));
     }
 
-
     @PostMapping("/getclassdata")
     public Mono<Message> getclassdata(@RequestParam("id")String id){
         if(mt.find(new Query(new Criteria()),JSONObject.class,id).size()!=0){
@@ -308,8 +306,6 @@ public class BaseDataController {
         return Mono.just(Message.SCUESSS("ok",0));
     }
 
-
-
     @PostMapping("/sendmail")
     @Transactional
     public Mono<Message> sendmail(@RequestBody JSONArray jsonArray){
@@ -325,7 +321,6 @@ public class BaseDataController {
     public Mono<Message> getemail(){
         return Mono.just(Message.SCUESSS("发送成功",mailInfoMapper.select()));
     }
-
 
     @GetMapping("/parameter")
     public Mono<Message> getParameter(){
