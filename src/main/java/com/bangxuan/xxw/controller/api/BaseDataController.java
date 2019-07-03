@@ -50,6 +50,8 @@ public class BaseDataController {
     private MongoTemplate mt;
     @Autowired
     private UnitMapper unitMapper;
+    @Autowired
+    private MailInfoMapper mailInfoMapper;
 
     @GetMapping("/getStatistics")
     public Mono<Message> getStatistics(){
@@ -257,8 +259,7 @@ public class BaseDataController {
     @PostMapping("/getclassdata")
     public Mono<Message> getclassdata(@RequestParam("id")String id){
         if(mt.find(new Query(new Criteria()),JSONObject.class,id).size()!=0){
-            JSONArray data=new JSONArray();
-
+          JSONArray data=new JSONArray();
           List<JSONObject> list= mt.find(new Query(new Criteria()),JSONObject.class,id);
           if(list.get(0).getString("type")=="pl"){
               data.add(list.get(0).getJSONArray("key"));
@@ -273,7 +274,7 @@ public class BaseDataController {
               }
               return Mono.just(Message.SCUESSS("ok",data));
             }else if(list.get(0).getString("type")=="bds"){
-
+                //获取表达式数据
           }
         }
         return Mono.just(Message.SCUESSS("ok",0));
@@ -307,8 +308,7 @@ public class BaseDataController {
         return Mono.just(Message.SCUESSS("ok",0));
     }
 
-    @Autowired
-    private MailInfoMapper mailInfoMapper;
+
 
     @PostMapping("/sendmail")
     @Transactional
