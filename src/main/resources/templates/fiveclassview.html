@@ -51,7 +51,7 @@
                 <span id="add_user"></span>
               </div>
             </div>
-            <div class="row">
+            <div class="row" >
               <div class="col-lg-12" id="mydata">
                 <div id="bds" style="width: 100%;">
                   <button type="submit" style="float: left;" class="btn btn-accent" onclick="addtable()">添加表达式</button><span id="bdsword" style="margin-left: 10px;margin-top:6px;font-weight: bold;"></span>
@@ -64,11 +64,16 @@
                 <div class="clear"></div>
                 <div id="example" ></div>
                 <input type="hidden" id="coreid"  th:value="${id}">
+                <div id="yueshu" style="width: 100%;"></div>
+                <br>
+                <div id="cz">
                 <button type="submit" id="bcsj" class="btn btn-accent" onclick="save()">生成数据</button>
+                </div>
                         </div>
                       </div>
               </div>
       </div>
+
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

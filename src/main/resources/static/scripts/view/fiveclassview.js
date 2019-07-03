@@ -1,75 +1,61 @@
 var yss=[];
-var ys=[];
-var a=0;
-var b=0;
-var ao=null;
-var bo=null;
-var color=["#FFFF00","#FFA500","#FF4040"," #FF1493","#FA8072","#D1EEEE",
-    "#CAFF70","#8B8B00","#8B1A1A","#32CD32","#0D0D0D","#0000EE"," #8B1A1A"," #8B8378","#9AC0CD","#B03060","#EED8AE"];
-function yueshu(obj,value,rowsize) {
-    if (a == value) {
-        $(obj).css("border","0px solid #fff");
-        ys[0]=null;
-        a=0;
-        ao=null;
-        return;
-    }
-    if (b==value) {
-        $(obj).css("border","0px solid #fff");
-        ys[1]=null;
-        b=0;
-        bo=null;
-        return;
-    }
-    if (a == 0) {
-        a = value;
-        ao=obj;
-        ys.push("csvalue"+value+""+rowsize)
-        $(obj).css("border", "2px solid red");
-    } else {
-        b = value;
-        bo=obj;
-        ys.push("csvalue"+value + "" + rowsize)
-        $(obj).css("border", "2px solid red");
-    }
+var data=[];
 
-    if(ao!=null&&bo!=null){
-        $(ao).css("border","0px solid #fff");
-        $(bo).css("border","0px solid #fff");
-        a=0;
-        b=0;
-        var aoo=ao;
-        var boo=bo;
-        ao=null;
-        bo=null;
-        var isok=0;
-        yss.forEach(function (value1) {
-            if(value1[0]==ys[0]&&value1[1]==ys[1]||value1[0]==ys[1]&&value1[1]==ys[0]){
-                isok++;
+function inityueshu() {
+    $("#yueshu").html("");
+    for(var i =0;i<data.length;i++){
+        for(var j =0;j<data.length;j++){
+            if(i<j){
+                if($("#codename"+(j+1)).length>0){
+                var table=" <table  class=\"gridtable\" style='float: left;margin: 10px;' >";
+                table+="<tr><td colspan=\"2\" rowspan=\"2\"></td><td colspan=\""+(data[j].rowsize+2)+"\">"+$("#codename"+(j+1)).html()+"</td></tr>";
+                table+="<tr>";
+                for (var a=0;a<data[j].rowsize;a++){
+                    if($("#csvalue"+(j+1)+a+"10h").length>0) {
+                        table += "<td>" + $("#csvalue" + (j + 1) + a + "10h").val() + "</td>";
+                    }
+                }
+                table+="</tr>";
+                for (var a=0;a<data[i].rowsize;a++){
+                    table+="<tr>";
+                    if(a==0){
+                        table+="<td rowspan=\""+(data[i].rowsize)+"\">"+$("#codename"+(i+1)).html()+"</td>";
+                    }
+                    if($("#csvalue"+(i+1)+a+"10h").length>0) {
+                        table += "<td>" + $("#csvalue" + (i + 1) + a + "10h").val() + "</td>";
+                        for (var x = 0; x < data[j].rowsize; x++) {
+                            table += "<td style='font-weight: bold;' onclick=\"seleced(this,'csvalue" + (j + 1) + x + "','csvalue" + (i + 1) + a + "')\">◎</td>";
+                        }
+                    }
+                    table+="</tr>";
+                }
+                table+=" </table>";
+                $("#yueshu").append(table);
+                }
             }
-        });
-        if(isok>0){
-            alert("约束已存在");
-            return;
         }
-        $(aoo).css("border","2px solid "+color[yss.length]);
-        $(boo).css("border","2px solid "+color[yss.length]);
-        yss.push(ys);
-        alert("已添加约束");
-        ys=[];
     }
-
-
 }
 
+function seleced(obj,value1,value2) {
+    if($(obj).html()=="◎"){
+        $(obj).css("color","white");
+        $(obj).html(yss.length);
+        yss.push([value1,value2]);
+    }else {
+        yss[$(obj).html()]=["0","0"];
+        $(obj).css("color","black");
+        $(obj).html("◎");
+    }
+}
 
-var data=[];
 function changecodename(obj,value) {
     $("#codename"+value).html(obj.value);
     bdsword();
 }
 addtable();
 function addtable() {
+    inityueshu()
     data.push({"index":1,"col":[],"colsize":2,"rowsize":0});
     $("#bds").append("<div id=\"bds"+data.length+"\" style=\"margin: 10px;width: 82px;border: 1px solid grey;float: left;\">" +
         "<select style=\"width: 80px;border-style:none;\" id='bdstype"+data.length+"' onchange='bdsword()'>\n" +
@@ -85,7 +71,7 @@ function addtable() {
         "<tr id=\"a"+data.length+"\">\n" +
         "<td><span style='font-weight: bold;color: red;' id='codename"+data.length+"'>[A"+data.length+"]</span>/中文名称</td>\n" +
         "<td rowspan=\"5\" id=\"addtd"+data.length+"\">\n" +
-        "<button type=\"button\" class=\"btn btn-sm btn-success \" onclick=\"addcs('"+data.length+"')\">添加列</button>\n" +
+        "<button type=\"button\" class=\"btn btn-sm btn-success \"  style='height: 20px;line-height: 0px;' onclick=\"addcs('"+data.length+"')\">添加列</button>\n" +
         "</td>\n" +
         "</tr>\n" +
         "<tr id=\"b"+data.length+"\"><td>英文名称</td></tr>\n" +
@@ -93,22 +79,21 @@ function addtable() {
         "<tr id=\"d"+data.length+"\"><td>单位</td></tr>\n" +
         "<tr id=\"e"+data.length+"\"><td>数据类型</td></tr>\n" +
         "<tr id=\"addth"+data.length+"\">\n" +
-        "<td colspan=\"2\"><center> <button type=\"button\" class=\"btn btn-sm btn-success \" onclick=\"addrow('"+data.length+"')\" >添加行</button></center></td>\n" +
+        "<td colspan=\"2\"><center> <button type=\"button\" class=\"btn btn-sm btn-success \"  style='height: 20px;line-height: 0px;' onclick=\"addrow('"+data.length+"')\" >添加行</button></center></td>\n" +
         "</tr>\n" +
-        "</table>")
-    bdsword();
+        "</table>");
+        bdsword();
 }
 
 function addcs(value) {
+    inityueshu()
     var colsize=data[value-1].colsize= data[value-1].colsize+1;
     var index=data[value-1].index;
     data[value-1].col.push(index);
     $("#addtd"+value).remove();
     $("#addth"+value).remove();
-    $("#gridtable"+value).append(" <tr id=\"addth"+value+"\">\n" +
-        "<td colspan=\""+colsize+"\"><center> <button type=\"button\" class=\"btn btn-sm btn-success \" onclick=\"addrow("+value+")\">添加行</button></center></td>\n" +
-        "</tr>");
-    $("#a"+value).append("<td  id='a"+value+index+"'><input  id='avalue"+value+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='中文名称'></td> <td rowspan=\"5\" id=\"addtd"+value+"\"><button type=\"button\" class=\"btn btn-sm btn-success \" onclick=\"addcs("+value+")\">添加列</button></td>");
+    $("#gridtable"+value).append(" <tr id=\"addth"+value+"\"><td colspan=\""+colsize+"\"><center> <button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-success \" onclick=\"addrow("+value+")\">添加行</button></center></td></tr>");
+    $("#a"+value).append("<td  id='a"+value+index+"'><input  id='avalue"+value+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='中文名称'></td> <td rowspan=\"5\" id=\"addtd"+value+"\"><button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-success \" onclick=\"addcs("+value+")\">添加列</button></td>");
     $("#b"+value).append("<td  id='b"+value+index+"'><input  id='bvalue"+value+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='英文名称'></td>");
     $("#c"+value).append("<td id='c"+value+index+"'><input  id='cvalue"+value+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='代码'></td>");
     var settings = {
@@ -119,37 +104,38 @@ function addcs(value) {
         "processData": false
     }
     $.ajax(settings).done(function (response) {
-        var unit="<select id='dvalue"+value+index+"'>"
+        var unit="<select id='dvalue"+value+index+"' style='height: 20px;line-height: 0px;'>"
         response.data.unit.forEach(function (val) {
             unit=unit+"<option value='"+val.unit_name+"("+val.unit+")"+"'>"+val.unit_name+"("+val.unit+")"+"</option>"
         });
         unit=unit+"</select>";
         $("#d"+value).append("<td  id='d"+value+index+"'>"+unit+"</td>");
-        var datatype="<select  id='evalue"+value+index+"'>"
+        var datatype="<select  id='evalue"+value+index+"' style='height: 20px;line-height: 0px;'>"
         response.data.datatype.forEach(function (val) {
             datatype=datatype+"<option value='"+val.datatype+"'>"+val.datatype+"</option>"
         });
         datatype=datatype+"</select>";
-        $("#e"+value).append("<td  id='e"+value+index+"'>"+datatype+"<button type=\"button\" class=\"btn btn-sm btn-danger \" onclick='rm("+value+index+","+value+")'>删除列</button></td>");
+        $("#e"+value).append("<td  id='e"+value+index+"'>"+datatype+"<button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-danger \" onclick='rm("+value+index+","+value+")'>删除列</button></td>");
         data[value-1].index=data[value-1].index+1;
     });
 }
 function addrow(value) {
+    inityueshu()
     var tds="";
     for(var i=0;i<data[value-1].col.length;i++){
         var index= data[value-1].col[i];
         if($("#avalue"+value+index).length>0){
             if(i==0){
-                tds+="<td id='cs"+value+data[value-1].rowsize+index+i+"h'><input  id='csvalue"+value+data[value-1].rowsize+index+i+"h' type='text' style=\"border-style:none;width: 100px;\" placeholder='参数'></td>";
+                tds+="<td id='cs"+value+data[value-1].rowsize+index+i+"h'><input oninput='inityueshu()' id='csvalue"+value+data[value-1].rowsize+index+i+"h' type='text' style=\"border-style:none;width: 100px;\" placeholder='参数'></td>";
             }
             tds+="<td id='cs"+value+data[value-1].rowsize+index+i+"'><input  id='csvalue"+value+data[value-1].rowsize+index+i+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='参数'></td>";
         }
     }
-    tds+="<td id='cs"+value+data[value-1].rowsize+i+"'><button type=\"button\" class=\"btn btn-sm btn-danger \" onclick=\"rmrow('csrow"+value+data[value-1].rowsize+"')\">删除行</button></td>";
-    $("#gridtable"+value).append("<tr ondblclick='yueshu(this,"+value+","+data[value-1 ].rowsize+")'  id=\"csrow"+value+data[value-1 ].rowsize+"\">"+tds+"</tr>");
+    tds+="<td id='cs"+value+data[value-1].rowsize+i+"'><button type=\"button\" style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-danger \" onclick=\"rmrow('csrow"+value+data[value-1].rowsize+"')\">删除行</button></td>";
+    $("#gridtable"+value).append("<tr id=\"csrow"+value+data[value-1 ].rowsize+"\">"+tds+"</tr>");
     data[value-1].rowsize=data[value-1].rowsize+1;
     $("#addth"+value).remove();
-    $("#gridtable"+value).append("<tr id=\"addth"+value+"\"><td colspan=\""+data[value-1].colsize+"\"><center><button type=\"button\" class=\"btn btn-sm btn-success \" onclick=\"addrow("+value+")\">添加行</button></center></td></tr>");
+    $("#gridtable"+value).append("<tr id=\"addth"+value+"\"><td colspan=\""+data[value-1].colsize+"\"><center><button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-success \" onclick=\"addrow("+value+")\">添加行</button></center></td></tr>");
 }
 
 function rm(obj,value) {
@@ -161,14 +147,16 @@ function rm(obj,value) {
     var colsize=data[value-1].colsize= data[value-1].colsize-1;
     $("#addth"+value).remove();
     $("#gridtable"+value).append(" <tr id=\"addth"+value+"\">\n" +
-        "<td colspan=\""+colsize+"\"><center> <button type=\"button\" class=\"btn btn-sm btn-success \" onclick=\"addrow("+value+")\">添加行</button></center></td></tr>");
+        "<td colspan=\""+colsize+"\"><center> <button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-success \" onclick=\"addrow("+value+")\">添加行</button></center></td></tr>");
 }
 
 function rmrow(value) {
+    inityueshu()
     $("#"+value).remove()
 }
 
 function rmbds(value) {
+    inityueshu()
     $("#bds"+value).remove();
     $("#gridtable"+value).remove();
     bdsword();
@@ -183,6 +171,7 @@ function bdsword() {
 var container = document.getElementById('example');
 var hot=null;
 
+
 function save() {
     var bdsdata= new Array();
     var sku= new Array();
@@ -193,7 +182,7 @@ function save() {
             for (var a = 0; a < data[x].col.length; a++) {
                 if($("#avalue" +(x+1)+data[x].col[a]).length>0) {
                     var coldata = {};
-                    coldata.sku = $("#csvalue" + (x+1)+i+data[x].col[0]+ "0h").val();
+                    coldata.sku =$("#bdstype"+(x+1)).val()+ $("#csvalue" + (x+1)+i+data[x].col[0]+ "0h").val();
                     coldata.value = $("#csvalue" + (x+1)+ i+data[x].col[a]+ a).val();
                     coldata.a=$("#avalue" +(x+1)+data[x].col[a]).val();
                     coldata.b=$("#bvalue" +(x+1)+data[x].col[a]).val();
@@ -208,36 +197,35 @@ function save() {
         }
         bdsdata.push(skudata);
     }
-    for(var i=0;i<bdsdata.length;i++){
-        for (var a=0;a<bdsdata.length;a++){
-            if(i<a) {
-                for (var b=0;b<bdsdata[i].length;b++){
-                    for (var d=0;d<bdsdata[a].length;d++){
-                        var isok=0;
-                        yss.forEach(function (value) {
-                            if(value[0]==bdsdata[i][b][0].data&&value[1]==bdsdata[a][d][0].data||value[0]==bdsdata[a][d][0].data&&value[1]==bdsdata[i][b][0].data){
-                                isok++;
-                            }
-                        });
-                        if(isok==0){
-                            var tsku = [];
-                            var ad = bdsdata[i][b];
-                            ad.forEach(function (v, c) {
-                                tsku.push(v);
-                            });
-                            var cd = bdsdata[a][d];
-                            cd.forEach(function (v, c) {
-                                tsku.push(v);
-                            });
-                            sku.push(tsku);
-                        }
+
+   var dke= descartes(bdsdata);
+    dke.forEach(function (val) {
+        var isok=0;
+        val.forEach(function (da) {
+            val.forEach(function (db) {
+                yss.forEach(function (value) {
+                    if(value[0]==da[0].data&&value[1]==db[0].data||value[0]==da[0].data&&value[1]==db[0].data){
+                        isok++;
                     }
+                });
+            })
+        })
+        if(isok==0){
+            var tsku = [];
+            val.forEach(function (v) {
+                if(v!=undefined) {
+                    v.forEach(function (t) {
+                        tsku.push(t);
+                    })
                 }
-            }
+            })
+            sku.push(tsku);
         }
-    }
+    })
+
     var dataa=[];
     dataa.push(["sku名称","","","","","","","","","","","","","","","","","","","","",""])
+    var dw=0;
     sku.forEach(function (value) {
         var datab=[];
         var datac=["中文名称"];
@@ -246,40 +234,62 @@ function save() {
         var dataf=["单位"];
         var datag=["数据类型"];
         var index=0;
-        var over=0;
+        var skunames=[];
         value.forEach(function (x) {
+            skunames.push(x.sku);
             if(index==0){
-                datab.push(x.sku);
-                datab.push(x.value);
+                datab.push("");
             }else{
-                if(datab[0]!=x.sku&&over==0){
-                    datab[0]=datab[0]+"/"+x.sku;
-                    over++;
-                }
-                datab.push(x.value);
+                var skuname=""
+                distinct(skunames,skunames).forEach(function (name) {
+                    skuname+=name;
+                })
+                datab[0]=skuname;
             }
-            datac.push(x.a);
-            datad.push(x.b);
-            datae.push(x.c);
-            dataf.push(x.d);
-            datag.push(x.e);
+            datab.push(x.value);
+            if(dw==0) {
+                datac.push(x.a);
+                datad.push(x.b);
+                datae.push(x.c);
+                dataf.push(x.d);
+                datag.push(x.e);
+            }
             index++;
         })
-        dataa.push(datac);
-        dataa.push(datad);
-        dataa.push(datae);
-        dataa.push(dataf);
-        dataa.push(datag);
-        dataa.push(datab);
+        if(dw==0) {
+            dataa.push(datac);
+            dataa.push(datad);
+            dataa.push(datae);
+            dataa.push(dataf);
+            dataa.push(datag);
+            dw++;
+        }
+            dataa.push(datab);
+
     })
+    $("#example").html("");
     hot = new Handsontable(container, {
         data: dataa,
         minSpareRows:2,//空出多少行
         colHeaders:true,//显示表头　
         contextMenu:true//显示表头下拉菜单
     });
-    $("#mydata").append("<button type=\"submit\" id=\"bcsj\" class=\"btn btn-accent\" onclick=\"bcsj()\">保存数据</button>")
-    $("#bcsj").remove();
+    $("#cz").html("<button type=\"submit\" id=\"bcsj\" class=\"btn btn-accent\" onclick=\"save()\">生成数据</button><button type=\"submit\" id=\"bcsj\" class=\"btn btn-accent\" onclick=\"bcsj()\">保存数据</button>")
+}
+
+function distinct(a, b) {
+    var arr = a.concat(b);
+    for (var i=0, len=arr.length; i<len; i++) {
+        for (var j=i+1; j<len; j++) {
+            if (arr[i] == arr[j]) {
+                arr.splice(j, 1);
+                // splice 会改变数组长度，所以要将数组长度 len 和下标 j 减一
+                len--;
+                j--;
+            }
+        }
+    }
+    return arr
 }
 
 function bcsj() {
@@ -294,7 +304,7 @@ function bcsj() {
         var settings = {
             "async": true,
             "crossDomain": true,
-            "url": "/basedata/bdsclassdata?id="+$("#coreid").val()+"&text="+$("#bdsword").html(),
+            "url": "/basedata/bdsclassdata?id="+$("#coreid").val(),
             "method": "PUT",
             "processData": false,
             "data":JSON.stringify(data),
@@ -305,3 +315,70 @@ function bcsj() {
         });
     }
 }
+
+
+
+//笛卡儿积组合
+function descartes(list)
+{
+    //parent上一级索引;count指针计数
+    var point  = {};
+
+    var result = [];
+    var pIndex = null;
+    var tempCount = 0;
+    var temp   = [];
+
+    //根据参数列生成指针对象
+    for(var index in list)
+    {
+        if(typeof list[index] == 'object')
+        {
+            point[index] = {'parent':pIndex,'count':0}
+            pIndex = index;
+        }
+    }
+
+    //单维度数据结构直接返回
+    if(pIndex == null)
+    {
+        return list;
+    }
+
+    //动态生成笛卡尔积
+    while(true)
+    {
+        for(var index in list)
+        {
+            tempCount = point[index]['count'];
+            temp.push(list[index][tempCount]);
+        }
+
+        //压入结果数组
+        result.push(temp);
+        temp = [];
+
+        //检查指针最大值问题
+        while(true)
+        {
+            if(point[index]['count']+1 >= list[index].length)
+            {
+                point[index]['count'] = 0;
+                pIndex = point[index]['parent'];
+                if(pIndex == null)
+                {
+                    return result;
+                }
+
+                //赋值parent进行再次检查
+                index = pIndex;
+            }
+            else
+            {
+                point[index]['count']++;
+                break;
+            }
+        }
+    }
+}
+

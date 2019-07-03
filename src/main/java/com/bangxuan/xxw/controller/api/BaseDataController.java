@@ -241,11 +241,10 @@ public class BaseDataController {
     }
 
     @PutMapping("/bdsclassdata")
-    public Mono<Message> bdsclassdata(@RequestBody JSONArray jsonArray,@RequestParam("id")String id,@RequestParam("text")String text){
+    public Mono<Message> bdsclassdata(@RequestBody JSONArray jsonArray,@RequestParam("id")String id){
         List<List> lists= jsonArray.toJavaList(List.class);
         JSONObject rowjson=new JSONObject();
         rowjson.put("data",lists);
-        rowjson.put("bds",text);
         rowjson.put("type","bds");
         if(mt.find(new Query(new Criteria()),JSONObject.class,id).size()!=0){
             mt.remove(new Query(new Criteria()),id);
