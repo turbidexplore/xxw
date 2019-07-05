@@ -107,10 +107,16 @@ public class ProductClassController {
     }
 
     @GetMapping("/getOne")
-    public Mono<Message> getOne(){
-        JSONObject data =productClassService.getOne();
-        data.put("images",productClassService.getImages(data.getString("id")));
-        return Mono.just(Message.SCUESSS(Message.SECUESS,data));
+    public Mono<Message> getOne(@RequestParam("id")String id){
+        if(id!="0"&&!id.equals("0")){
+            JSONObject data=productClassService.get(id);
+            data.put("images",productClassService.getImages(data.getString("id")));
+            return Mono.just(Message.SCUESSS(Message.SECUESS,data));
+        }else {
+            JSONObject data= productClassService.getOne();
+            data.put("images",productClassService.getImages(data.getString("id")));
+            return Mono.just(Message.SCUESSS(Message.SECUESS,data));
+        }
     }
 
     @PutMapping("/saveClassdata")

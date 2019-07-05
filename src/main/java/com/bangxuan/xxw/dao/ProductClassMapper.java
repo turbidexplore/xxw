@@ -106,6 +106,9 @@ public interface ProductClassMapper {
     @Select("select a.*,b.pdf_file,c.company_name,c.logo as companylogo,c.id as company_id,d.* from gy_product_class a,gy_class_pdf b,gy_company c,gy_company_brand d where a.company_id=c.id and a.brand_id =d.id and a.id=b.class_id and a.status <2 order by a.status,a.pinyin_index asc limit 0,1")
     JSONObject getOne();
 
+    @Select("select a.*,b.pdf_file,c.company_name,c.logo as companylogo,c.id as company_id,d.* from gy_product_class a,gy_class_pdf b,gy_company c,gy_company_brand d where a.company_id=c.id and a.brand_id =d.id and a.id=b.class_id and a.id=#{id}")
+    JSONObject get(@Param("id")String id);
+
     @Update("update gy_product_class set status=#{status} where id=#{id}")
     int updateSec(@Param("status")Integer status,@Param("id")Integer id);
 

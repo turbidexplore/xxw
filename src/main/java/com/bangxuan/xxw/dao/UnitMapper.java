@@ -15,4 +15,7 @@ public interface UnitMapper {
 
     @Select("select * from gy_sys_datatype")
     List<JSONObject> alldatatype();
+
+    @Select("select * from dicts where object='codes' ")
+    List<JSONObject> codes();
 }

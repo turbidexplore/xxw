@@ -1,6 +1,11 @@
 var yss=[];
 var data=[];
 
+if($.cookie("ACCESS_TOKEN")==undefined){
+    window.location.href="/system/login";
+}
+
+
 function inityueshu() {
     $("#yueshu").html("");
     for(var i =0;i<data.length;i++){
@@ -56,17 +61,31 @@ function changecodename(obj,value) {
 addtable();
 function addtable() {
     inityueshu()
+
     data.push({"index":1,"col":[],"colsize":2,"rowsize":0});
-    $("#bds").append("<div id=\"bds"+data.length+"\" style=\"margin: 10px;width: 82px;border: 1px solid grey;float: left;\">" +
-        "<select style=\"width: 80px;border-style:none;\" id='bdstype"+data.length+"' onchange='bdsword()'>\n" +
-        "<option value=\"\">默认</option>\n" +
-        "<option value=\".\">.</option>\n" +
-        "<option value=\"-\">-</option>\n" +
-        "<option value=\"*\">*</option>\n" +
-        "</select><br>\n" +
-        "<input id='bdsname"+data.length+"' oninput='changecodename(this,"+data.length+")' style=\"width: 80px;border-style:none;\" value='A"+data.length+"' type='text'  placeholder='中文名称'>\n" +
-        "<button type=\"button\" style=\"width: 80px;border-style:none;border-radius: 0\" class=\"btn btn-sm btn-danger \" onclick=\"rmbds("+data.length+")\">删除</button>"+
-        "</div>");
+
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "/basedata/codes",
+        "method": "GET",
+        "processData": false
+    }
+    $.ajax(settings).done(function (response) {
+        var options="";
+        response.data.forEach(function (v) {
+            options+= "<option value=\""+v.value+"\">"+v.value+"</option>";
+        })
+        $("#bds").append("<div id=\"bds"+data.length+"\" style=\"margin: 10px;width: 82px;border: 1px solid grey;float: left;\">" +
+            "<select style=\"width: 80px;border-style:none;\" id='bdstype"+data.length+"' onchange='bdsword()'>\n" +
+            "<option value=\"\">默认</option>\n" +
+            options+
+            "</select><br>\n" +
+            "<input id='bdsname"+data.length+"' oninput='changecodename(this,"+data.length+")' style=\"width: 80px;border-style:none;\" value='A"+data.length+"' type='text'  placeholder='中文名称'>\n" +
+            "<button type=\"button\" style=\"width: 80px;border-style:none;border-radius: 0\" class=\"btn btn-sm btn-danger \" onclick=\"rmbds("+data.length+")\">删除</button>"+
+            "</div>");
+    });
+
     $("#tables").append(" <table  class=\"gridtable\" style='float: left;margin: 10px;' id=\"gridtable"+data.length+"\" >\n" +
         "<tr id=\"a"+data.length+"\">\n" +
         "<td><span style='font-weight: bold;color: red;' id='codename"+data.length+"'>[A"+data.length+"]</span>/中文名称</td>\n" +
@@ -79,7 +98,7 @@ function addtable() {
         "<tr id=\"d"+data.length+"\"><td>单位</td></tr>\n" +
         "<tr id=\"e"+data.length+"\"><td>数据类型</td></tr>\n" +
         "<tr id=\"addth"+data.length+"\">\n" +
-        "<td colspan=\"2\"><center> <button type=\"button\" class=\"btn btn-sm btn-success \"  style='height: 20px;line-height: 0px;' onclick=\"addrow('"+data.length+"')\" >添加行</button></center></td>\n" +
+        "<td colspan=\"2\"><center> <button type=\"button\" class=\"btn btn-sm btn-success \"  style='height: 20px;line-height: 0px;' onclick=\"adddaoru('"+data.length+"')\" >导入数据</button></center></td>\n" +
         "</tr>\n" +
         "</table>");
         bdsword();
@@ -92,7 +111,7 @@ function addcs(value) {
     data[value-1].col.push(index);
     $("#addtd"+value).remove();
     $("#addth"+value).remove();
-    $("#gridtable"+value).append(" <tr id=\"addth"+value+"\"><td colspan=\""+colsize+"\"><center> <button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-success \" onclick=\"addrow("+value+")\">添加行</button></center></td></tr>");
+    $("#gridtable"+value).append(" <tr id=\"addth"+value+"\"><td colspan=\""+colsize+"\"><center> <button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-success \" onclick=\"adddaoru("+value+")\">导入数据</button></center></td></tr>");
     $("#a"+value).append("<td  id='a"+value+index+"'><input  id='avalue"+value+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='中文名称'></td> <td rowspan=\"5\" id=\"addtd"+value+"\"><button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-success \" onclick=\"addcs("+value+")\">添加列</button></td>");
     $("#b"+value).append("<td  id='b"+value+index+"'><input  id='bvalue"+value+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='英文名称'></td>");
     $("#c"+value).append("<td id='c"+value+index+"'><input  id='cvalue"+value+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='代码'></td>");
@@ -135,7 +154,32 @@ function addrow(value) {
     $("#gridtable"+value).append("<tr id=\"csrow"+value+data[value-1 ].rowsize+"\">"+tds+"</tr>");
     data[value-1].rowsize=data[value-1].rowsize+1;
     $("#addth"+value).remove();
-    $("#gridtable"+value).append("<tr id=\"addth"+value+"\"><td colspan=\""+data[value-1].colsize+"\"><center><button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-success \" onclick=\"addrow("+value+")\">添加行</button></center></td></tr>");
+    $("#gridtable"+value).append("<tr id=\"addth"+value+"\"><td colspan=\""+data[value-1].colsize+"\"><center><button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-success \" onclick=\"adddaoru("+value+")\">导入数据</button></center></td></tr>");
+}
+
+function adddaoru(value) {
+    var count=hot1.countRows();
+    for (var s=0;s<=count;s++){
+        if(!hot1.isEmptyRow(s)) {
+            var tds="";
+            for(var i=0;i<data[value-1].col.length;i++){
+                var index= data[value-1].col[i];
+                if($("#avalue"+value+index).length>0){
+                    if(i==0){
+                        tds+="<td id='cs"+value+data[value-1].rowsize+index+i+"h'><input oninput='inityueshu()' id='csvalue"+value+data[value-1].rowsize+index+i+"h' type='text' style=\"border-style:none;width: 100px;\" placeholder='参数' value='"+hot1.getDataAtCell(s,0)+"'></td>";
+                    }
+                        tds += "<td id='cs" + value + data[value - 1].rowsize + index + i + "'><input  id='csvalue" + value + data[value - 1].rowsize + index + i + "' type='text' style=\"border-style:none;width: 100px;\" placeholder='参数' value='" + hot1.getDataAtCell(s, (i+1)) + "'></td>";
+
+                }
+            }
+            tds+="<td id='cs"+value+data[value-1].rowsize+i+"'><button type=\"button\" style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-danger \" onclick=\"rmrow('csrow"+value+data[value-1].rowsize+"')\">删除行</button></td>";
+            $("#gridtable"+value).append("<tr id=\"csrow"+value+data[value-1 ].rowsize+"\">"+tds+"</tr>");
+            data[value-1].rowsize=data[value-1].rowsize+1;
+            $("#addth"+value).remove();
+            $("#gridtable"+value).append("<tr id=\"addth"+value+"\"><td colspan=\""+data[value-1].colsize+"\"><center><button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-success \" onclick=\"adddaoru("+value+")\">导入数据</button></center></td></tr>");
+        }
+    }
+    inityueshu()
 }
 
 function rm(obj,value) {
@@ -147,7 +191,7 @@ function rm(obj,value) {
     var colsize=data[value-1].colsize= data[value-1].colsize-1;
     $("#addth"+value).remove();
     $("#gridtable"+value).append(" <tr id=\"addth"+value+"\">\n" +
-        "<td colspan=\""+colsize+"\"><center> <button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-success \" onclick=\"addrow("+value+")\">添加行</button></center></td></tr>");
+        "<td colspan=\""+colsize+"\"><center> <button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-success \" onclick=\"adddaoru("+value+")\">导入数据</button></center></td></tr>");
 }
 
 function rmrow(value) {
@@ -170,6 +214,14 @@ function bdsword() {
 
 var container = document.getElementById('example');
 var hot=null;
+
+var container1 = document.getElementById('example1');
+var hot1=  new Handsontable(container1, {
+    data: [["","","","",""]],
+    minSpareRows:2,//空出多少行
+    colHeaders:true,//显示表头　
+    contextMenu:true//显示表头下拉菜单
+});
 
 
 function save() {
@@ -323,12 +375,10 @@ function descartes(list)
 {
     //parent上一级索引;count指针计数
     var point  = {};
-
     var result = [];
     var pIndex = null;
     var tempCount = 0;
     var temp   = [];
-
     //根据参数列生成指针对象
     for(var index in list)
     {
@@ -338,13 +388,11 @@ function descartes(list)
             pIndex = index;
         }
     }
-
     //单维度数据结构直接返回
     if(pIndex == null)
     {
         return list;
     }
-
     //动态生成笛卡尔积
     while(true)
     {
@@ -353,11 +401,9 @@ function descartes(list)
             tempCount = point[index]['count'];
             temp.push(list[index][tempCount]);
         }
-
         //压入结果数组
         result.push(temp);
         temp = [];
-
         //检查指针最大值问题
         while(true)
         {
@@ -369,7 +415,6 @@ function descartes(list)
                 {
                     return result;
                 }
-
                 //赋值parent进行再次检查
                 index = pIndex;
             }

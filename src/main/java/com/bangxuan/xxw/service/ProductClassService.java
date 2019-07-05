@@ -136,6 +136,10 @@ public class ProductClassService {
         return productClassMapper.getOne();
     }
 
+    public JSONObject get(String id) {
+        return productClassMapper.get(id);
+    }
+
     public int updateClassData(Integer id, Integer value) {
         return productClassMapper.updateSec(value,id);
     }

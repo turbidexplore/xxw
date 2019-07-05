@@ -328,4 +328,10 @@ public class BaseDataController {
         data.put("datatype",unitMapper.alldatatype());
         return Mono.just(Message.SCUESSS("ok",data));
     }
+
+    @GetMapping("/codes")
+    public Mono<Message> getCodes(){
+
+        return Mono.just(Message.SCUESSS("ok",unitMapper.codes()));
+    }
 }

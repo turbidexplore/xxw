@@ -65,7 +65,8 @@ public class NavController {
     }
 
     @RequestMapping("/system/fiveclass")
-    public String fiveclass(){
+    public String fiveclass(@RequestParam("id")String id,HttpServletRequest request){
+        request.setAttribute("id",id);
         return "fiveclass";
     }
 

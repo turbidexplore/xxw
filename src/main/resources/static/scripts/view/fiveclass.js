@@ -1,3 +1,7 @@
+if($.cookie("ACCESS_TOKEN")==undefined){
+    window.location.href="/system/login";
+}
+
 hidemenu();
 function hidemenu() {
 
@@ -51,7 +55,7 @@ var hot=null;
 var settings = {
     "async": true,
     "crossDomain": true,
-    "url": "/productclass/getOne",
+    "url": "/productclass/getOne?id="+$("#coreid").val(),
     "method": "GET",
     "processData": false,
     "headers": {
@@ -119,7 +123,6 @@ $.ajax(settings).done(function (response) {
                 });
         }
     });
-
 });
 
 $("#gridtable").hide();
@@ -140,9 +143,9 @@ function rmcss(obj) {
 function add() {
     $("#addtd").remove();
 
-    $("#a").append("<td ondblclick='rm("+index+")' id='a"+index+"'><input oninput='rmcss(this)' id='avalue"+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='中文名称'></td> <td rowspan=\"5\" id=\"addtd\"><button type=\"button\" class=\"btn btn-sm btn-success \" onclick=\"add()\">+</button><br/> <button type=\"button\" class=\"btn btn-sm btn-danger \" onclick=\"saveadd()\">=</button></td>");
-    $("#b").append("<td ondblclick='rm("+index+")' id='b"+index+"'><input oninput='rmcss(this)' id='bvalue"+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='英文名称'></td>");
-    $("#c").append("<td ondblclick='rm("+index+")' id='c"+index+"'><input oninput='rmcss(this)' id='cvalue"+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='代码'></td>");
+    $("#a").append("<td id='a"+index+"'><input oninput='rmcss(this)' id='avalue"+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='中文名称'></td> <td rowspan=\"5\" id=\"addtd\"><button type=\"button\" class=\"btn btn-sm btn-success \" onclick=\"add()\">+</button><br/> <button type=\"button\" class=\"btn btn-sm btn-danger \" onclick=\"saveadd()\">=</button></td>");
+    $("#b").append("<td id='b"+index+"'><input oninput='rmcss(this)' id='bvalue"+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='英文名称'></td>");
+    $("#c").append("<td id='c"+index+"'><input oninput='rmcss(this)' id='cvalue"+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='代码'></td>");
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -164,7 +167,7 @@ function add() {
             datatype=datatype+"<option value='"+value.datatype+"'>"+value.datatype+"</option>"
         });
         datatype=datatype+"</select>";
-        $("#e").append("<td ondblclick='rm("+index+")' id='e"+index+"'>"+datatype+"</td>");
+        $("#e").append("<td id='e"+index+"'>"+datatype+"<button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-danger \" onclick='rm("+index+")' >删除</button></td>");
         index=index+1;
     });
 }
@@ -306,11 +309,11 @@ function uploada(fileList) {
 
 function saveadd() {
     var mydata=[];
-    var a=["批量上传试例","参数中文名称"];
-    var b=["-","参数英文名称"];
-    var c=["-","参数英文名称"];
-    var d=["-","参数英文名称"];
-    var e=["-","参数英文名称"];
+    var a=["批量上传试例","型号/中文名称"];
+    var b=["-","型号/英文名称"];
+    var c=["-","型号/代码"];
+    var d=["-","型号/单位"];
+    var e=["-","型号/数据类型"];
     for(var i=0;i<index;i++){
         if($("#avalue"+i).val()==""||$("#bvalue"+i).val()==""){
             if($("#avalue"+i).val()==""){

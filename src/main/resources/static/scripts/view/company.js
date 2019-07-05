@@ -1,3 +1,6 @@
+if($.cookie("ACCESS_TOKEN")==undefined){
+    window.location.href="/system/login";
+}
 
 function logout() {
     $.removeCookie("ACCESS_TOKEN", {path:"/",domain:"chuanqi.lingjianbang.com"});
