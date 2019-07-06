@@ -4,8 +4,6 @@ var data=[];
 if($.cookie("ACCESS_TOKEN")==undefined){
     window.location.href="/system/login";
 }
-
-
 function inityueshu() {
     yss=[];
     $("#yueshu").html("");
@@ -254,7 +252,6 @@ function qingkong() {
     });
 }
 
-
 function save() {
     var bdsdata = new Array();
     var sku = new Array();
@@ -290,7 +287,6 @@ function save() {
     if (status > 0) {
         alert("请完整填写信息！")
     } else {
-
         var dke = descartes(bdsdata);
         dke.forEach(function (val) {
             var isok = 0;
@@ -415,7 +411,6 @@ function bcsj() {
         });
     }
 }
-
 
 
 //笛卡儿积组合
