@@ -20,7 +20,6 @@ function inityueshu() {
                         }
                     }
                     table += "</tr>";
-
                     for (var a = 0; a < data[i].rowsize; a++) {
                         table += "<tr>";
                         if (a == 0) {
@@ -60,10 +59,7 @@ function changecodename(obj,value) {
 }
 addtable();
 function addtable() {
-
-
     data.push({"index":1,"col":[],"colsize":2,"rowsize":0});
-
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -84,25 +80,27 @@ function addtable() {
             "<input id='bdsname"+data.length+"' oninput='changecodename(this,"+data.length+")' style=\"width: 80px;border-style:none;\" value='A"+data.length+"' type='text'  placeholder='中文名称'>\n" +
             "<button type=\"button\" style=\"width: 80px;border-style:none;border-radius: 0\" class=\"btn btn-sm btn-danger \" onclick=\"rmbds("+data.length+")\">删除</button>"+
             "</div>");
+
+        $("#tables").append(" <table  class=\"gridtable\" style='float: left;margin: 10px;' id=\"gridtable"+data.length+"\" >\n" +
+            "<tr id=\"a"+data.length+"\">\n" +
+            "<td><span style='font-weight: bold;color: red;' id='codename"+data.length+"'>[A"+data.length+"]</span>/中文名称</td>\n" +
+            "<td rowspan=\"5\" id=\"addtd"+data.length+"\">\n" +
+            "<button type=\"button\" class=\"btn btn-sm btn-success \"  style='height: 20px;line-height: 0px;' onclick=\"addcs('"+data.length+"')\">添加列</button>\n" +
+            "</td>\n" +
+            "</tr>\n" +
+            "<tr id=\"b"+data.length+"\"><td>英文名称</td></tr>\n" +
+            "<tr id=\"c"+data.length+"\"><td>代码</td></tr>\n" +
+            "<tr id=\"d"+data.length+"\"><td>单位</td></tr>\n" +
+            "<tr id=\"e"+data.length+"\"><td>数据类型</td></tr>\n" +
+            "<tr id=\"addth"+data.length+"\">\n" +
+            "<td colspan=\"2\"><center> <button type=\"button\" class=\"btn btn-sm btn-success \"  style='height: 20px;line-height: 0px;' onclick=\"adddaoru('"+data.length+"')\" >导入数据</button></center></td>\n" +
+            "</tr><tbody id='view"+data.length+"'></tbody>\n" +
+            "</table>");
+        bdsword();
+        inityueshu();
     });
 
-    $("#tables").append(" <table  class=\"gridtable\" style='float: left;margin: 10px;' id=\"gridtable"+data.length+"\" >\n" +
-        "<tr id=\"a"+data.length+"\">\n" +
-        "<td><span style='font-weight: bold;color: red;' id='codename"+data.length+"'>[A"+data.length+"]</span>/中文名称</td>\n" +
-        "<td rowspan=\"5\" id=\"addtd"+data.length+"\">\n" +
-        "<button type=\"button\" class=\"btn btn-sm btn-success \"  style='height: 20px;line-height: 0px;' onclick=\"addcs('"+data.length+"')\">添加列</button>\n" +
-        "</td>\n" +
-        "</tr>\n" +
-        "<tr id=\"b"+data.length+"\"><td>英文名称</td></tr>\n" +
-        "<tr id=\"c"+data.length+"\"><td>代码</td></tr>\n" +
-        "<tr id=\"d"+data.length+"\"><td>单位</td></tr>\n" +
-        "<tr id=\"e"+data.length+"\"><td>数据类型</td></tr>\n" +
-        "<tr id=\"addth"+data.length+"\">\n" +
-        "<td colspan=\"2\"><center> <button type=\"button\" class=\"btn btn-sm btn-success \"  style='height: 20px;line-height: 0px;' onclick=\"adddaoru('"+data.length+"')\" >导入数据</button></center></td>\n" +
-        "</tr><tbody id='view"+data.length+"'></tbody>\n" +
-        "</table>");
-        bdsword();
-    inityueshu();
+
 }
 
 function addcs(value) {
@@ -186,7 +184,7 @@ function adddaoru(value) {
                     x++;
                 }
             }
-            tds+="<td id='cs"+value+data[value-1].rowsize+i+"'><button type=\"button\" style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-danger \" onclick=\"rmrow('csrow"+value+data[value-1].rowsize+"')\">删除行</button></td>";
+            tds+="<td id='cs"+value+data[value-1].rowsize+i+"'></td>";
             $("#view"+value).append("<tr id=\"csrow"+value+data[value-1 ].rowsize+"\">"+tds+"</tr>");
             data[value-1].rowsize=data[value-1].rowsize+1;
             $("#addth"+value).remove();
@@ -210,9 +208,10 @@ function rm(obj,value,index) {
     adddaoru(value);
 }
 
-function rmrow(value) {
+function rmrow(obj,value) {
 
-    $("#"+value).remove()
+    data[value-1].rowsize=data[value-1].rowsize-1;
+    $("#"+obj).remove()
     inityueshu()
 }
 
@@ -287,6 +286,8 @@ function save() {
     if (status > 0) {
         alert("请完整填写信息！")
     } else {
+        console.log(bdsdata);
+        console.log(dke);
         var dke = descartes(bdsdata);
         dke.forEach(function (val) {
             var isok = 0;

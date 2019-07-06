@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.dao.TasksMapper;
 import com.bangxuan.xxw.entity.Tasks;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,7 @@ public class TasksService {
         tasksMapper.updateLogo(id);
     }
 
+
     public Integer getAllCount(String name) {
         return tasksMapper.getAllCountByUser(name);
     }
@@ -46,19 +48,22 @@ public class TasksService {
         return tasksMapper.updatetg(id);
     }
 
+    @Cacheable(cacheNames={"redis_cache"}, key = "'getAllCount'")
     public Integer getAllCount() {
         return tasksMapper.getAllCount();
     }
 
+    @Cacheable(cacheNames={"redis_cache"}, key = "'getAllCount0'")
     public Integer getAllCount0() {
         return tasksMapper.getAllCount0();
     }
 
-
+    @Cacheable(cacheNames={"redis_cache"}, key = "'getLevel'+#s")
     public Integer getLevel(String s) {
         return tasksMapper.getLevel(s);
     }
 
+    @Cacheable(cacheNames={"redis_cache"}, key = "'getLevelALL'+#s")
     public Integer getLevelALL(String s) {
         return tasksMapper.getLevelALL(s);
     }
@@ -67,6 +72,7 @@ public class TasksService {
         return tasksMapper.getMy(name,page*size,size,text);
     }
 
+    @Cacheable(cacheNames={"redis_cache"}, key = "'getMyCount'+#name+#text")
     public int getMyCount(String name,String text) {
         return tasksMapper.getMyCount(name,text);
     }

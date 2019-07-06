@@ -81,6 +81,7 @@ public class ProductClassService {
         return productClassMapper.getPDF(id);
     }
 
+
     public List<JSONObject> getProductClassNotLogo(String level){
         return productClassMapper.selectProductClassNotLogo(level);
     }
@@ -105,6 +106,7 @@ public class ProductClassService {
         return productClassMapper.getBrand(id);
     }
 
+    @Cacheable(cacheNames={"redis_cache"}, key = "'getByCompanyId'+#companyid+#pid")
     public List<JSONObject> getByCompanyId(String companyid, Integer pid) {
         try {
             if(pid.equals(0)) {
@@ -127,15 +129,17 @@ public class ProductClassService {
         }
         return null;
     }
-
+    @Cacheable(cacheNames={"redis_cache"}, key = "'getByLevel5'+#id")
     public List<JSONObject> getByLevel5(String id) {
         return productClassMapper.getByLevel5(id);
     }
+
 
     public JSONObject getOne() {
         return productClassMapper.getOne();
     }
 
+    @Cacheable(cacheNames={"redis_cache"}, key = "'getOne'+#id")
     public JSONObject get(String id) {
         return productClassMapper.get(id);
     }
@@ -167,6 +171,7 @@ public class ProductClassService {
         return productClassMapper.updateDesc(desc,id);
     }
 
+    @Cacheable(cacheNames={"redis_cache"}, key = "'getImages'+#id")
     public List<JSONObject> getImages(String id) {
         return productClassMapper.getImages(id);
     }

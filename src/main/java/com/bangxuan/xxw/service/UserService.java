@@ -5,6 +5,7 @@ import com.bangxuan.xxw.dao.UserMapper;
 import com.bangxuan.xxw.entity.User;
 import com.bangxuan.xxw.entity.UserSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,14 +27,17 @@ public class UserService {
         return userMapper.updateByPrimaryKeySelective(user);
     }
 
+    @Cacheable(cacheNames={"redis_cache"}, key = "'getUserinfo'+#name")
     public User get(String name) {
         return userMapper.get(name);
     }
 
+    @Cacheable(cacheNames={"redis_cache"}, key = "'getAllAdminData'")
     public List<JSONObject> getAllAdminData() {
         return userMapper.getAllAdminData();
     }
 
+    @Cacheable(cacheNames={"redis_cache"}, key = "'getAllByPage'+#page+#size+#text")
     public List<JSONObject> getAllByPage(int page,int size,String text) {
         return userMapper.getAllByPage(page*size,size,text);
     }
