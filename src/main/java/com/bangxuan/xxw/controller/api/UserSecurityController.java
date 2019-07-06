@@ -163,7 +163,7 @@ public class UserSecurityController {
 
     @PutMapping("/changePassword")
     public Mono<Message> changePassword(Principal principal, @Param("password")String password){
-        return Mono.just(Message.SCUESSS("SECUESS", userSecurityService.changePassword(principal.getName(),password)));
+        return Mono.just(Message.SCUESSS("SECUESS", userSecurityService.changePassword(principal.getName(),bCryptPasswordEncoder.encode(password))));
     }
 
     @GetMapping("/userdata_count")

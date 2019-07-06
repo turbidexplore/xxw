@@ -16,6 +16,7 @@
     <link rel="icon" href="/images/favicon.ico">
     <link rel="stylesheet" media="screen" href="/styles/handsontable.full.css">
     <link rel="stylesheet" media="screen" href="/styles/jquery.notebook.css">
+    <link rel="stylesheet" media="screen" href="/styles/alert.css">
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <style type="text/css">
       table.gridtable {
@@ -164,40 +165,6 @@
                         </div>
                 </div>
                </div>
-                <div class="col-lg-12" style="overflow:auto;">
-                  <div class="custom-control custom-toggle custom-toggle-sm mb-1">
-                    <button type="submit" style="float: right; margin-right: 80px;" class="btn btn-accent" onclick="savetable()">保存SKU数据</button> <input onchange="edittable(this)" type="checkbox" id="customToggle2" name="customToggle2" class="custom-control-input" ><button type="button" class="btn btn-sm btn-success " onclick="gobds()">表达式</button>
-                    <label class="custom-control-label" for="customToggle2">开启表头编辑</label>
-                  </div>
-                  <table  class="gridtable" id="gridtable" >
-                    <tr id="a">
-                      <td style="min-width: 100px;">参数中文名称</td>
-                      <td rowspan="5" id="addtd">
-                        <button type="button" class="btn btn-sm btn-success " onclick="add(this)">+</button>
-                        <br/><button type="button" class="btn btn-sm btn-danger " onclick="saveadd()">=</button>
-                      </td>
-                    </tr>
-                    <tr id="b">
-                      <td style="min-width: 100px;">参数英文名称</td>
-                    </tr>
-                    <tr id="c">
-                      <td style="min-width: 100px;">参数代码</td>
-                    </tr>
-                    <tr id="d">
-                      <td style="min-width: 100px;">参数单位</td>
-                    </tr>
-                    <tr id="e">
-                      <td style="min-width: 100px;">参数数据类型</td>
-                    </tr>
-                  </table>
-                </div>
-                  <div class="col-lg-12" >
-                    <div class="row">
-                      <div class="col" style="overflow:auto;">
-                        <div id="example" style="height: 400px;"></div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               <div class="col-lg-6"  id="level5space" >
               </div>
@@ -219,5 +186,6 @@
     <script src="/scripts/handsontable.full.js"></script>
     <script src="/scripts/jquery.notebook.js"></script>
     <script src="/scripts/view/fiveclass.js"></script>
+    <script src="/scripts/alert.js"></script>
   </body>
 </html>

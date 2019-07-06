@@ -58,11 +58,10 @@ public class UserSecurityService {
         return userSecurityMapper.findUserCodeByPhone(name);
     }
 
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @Transactional
     public int changePassword(String name, String password) {
-        return userSecurityMapper.changePassword(name,bCryptPasswordEncoder.encode(password));
+        return userSecurityMapper.changePassword(name,password);
     }
 }

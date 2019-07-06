@@ -389,9 +389,41 @@ function update() {
             "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
         }
     }
-    $.ajax(settings).done(function (response) {});
+    $.ajax(settings).done(function (response) {
+        go();
+    });
 }
 
 function gobds(){
     window.open("/system/fiveclassview?id="+$("#coreid").val(), "_blank", "scrollbars=yes,resizable=1,modal=false,alwaysRaised=yes");
+}
+
+
+function go() {
+    $.confirm({
+        title: '上传sku',
+        content: '请选择sku的上传类型！',
+        type: 'green',
+        icon: 'glyphicon glyphicon-question-sign',
+        buttons: {
+            bds: {
+                text: '表达式',
+                btnClass: 'btn-primary',
+                action: function() {
+                    location.href = "/system/fiveclassview?id="+$("#coreid").val();
+                }
+            },
+            pl: {
+                text: '批量',
+                btnClass: 'btn-primary',
+                action: function() {
+                    location.href = "/system/fiveclassviewpl?id="+$("#coreid").val();
+                }
+            },
+            cancel: {
+                text: '取消',
+                btnClass: 'btn-error'
+            }
+        }
+    });
 }

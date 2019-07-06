@@ -258,7 +258,7 @@ public class BaseDataController {
         if(mt.find(new Query(new Criteria()),JSONObject.class,id).size()!=0){
           JSONArray data=new JSONArray();
           List<JSONObject> list= mt.find(new Query(new Criteria()),JSONObject.class,id);
-          if(list.get(0).getString("type")=="pl"){
+          if(list.get(0).getString("type").equals("pl")){
               data.add(list.get(0).getJSONArray("key"));
               for (int i=1;i<list.get(0).getInteger("count")+1;i++){
                   JSONArray row=new JSONArray();
@@ -270,7 +270,7 @@ public class BaseDataController {
                   data.add(row);
               }
               return Mono.just(Message.SCUESSS("ok",data));
-            }else if(list.get(0).getString("type")=="bds"){
+            }else if(list.get(0).getString("type").equals("bds")){
                 //获取表达式数据
           }
         }
@@ -331,7 +331,6 @@ public class BaseDataController {
 
     @GetMapping("/codes")
     public Mono<Message> getCodes(){
-
         return Mono.just(Message.SCUESSS("ok",unitMapper.codes()));
     }
 }
