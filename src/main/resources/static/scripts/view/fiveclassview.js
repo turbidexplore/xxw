@@ -193,11 +193,13 @@ function adddaoru(value) {
                     x++;
                 }
             }
-            tds+="<td id='cs"+value+data[value-1].rowsize+i+"'></td>";
-            $("#view"+value).append("<tr id=\"csrow"+value+data[value-1 ].rowsize+"\">"+tds+"</tr>");
-            data[value-1].rowsize=data[value-1].rowsize+1;
-            $("#addth"+value).remove();
-            $("#view"+value).append("<tr id=\"addth"+value+"\"><td colspan=\""+data[value-1].colsize+"\"><center><button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-success \" onclick=\"adddaoru("+value+")\">导入数据</button></center></td></tr>");
+            if(tds!=""){
+                tds+="<td id='cs"+value+data[value-1].rowsize+i+"'></td>";
+                $("#view"+value).append("<tr id=\"csrow"+value+data[value-1 ].rowsize+"\">"+tds+"</tr>");
+                data[value-1].rowsize=data[value-1].rowsize+1;
+                $("#addth"+value).remove();
+                $("#view"+value).append("<tr id=\"addth"+value+"\"><td colspan=\""+data[value-1].colsize+"\"><center><button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-success \" onclick=\"adddaoru("+value+")\">导入数据</button></center></td></tr>");
+            }
         }
     }
     inityueshu()
@@ -246,6 +248,7 @@ var container1 = document.getElementById('example1');
 var hot1=  new Handsontable(container1, {
     data: [["","","","","","",""]],
     minSpareRows:2,//空出多少行
+    minSpareCols:2,
     colHeaders:true,//显示表头　
     contextMenu:true//显示表头下拉菜单
 });
@@ -255,6 +258,7 @@ function qingkong() {
     hot1=  new Handsontable(container1, {
         data: [["","","","",""]],
         minSpareRows:2,//空出多少行
+        minSpareCols:2,
         colHeaders:true,//显示表头　
         contextMenu:true//显示表头下拉菜单
     });
@@ -376,6 +380,7 @@ function save() {
         hot = new Handsontable(container, {
             data: dataa,
             minSpareRows: 2,//空出多少行
+            minSpareCols:2,
             colHeaders: true,//显示表头　
             contextMenu: true//显示表头下拉菜单
         });

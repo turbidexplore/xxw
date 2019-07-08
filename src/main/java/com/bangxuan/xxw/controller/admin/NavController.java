@@ -1,5 +1,7 @@
 package com.bangxuan.xxw.controller.admin;
 
+import com.bangxuan.xxw.service.ProductClassService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -8,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class NavController {
+
+    @Autowired
+    private ProductClassService productClassService;
 
     @RequestMapping("/")
     public String home(){
@@ -67,6 +72,14 @@ public class NavController {
     @RequestMapping("/system/fiveclass")
     public String fiveclass(@RequestParam("id")String id,HttpServletRequest request){
         request.setAttribute("id",id);
+        if(id!="0"&&!id.equals("0")) {
+            Integer skutype = productClassService.getSkutypeById(id);
+            if (skutype == 1) {
+                return "fiveclassview";
+            } else if (skutype == 2) {
+                return "fiveclassviewpl";
+            }
+        }
         return "fiveclass";
     }
 
@@ -78,12 +91,14 @@ public class NavController {
     @RequestMapping("/system/fiveclassview")
     public String fiveclassview(@RequestParam("id")String id, HttpServletRequest request){
         request.setAttribute("id",id);
+        productClassService.updateSkutype(id,1);
         return "fiveclassview";
     }
 
     @RequestMapping("/system/fiveclassviewpl")
     public String fiveclassviewpl(@RequestParam("id")String id, HttpServletRequest request){
         request.setAttribute("id",id);
+        productClassService.updateSkutype(id,2);
         return "fiveclassviewpl";
     }
 

@@ -133,5 +133,11 @@ public interface ProductClassMapper {
     @Select("select * from filegroup where class_id=#{id}")
     List<JSONObject> getImages(@Param("id") String id);
 
+    @Select("select skutype from gy_product_class where id=#{id}")
+    Integer selectSkutypeById(@Param("id")String id);
+
+    @Update("update gy_product_class set skutype=#{skutype} where id=#{id}")
+    int updateSkutype(@Param("id")String id,@Param("skutype")Integer skutype);
+
 }
 

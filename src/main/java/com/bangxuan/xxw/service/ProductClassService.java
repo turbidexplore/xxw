@@ -1,15 +1,14 @@
 package com.bangxuan.xxw.service;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.dao.ProductClassMapper;
 import com.bangxuan.xxw.entity.Company;
 import com.bangxuan.xxw.entity.ProductClass;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -174,5 +173,14 @@ public class ProductClassService {
     @Cacheable(cacheNames={"redis_cache"}, key = "'getImages'+#id")
     public List<JSONObject> getImages(String id) {
         return productClassMapper.getImages(id);
+    }
+
+    public Integer getSkutypeById(String id){
+        return productClassMapper.selectSkutypeById(id);
+    }
+
+    @Transactional
+    public Integer updateSkutype(String id,Integer skutype){
+        return productClassMapper.updateSkutype(id,skutype);
     }
 }

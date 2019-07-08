@@ -38,6 +38,8 @@ public class ProductClass {
 
     private  String parent_ids;
 
+    private Integer skutype;
+
     public Integer getId() {
         return id;
     }
@@ -180,5 +182,13 @@ public class ProductClass {
 
     public void setParent_ids(String parent_ids) {
         this.parent_ids = parent_ids;
+    }
+
+    public Integer getSkutype() {
+        return skutype;
+    }
+
+    public void setSkutype(Integer skutype) {
+        this.skutype = skutype;
     }
 }

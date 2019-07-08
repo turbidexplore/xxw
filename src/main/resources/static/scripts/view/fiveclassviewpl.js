@@ -42,12 +42,12 @@ function save(value) {
 }
 
 var data = [//四行五列
-    ["批量上传试例","参数中文名称", "", "", "", "","","","","","","",""],
-    ["-","参数英文名称", "", "", "", "","","","","","","",""],
-    ["-","参数代码", "", "", "", "","","","","","","",""],
-    ["-","参数单位", "", "", "", "","","","","","","",""],
-    ["-","参数数据类型", "", "", "", "","","","","","","",""],
-    ["型号值","", "", "", "", "","","","","","","",""]
+    ["参数中文名称", "", "", "", "","","","","","","",""],
+    ["参数英文名称", "", "", "", "","","","","","","",""],
+    ["参数代码", "", "", "", "","","","","","","",""],
+    ["参数单位", "", "", "", "","","","","","","",""],
+    ["参数数据类型", "", "", "", "","","","","","","",""],
+    ["", "", "", "", "","","","","","","",""]
 ];
 var container = document.getElementById('example');
 var hot=null;
@@ -66,6 +66,7 @@ var hot=null;
                 {
                     data: response.data,
                     minSpareRows:2,//空出多少行
+                    minSpareCols:2,
                     colHeaders:true,//显示表头　
                     contextMenu:true//显示表头下拉菜单
                 });
@@ -74,6 +75,7 @@ var hot=null;
                 {
                     data: data,
                     minSpareRows:2,//空出多少行
+                    minSpareCols:2,
                     colHeaders:true,//显示表头　
                     contextMenu:true//显示表头下拉菜单
                 });
@@ -163,11 +165,11 @@ function savetable() {
 
 function saveadd() {
     var mydata=[];
-    var a=["批量上传试例","型号/中文名称"];
-    var b=["-","型号/英文名称"];
-    var c=["-","型号/代码"];
-    var d=["-","型号/单位"];
-    var e=["-","型号/数据类型"];
+    var a=["型号/中文名称"];
+    var b=["型号/英文名称"];
+    var c=["型号/代码"];
+    var d=["型号/单位"];
+    var e=["型号/数据类型"];
     for(var i=0;i<index;i++){
         if($("#avalue"+i).val()==""||$("#bvalue"+i).val()==""){
             if($("#avalue"+i).val()==""){
@@ -218,6 +220,7 @@ function saveadd() {
         {
             data: mydata,
             minSpareRows:2,//空出多少行
+            minSpareCols:2,
             colHeaders:true,//显示表头　
             contextMenu:true//显示表头下拉菜单
         });

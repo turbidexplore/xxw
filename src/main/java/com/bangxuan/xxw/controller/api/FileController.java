@@ -139,6 +139,4 @@ public class FileController {
         return Mono.just(Message.SCUESSS(Message.SECUESS,fileService.seo()));
     }
 
-
-
 }

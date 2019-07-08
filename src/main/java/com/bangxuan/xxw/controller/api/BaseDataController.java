@@ -52,6 +52,8 @@ public class BaseDataController {
     private UnitMapper unitMapper;
     @Autowired
     private MailInfoMapper mailInfoMapper;
+    @Autowired
+    private GeneralParametersService generalParametersService;
 
     @GetMapping("/getStatistics")
     public Mono<Message> getStatistics(){
@@ -243,6 +245,7 @@ public class BaseDataController {
     @PutMapping("/bdsclassdata")
     public Mono<Message> bdsclassdata(@RequestBody JSONArray jsonArray,@RequestParam("id")String id){
         List<List> lists= jsonArray.toJavaList(List.class);
+        lists.remove(0);
         JSONObject rowjson=new JSONObject();
         rowjson.put("data",lists);
         rowjson.put("type","bds");
@@ -255,9 +258,10 @@ public class BaseDataController {
 
     @PostMapping("/getclassdata")
     public Mono<Message> getclassdata(@RequestParam("id")String id){
-        if(mt.find(new Query(new Criteria()),JSONObject.class,id).size()!=0){
+
           JSONArray data=new JSONArray();
           List<JSONObject> list= mt.find(new Query(new Criteria()),JSONObject.class,id);
+          if(list.size()>0){
           if(list.get(0).getString("type").equals("pl")){
               data.add(list.get(0).getJSONArray("key"));
               for (int i=1;i<list.get(0).getInteger("count")+1;i++){
@@ -271,7 +275,7 @@ public class BaseDataController {
               }
               return Mono.just(Message.SCUESSS("ok",data));
             }else if(list.get(0).getString("type").equals("bds")){
-                //获取表达式数据
+              return Mono.just(Message.SCUESSS("ok",list.get(0).getJSONArray("data")));
           }
         }
         return Mono.just(Message.SCUESSS("ok",0));

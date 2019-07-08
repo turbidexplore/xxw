@@ -4,7 +4,6 @@ if($.cookie("ACCESS_TOKEN")==undefined){
 
 hidemenu();
 function hidemenu() {
-
     if ($("#hidden").val()==1){
         $("#menu").show();
         $("#context").addClass("p-0");
@@ -58,6 +57,12 @@ $.ajax(settings).done(function (response) {
     if(response.status!=200){
         window.location.href="/system/nodata";
     }
+    if(response.data.skutype==1){
+        location.href = "/system/fiveclassview?id="+response.data.id;
+    }else if(response.data.skutype==2){
+        location.href = "/system/fiveclassviewpl?id="+response.data.id;
+    }
+
     var routh_paths=response.data.route_path.split("//")[1];
     var routh_path=routh_paths.split("/");
     $("#classname").html( routh_path[0]+">"+routh_path[1]+">"+routh_path[2]+">"+routh_path[3]+"  "+response.data.brand_name+" | "+response.data.class_name);
@@ -81,6 +86,7 @@ $.ajax(settings).done(function (response) {
     $("#level5space").append(
         "<object width=\"100%\" height=\"900px\" data=\""+"https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/pdf/"+response.data.pdf_file+"\"> \n" +
         "</object>");
+
 
     response.data.images.forEach(function (value){
         $("#imgs").append("<div onclick='rmimgs(this)'  style='float: left;margin: 10px;'><input type='hidden' value='" + value.url + "'><img src=\"https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/images/" +value.url+ "\" alt=\"logo\"  width=\"80px;\"></div>");
