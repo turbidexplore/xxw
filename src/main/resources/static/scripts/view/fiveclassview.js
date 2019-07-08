@@ -172,14 +172,23 @@ function adddaoru(value) {
             var tds="";
             var x=0;
             var t=0;
+            var o=0;
+            var b=1;
             for(var i=0;i<data[value-1].col.length;i++){
                 var index= data[value-1].col[i];
                 if($("#avalue"+value+index).length>0){
+                    if($("#cs"+value+data[value-1].rowsize+index+i).length>0){
+                        b++;
+                    }
                     if(t==0){
-                        tds+="<td id='cs"+value+data[value-1].rowsize+index+i+"h'><input oninput='inityueshu()' id='csvalue"+value+data[value-1].rowsize+index+"0h' type='text' style=\"border-style:none;width: 100px;\" placeholder='参数' value='"+hot1.getDataAtCell(s,0)+"'></td>";
+                        if($("#cs"+value+data[value-1].rowsize+index+i+"h").length>0){
+                            o++;
+                        }
+                        data[value-1].col[0]=b;
+                        tds+="<td id='cs"+value+data[value-1].rowsize+b+o+"h'><input oninput='inityueshu()' id='csvalue"+value+data[value-1].rowsize+b+"0h' type='text' style=\"border-style:none;width: 100px;\" placeholder='参数' value='"+hot1.getDataAtCell(s,0)+"'></td>";
                     }
                     t++;
-                        tds += "<td id='cs" + value + data[value - 1].rowsize + index + i + "'><input  id='csvalue" + value + data[value - 1].rowsize + index + i + "' type='text' style=\"border-style:none;width: 100px;\" placeholder='参数' value='" + hot1.getDataAtCell(s, (i+1-x)) + "'></td>";
+                        tds += "<td id='cs" + value + data[value - 1].rowsize + b + i + "'><input  id='csvalue" + value + data[value - 1].rowsize + index + i + "' type='text' style=\"border-style:none;width: 100px;\" placeholder='参数' value='" + hot1.getDataAtCell(s, (i+1-x)) + "'></td>";
                 }else {
                     x++;
                 }
