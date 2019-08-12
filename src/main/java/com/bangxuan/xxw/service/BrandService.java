@@ -1,10 +1,10 @@
 package com.bangxuan.xxw.service;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.dao.BrandMapper;
 import com.bangxuan.xxw.entity.Brand;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,5 +39,14 @@ public class BrandService {
 
     public List<JSONObject> list() {
         return brandMapper.list();
+    }
+
+    @Cacheable(cacheNames={"redis_cache"}, key = "'allBrandInfos'")
+    public List<JSONObject> allBrand() {
+        return brandMapper.allBrand();
+    }
+
+    public List<JSONObject> getClassesByBrand(String name,String brandid,Integer page){
+        return brandMapper.getClassesByBrand(name,brandid,page);
     }
 }

@@ -19,42 +19,43 @@ public class ProductClassService {
     @Autowired
     private ProductClassMapper productClassMapper;
 
-    @Cacheable(cacheNames={"redis_cache"}, key = "'getproductclass_info'")
-    public List<JSONObject> getProductClass(){
+    @Cacheable(cacheNames = {"redis_cache"}, key = "'getproductclass_info'")
+    public List<JSONObject> getProductClass() {
         return productClassMapper.selectByLevel();
     }
 
-    @Cacheable(cacheNames={"redis_cache"}, key = "'getproductclass_infohavelogo'")
+    @Cacheable(cacheNames = {"redis_cache"}, key = "'getproductclass_infohavelogo'")
     public List<JSONObject> getProductClassHaveLogo() {
         return productClassMapper.selectByLevelHaveLogo();
     }
 
-    public List<ProductClass> getNewTOP14(){
+    public List<JSONObject> getNewTOP14() {
         return productClassMapper.selectNewTOP14();
     }
 
     public List<ProductClass> getByLevelCondition(ProductClass productClass) {
         return productClassMapper.selectByCondition(productClass);
     }
+
     public List<JSONObject> getByLevelAuth(JSONObject jsonObject) {
         return productClassMapper.selectByConditionAuth(jsonObject);
     }
 
-    public List<ProductClass> getByText(String text) {
+    public List<JSONObject> getByText(String text) {
         return productClassMapper.selectByText(text);
     }
 
-    @Cacheable(cacheNames={"redis_cache"}, key = "'getproductclass_allOrderPinyin'+#text")
+    @Cacheable(cacheNames = {"redis_cache"}, key = "'getproductclass_allOrderPinyin'+#text")
     public List<JSONObject> allOrderPinyin(String text) {
         return productClassMapper.allOrderPinyin(text);
     }
 
-    @Cacheable(cacheNames={"redis_cache"}, key = "'getproductclass_allOrderPinyinnumber'")
+    @Cacheable(cacheNames = {"redis_cache"}, key = "'getproductclass_allOrderPinyinnumber'")
     public List<JSONObject> allNumber() {
         return productClassMapper.allNumber();
     }
 
-    @Cacheable(cacheNames={"redis_cache"}, key = "'getproductclass_allOrderPinyiqt'")
+    @Cacheable(cacheNames = {"redis_cache"}, key = "'getproductclass_allOrderPinyiqt'")
     public List<JSONObject> allqt() {
 
         return productClassMapper.allqt();
@@ -76,21 +77,21 @@ public class ProductClassService {
         return productClassMapper.selectSKUCount();
     }
 
-    public List<JSONObject> getPDF(String id){
+    public List<JSONObject> getPDF(String id) {
         return productClassMapper.getPDF(id);
     }
 
 
-    public List<JSONObject> getProductClassNotLogo(String level){
+    public List<JSONObject> getProductClassNotLogo(String level) {
         return productClassMapper.selectProductClassNotLogo(level);
     }
 
-    public List<JSONObject> getProductClassNotLogob(String level){
+    public List<JSONObject> getProductClassNotLogob(String level) {
         return productClassMapper.selectProductClassNotLogob(level);
     }
 
     public void updateLogo(String url, String id) {
-        productClassMapper.updateLogo(url,id);
+        productClassMapper.updateLogo(url, id);
     }
 
     public List<JSONObject> getByLevelHaveLogo(String id) {
@@ -105,50 +106,51 @@ public class ProductClassService {
         return productClassMapper.getBrand(id);
     }
 
-    @Cacheable(cacheNames={"redis_cache"}, key = "'getByCompanyId'+#companyid+#pid")
+    @Cacheable(cacheNames = {"redis_cache"}, key = "'getByCompanyId'+#companyid+#pid")
     public List<JSONObject> getByCompanyId(String companyid, Integer pid) {
         try {
-            if(pid.equals(0)) {
-              return  productClassMapper.getlevel1ByCompanyId(companyid);
-            }else {
-               int level= productClassMapper.getById(pid.toString()).getInteger("level");
-               if(level==1){
-                   return productClassMapper.getlevel2ByCompanyId(companyid,pid.toString());
-               }else if(level==2){
-                   return productClassMapper.getlevel3ByCompanyId(companyid,pid.toString());
-               }else if(level==3){
-                   return productClassMapper.getlevel4ByCompanyId(companyid,pid.toString());
-               }else if(level==4){
-                   return productClassMapper.getlevel5ByCompanyId(companyid,pid.toString());
-               }
+            if (pid.equals(0)) {
+                return productClassMapper.getlevel1ByCompanyId(companyid);
+            } else {
+                int level = productClassMapper.getById(pid.toString()).getInteger("level");
+                if (level == 1) {
+                    return productClassMapper.getlevel2ByCompanyId(companyid, pid.toString());
+                } else if (level == 2) {
+                    return productClassMapper.getlevel3ByCompanyId(companyid, pid.toString());
+                } else if (level == 3) {
+                    return productClassMapper.getlevel4ByCompanyId(companyid, pid.toString());
+                } else if (level == 4) {
+                    return productClassMapper.getlevel5ByCompanyId(companyid, pid.toString());
+                }
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
         return null;
     }
-    @Cacheable(cacheNames={"redis_cache"}, key = "'getByLevel5'+#id")
+
+    @Cacheable(cacheNames = {"redis_cache"}, key = "'getByLevel5'+#id")
     public List<JSONObject> getByLevel5(String id) {
         return productClassMapper.getByLevel5(id);
     }
 
 
-    public JSONObject getOne() {
-        return productClassMapper.getOne();
+    public JSONObject getOne(String user) {
+        return productClassMapper.getOne(user);
     }
 
-    @Cacheable(cacheNames={"redis_cache"}, key = "'getOne'+#id")
+    @Cacheable(cacheNames = {"redis_cache"}, key = "'getOne'+#id")
     public JSONObject get(String id) {
         return productClassMapper.get(id);
     }
 
-    public int updateClassData(Integer id, Integer value) {
-        return productClassMapper.updateSec(value,id);
+    public int tg(Integer id, Integer value) {
+        return productClassMapper.tg(value, id);
     }
 
     public int updateStatus(String id) {
-        return productClassMapper.updateStatus(9,Integer.parseInt(id));
+        return productClassMapper.updateStatus(9, Integer.parseInt(id));
     }
 
     public int updateTaskLogo() {
@@ -160,27 +162,82 @@ public class ProductClassService {
     }
 
     public int addImage(String id, String img) {
-        return productClassMapper.addImage(id,img);
+        return productClassMapper.addImage(id, img);
     }
+
     public int delImage(String id) {
         return productClassMapper.delImage(id);
     }
 
-    public int updateDesc(String desc,String id){
-        return productClassMapper.updateDesc(desc,id);
+    public int updateDesc(String desc, String id,String industry) {
+        return productClassMapper.updateDesc(desc, id,industry);
     }
 
-    @Cacheable(cacheNames={"redis_cache"}, key = "'getImages'+#id")
+    @Cacheable(cacheNames = {"redis_cache"}, key = "'getImages'+#id")
     public List<JSONObject> getImages(String id) {
         return productClassMapper.getImages(id);
     }
 
-    public Integer getSkutypeById(String id){
+    public Integer getSkutypeById(String id) {
         return productClassMapper.selectSkutypeById(id);
     }
 
     @Transactional
-    public Integer updateSkutype(String id,Integer skutype){
-        return productClassMapper.updateSkutype(id,skutype);
+    public Integer updateSkutype(String id, Integer skutype) {
+        return productClassMapper.updateSkutype(id, skutype);
+    }
+
+    @Transactional
+    public int updateUser(String user, String id) {
+        return productClassMapper.updateUser(user, id);
+    }
+
+    public List<JSONObject> getInfos(String id, String name) {
+        return productClassMapper.getInfos(id, name);
+    }
+
+    public int getFiveClass() {
+        return productClassMapper.getFiveClassCount();
+    }
+
+    public List<JSONObject> myfiveclass(String name, int page, int size, String text) {
+        return productClassMapper.myfiveclass(name, page * size, size, text);
+    }
+
+    public String getLogo(String id) {
+        return productClassMapper.getFiveClassLogo(id);
+    }
+
+    @Transactional
+    public Integer updateInfo(String id,String values) {
+        return productClassMapper.updateInfo(id, values);
+    }
+
+    public int updateClassData(Integer id, Integer value) {
+        return productClassMapper.updateSec(value, id);
+    }
+
+    public int getNumberclass() {
+        return productClassMapper.getNumberclass();
+    }
+
+    public List<JSONObject> getByBrand(String brandid) {
+        return productClassMapper.getByBrandId(brandid);
+    }
+
+    public String getEnname(String text) {
+        return productClassMapper.getEnname(text);
+    }
+
+    public List<JSONObject> getByCompany(String text) {
+        return productClassMapper.getByCompany(text);
+    }
+
+    public JSONObject getOneC(String name, String comid) {
+        return productClassMapper.getOneC(name,comid);
+    }
+
+    public List<ProductClass> getBySeo() {
+    return productClassMapper.getBySeo();
     }
 }

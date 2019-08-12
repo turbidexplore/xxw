@@ -48,7 +48,7 @@ spring:
         max-idle: 8
         max-wait: -1ms
         min-idle: 0
-  shutdown-timeout: 100ms
+    shutdown-timeout: 100ms
   data:
     mongodb:
       host: anoax.com
@@ -73,11 +73,7 @@ mybatis:
     default-statement-timeout: 25000
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.bangxuan.xxw.entity
-mapper:
-  plugin: tk.mybatis.mapper.generator.MapperPlugin
-  Mapper: tk.mybatis.mapper.common.Mapper
-  not-empty: false
-  identity: MYSQL
+
 com:
   turbid:
     upload-path:
@@ -92,3 +88,9 @@ security:
     resource:
       jwt:
         key-value: auth.turbidexplore.com
+logging:
+  level:
+   com:
+    bangxuan:
+      xxw:
+        dao: debug

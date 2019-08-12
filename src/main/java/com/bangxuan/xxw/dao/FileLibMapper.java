@@ -3,6 +3,7 @@ package com.bangxuan.xxw.dao;
 import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.entity.FileLib;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +25,7 @@ public interface FileLibMapper {
     int updateByPrimaryKey(FileLib record);
 
     @Select("select * from gy_filelib order by create_time desc LIMIT #{page},#{size}")
-    List<JSONObject> findPage(int page, int size);
+    List<JSONObject> findPage(@Param("page") int page,@Param("size") int size);
 
     @Select("select count(*) from gy_filelib ")
     int findCount();

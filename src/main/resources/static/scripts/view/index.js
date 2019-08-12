@@ -62,9 +62,9 @@ function init() {
         $("#level4").html(response.data.level4);
         $("#level5").html(response.data.level5);
         $("#countb").html(response.data.countb);
-        $("#level3b").html(response.data.level3b);
-        $("#level4b").html(response.data.level4b);
-        $("#level5b").html(response.data.level5b);
+        // $("#level3b").html(response.data.level3b);
+        // $("#level4b").html(response.data.level4b);
+        // $("#level5b").html(response.data.level5b);
         response.data.todaydata.forEach(function (v,i) {
             if(i==0){
                 $("#todaydata").append("<div class=\"col-lg-1 col-md-6 col-sm-12 mb-4\" >\n" +

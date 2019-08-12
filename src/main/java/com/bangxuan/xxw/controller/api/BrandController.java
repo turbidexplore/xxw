@@ -45,4 +45,13 @@ public class BrandController {
     }
 
 
+    @GetMapping("/allbrand")
+    public Mono<Message> allBrand(){
+        return Mono.just(Message.SCUESSS(Message.SECUESS,brandService.allBrand()));
+    }
+
+    @GetMapping("classesByBrandId")
+    public Mono<Message> classesByBrandId(@RequestParam("name")String name,@RequestParam("brandid")String branid,@RequestParam("page")Integer page){
+        return Mono.just(Message.SCUESSS(Message.SECUESS,brandService.getClassesByBrand(name,branid,page*1000)));
+    }
 }

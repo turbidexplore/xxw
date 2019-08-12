@@ -12,6 +12,7 @@ import java.util.List;
 @Mapper
 @Component
 public interface TradeMapper {
+
     int deleteByPrimaryKey(Long id);
 
     int insert(Trade record);
@@ -29,4 +30,11 @@ public interface TradeMapper {
 
     @Select("select * from gy_product_class where industry =#{id} and level >3")
     List<JSONObject> getClassByPcode(@Param("id")String id);
+
+    @Select("select a.id as a,b.id as b,c.id as c from sys_trade a,sys_trade b,sys_trade c" +
+            " where a.pcode=b.id and b.pcode=c.id and a.id =#{code}")
+    JSONObject getByCode(@Param("code") String code);
+
+    @Select("select * from sys_trade where pcode =#{pcode}")
+    List<JSONObject> getByPCode(@Param("pcode") String pcode);
 }

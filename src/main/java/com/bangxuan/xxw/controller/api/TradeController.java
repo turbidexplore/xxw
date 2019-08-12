@@ -38,6 +38,16 @@ public class TradeController {
         return Mono.just(Message.SCUESSS(Message.SECUESS, tradeService.getByClassPcode(pcode)));
     }
 
+    @GetMapping("/getByCode")
+    public Mono<Message> getByCode(@RequestParam("code")String code){
+        return Mono.just(Message.SCUESSS(Message.SECUESS, tradeService.getByCode(code)));
+    }
+
+    @GetMapping("/getByPCode")
+    public Mono<Message> getByPCode(@RequestParam("pcode")String pcode){
+        return Mono.just(Message.SCUESSS(Message.SECUESS, tradeService.getByPCode(pcode)));
+    }
+
 
 
 

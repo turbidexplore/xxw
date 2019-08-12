@@ -1,0 +1,355 @@
+<!doctype html>
+<html class="no-js h-100" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>零件邦-传奇</title>
+    <style>
+      /* fallback */
+      @font-face {
+        font-family: 'Material Icons';
+        font-style: normal;
+        font-weight: 400;
+        src: url(https://fonts.gstatic.com/s/materialicons/v47/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
+      }
+
+      .material-icons {
+        font-family: 'Material Icons';
+        font-weight: normal;
+        font-style: normal;
+        font-size: 24px;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-block;
+        white-space: nowrap;
+        word-wrap: normal;
+        direction: ltr;
+        -moz-font-feature-settings: 'liga';
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+    </style>
+    <link rel="stylesheet" media="screen" href="/styles/handsontable.full.css">
+    <link rel="stylesheet" href="/styles/bootstrap.min.css" >
+    <link rel="stylesheet" id="main-stylesheet" data-version="1.1.0" href="/styles/shards-dashboards.1.1.0.min.css">
+    <link rel="stylesheet" href="/styles/extras.1.1.0.min.css">
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/images/favicon.ico">
+  </head>
+  <body class="h-100">
+
+    <div class="container-fluid">
+      <div class="row">
+        <aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0">
+          <div class="main-navbar">
+            <nav class="navbar align-items-stretch navbar-light bg-white flex-md-nowrap border-bottom p-0">
+              <a class="navbar-brand w-100 mr-0" href="#" style="line-height: 25px;">
+                <div class="d-table m-auto">
+                  <img id="main-logo" class="d-inline-block align-top mr-1" style="max-width: 25px;" src="/images/favicon.ico" alt="Shards Dashboard">
+                  <span class="d-none d-md-inline ml-1">零件邦之传奇</span>
+                </div>
+              </a>
+            </nav>
+          </div>
+          <form action="#" class="main-sidebar__search w-100 border-right d-sm-flex d-md-none d-lg-none">
+            <div class="input-group input-group-seamless ml-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <i class="fas fa-search"></i>
+                </div>
+              </div>
+              <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> </div>
+          </form>
+          <div class="nav-wrapper">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link " href="/system/index">
+                  <i class="material-icons">view_module</i>
+                  <span>首页</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/system/task">
+                  <i class="material-icons">vertical_split</i>
+                  <span>LOGO任务</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/system/company">
+                  <i class="material-icons">vertical_split</i>
+                  <span>补全公司信息</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link =" href="/system/tasks">
+                  <i class="material-icons">vertical_split</i>
+                  <span>已完成任务列表</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/system/filelib">
+                  <i class="material-icons">vertical_split</i>
+                  <span>样本提交列表 <span class="badge badge-pill badge-danger" id="yb"></span></span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/system/fk">
+                  <i class="material-icons">vertical_split</i>
+                  <span>反馈信息 <span class="badge badge-pill badge-danger" id="fk"></span></span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="/system/fiveclass?id=0&comid=0">
+                  <i class="material-icons">vertical_split</i>
+                  <span>产品综合信息</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/system/myfiveclass">
+                  <i class="material-icons">vertical_split</i>
+                  <span>已完成SKU列表</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/system/userdata">
+                  <i class="material-icons">vertical_split</i>
+                  <span>统计数据</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/system/messages">
+                  <i class="material-icons">vertical_split</i>
+                  <span>消息中心</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+        <main class="main-content col-lg-10 col-md-9 col-sm-12 p-0 offset-lg-2 offset-md-3" id="imgs">
+          <div class="main-navbar sticky-top bg-white" >
+            <nav class="navbar align-items-stretch navbar-light flex-md-nowrap p-0">
+              <form action="#" class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
+                <div class="input-group input-group-seamless ml-3">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="fas fa-search"></i>
+                    </div>
+                  </div>
+                  <input class="navbar-search form-control" id="searchtext" oninput="init()" type="text" placeholder="输入关键字搜索内容" aria-label="Search"> </div>
+              </form>
+              <ul class="navbar-nav border-left flex-row ">
+                <li class="nav-item dropdown" ondblclick="logout()">
+                  <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    <img class="user-avatar rounded-circle mr-2" id="userimage" src="" alt="无图片">
+                    <span class="d-none d-md-inline-block" id="username">登录</span>
+                    <span style="color: #2d53fe;">双击退出</span>
+                  </a>
+                </li>
+              </ul>
+              <nav class="nav">
+                <a href="#" class="nav-link nav-link-icon toggle-sidebar d-md-inline d-lg-none text-center border-left" data-toggle="collapse" data-target=".header-navbar" aria-expanded="false" aria-controls="header-navbar">
+                  <i class="material-icons">&#xE5D2;</i>
+                </a>
+              </nav>
+            </nav>
+          </div>
+          <div class="main-content-container container-fluid px-4">
+            <div class="page-header row no-gutters py-4">
+              <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+                <span class="text-uppercase page-subtitle">零件邦  <button type="button" onclick="save(this)"  class="mb-2 btn btn-outline-success mr-2">  提交信息 </button></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12" >
+                <input onchange="sc(this)"  type='file'  style='width: 200px;'  /><input type='text'  id='filepath' style="width: 600px;" placeholder="文件路径"><button id="copy"  class="mb-2 btn btn-outline-success mr-2">复制路径</button>
+              </div>
+              <div class="col-lg-12" >
+                <div id="example" style="height: 800px;overflow: scroll;" ></div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+    <input id="coreid" type="hidden" th:value="${id}">
+    <script src="/scripts/handsontable.full.js"></script>
+    <script src="/scripts/jquery-3.3.1.min.js" ></script>
+    <script src="/scripts/popper.min.js" ></script>
+    <script src="/scripts/bootstrap.min.js" ></script>
+    <script src="/scripts/shards.min.js"></script>
+    <script src="/scripts/jquery.sharrre.min.js"></script>
+    <script src="/scripts/extras.1.1.0.min.js"></script>
+    <script src="/scripts/jquery.cookie.min.js" ></script>
+    <script src="/scripts/buttons.js"></script>
+  <script th:inline="none">
+
+      $("#copy").click(function() {
+          var copyText = $("#filepath");//获取对象
+          copyText .select();//选择
+          document.execCommand("Copy");//执行复制
+      })
+
+
+      if($.cookie("ACCESS_TOKEN")==undefined){
+          window.location.href="/system/login";
+      }
+      function logout() {
+          $.removeCookie("ACCESS_TOKEN", {path:"/",domain:"chuanqi.lingjianbang.com"});
+          window.location.href="/system/login";
+      }
+      var settings = {
+          "async": true,
+          "crossDomain": true,
+          "url": "/user/get",
+          "method": "GET",
+          "processData": false,
+          "headers": {
+              "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+              "cache-control": "no-cache",
+              "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+          }
+      }
+
+      $.ajax(settings).done(function (response) {
+          if(response.status!=200){
+              window.location.href="/system/login";
+          }else {
+              $("#userimage").attr("src",response.data.headportrait);
+              $("#username").html(response.data.name);
+              if(response.data.ybcount!=0){
+                  $("#yb").html(response.data.ybcount);
+              }
+              if(response.data.fkcount!=0) {
+                  $("#fk").html(response.data.fkcount);
+              }
+          }
+      });
+
+      var container = document.getElementById('example');
+      var hot=null;
+      var settings = {
+          "async": true,
+          "crossDomain": true,
+          "url": "/productclass/getSkuInfo?id="+$("#coreid").val(),
+          "method": "GET",
+          "processData": false
+      }
+
+      $.ajax(settings).done(function (response) {
+          $("#example").html("");
+          if(response.status==201){
+              hot = new Handsontable(container, {
+                  data: response.data.data,
+                  autoColumnSize:true,
+                  minSpareRows: 2,//空出多少行
+                  colHeaders: true,//显示表头　
+                  contextMenu: true//显示表头下拉菜单
+              });
+          }else {
+              var data = [["SKU名称", "产地", "样品单价", "批量价格", "最小包装量", "最小起订量", "质保时间", "样品", "纸质样本", "PDF样本", "3D模型", "2D图纸", "产品视频", "LOGO"]]
+              response.data.data.forEach(function (v) {
+                  var d = [];
+                  d.push(v[0]);
+                  data.push(d);
+              })
+              hot = new Handsontable(container, {
+                  data: data,
+                  autoColumnSize:true,
+                  minSpareRows: 2,//空出多少行
+                  colHeaders: true,//显示表头　
+                  contextMenu: true//显示表头下拉菜单
+              });
+          }
+      });
+
+
+
+      $("#imgs").on('paste', function(eventObj) {
+          // 处理粘贴事件
+          var event = eventObj.originalEvent;
+          var imageRe = new RegExp(/image\/.*/);
+          var fileList = $.map(event.clipboardData.items, function (o) {
+              if(!imageRe.test(o.type)){ return }
+              var blob = o.getAsFile();
+              return blob;
+          });
+          if(fileList.length <= 0){ return }
+          upload(fileList);
+          //阻止默认行为即不让剪贴板内容在div中显示出来
+          event.preventDefault();
+      });
+      function upload(fileList) {
+          for(var i = 0, l = fileList.length; i < l; i++){
+              var fd = new FormData();
+              var f = fileList[i];
+              fd.append('file', f);
+              $.ajax({
+                  url:"/file/upload",
+                  type: 'POST',
+                  dataType: 'json',
+                  data: fd,
+                  processData: false,
+                  contentType: false,
+                  xhrFields: { withCredentials: true },
+                  headers: {
+                      'Access-Control-Allow-Origin': '*',
+                      'Access-Control-Allow-Credentials': 'true'
+                  },
+                  success: function(result){
+                      $("#filepath").val(result.data);
+                  },
+                  error: function(){
+                      alert("上传图片错误");
+                  }
+              });
+          }
+      }
+
+
+
+      function sc(i) {
+          var form = new FormData();
+          form.append('file', i.files[0]); // 第三个参数为文件名
+          $.ajax({
+              type: 'POST',
+              url : "/file/upload",
+              data: form ,
+              processData: false,
+              contentType: false,
+          }).done(function(result) {
+              alert("上传成功！");
+              $("#filepath").val(result.data);
+          });
+      }
+
+      function save(obj) {
+          $(obj).attr("disabled",true);
+          var count=hot.countRows();
+          var data=[];
+          for (i=0;i<=count;i++){
+              if(!hot.isEmptyRow(i)) {
+                  data.push(hot.getDataAtRow(i));
+              }
+          }
+
+          var settings = {
+              "async": true,
+              "crossDomain": true,
+              "url": "/productclass/saveSkuInfopls?id="+$("#coreid").val(),
+              "method": "PUT",
+              "processData": false,
+              "data":JSON.stringify(data),
+              "contentType": "application/json"
+          }
+
+          $.ajax(settings).done(function (res) {
+              alert("已保存"+(data.length-5)+"条数据！");
+              window.open("https://www.lingjianbang.com/level5/"+$("#coreid").val(),'_blank','');
+              location.href = "/system/fiveclass?id=0&comid=0";
+          });
+
+      }
+  </script>
+  </body>
+</html>

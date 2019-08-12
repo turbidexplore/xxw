@@ -29,9 +29,9 @@ public class NavController {
         return "index";
     }
 
-    @RequestMapping("/system/indextest")
-    public String indextest(){
-        return "indextest";
+    @RequestMapping("/system/task")
+    public String task(){
+        return "task";
     }
 
     @RequestMapping("/system/fk")
@@ -64,23 +64,26 @@ public class NavController {
         return "filelib";
     }
 
+    @RequestMapping("/system/nodatafiveclass")
+    public String nodatafiveclass(){
+        return "nodatafiveclass";
+    }
+
     @RequestMapping("/system/nodata")
     public String nodata(){
         return "nodata";
     }
 
     @RequestMapping("/system/fiveclass")
-    public String fiveclass(@RequestParam("id")String id,HttpServletRequest request){
+    public String fiveclass(@RequestParam("id")String id,@RequestParam("comid")String comid,HttpServletRequest request){
         request.setAttribute("id",id);
-        if(id!="0"&&!id.equals("0")) {
-            Integer skutype = productClassService.getSkutypeById(id);
-            if (skutype == 1) {
-                return "fiveclassview";
-            } else if (skutype == 2) {
-                return "fiveclassviewpl";
-            }
-        }
+        request.setAttribute("comid",comid);
         return "fiveclass";
+    }
+
+    @RequestMapping("/system/myfiveclass")
+    public String myfiveclass(){
+        return "myfiveclass";
     }
 
     @RequestMapping("/system/messages")
@@ -103,9 +106,20 @@ public class NavController {
     }
 
     @RequestMapping("/system/tasklogo")
-    public String fk(@RequestParam("id")String id, HttpServletRequest request){
+    public String tasklogo(@RequestParam("id")String id, HttpServletRequest request){
         request.setAttribute("id",id);
         return "tasklogo";
     }
 
+    @RequestMapping("/system/skuinfo")
+    public String skuinfo(@RequestParam("id")String id, HttpServletRequest request){
+        request.setAttribute("id",id);
+        return "skuinfo";
+    }
+
+    @RequestMapping("/system/skuinfopl")
+    public String skuinfopl(@RequestParam("id")String id, HttpServletRequest request){
+        request.setAttribute("id",id);
+        return "skuinfopl";
+    }
 }

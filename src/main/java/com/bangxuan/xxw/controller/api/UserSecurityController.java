@@ -44,61 +44,61 @@ public class UserSecurityController {
     private StringRedisTemplate stringRedisTemplate;
 
     @PutMapping("/register")
-    public Mono<Message> register(@RequestBody UserSecurity userSecurity,@RequestParam("registertype")String registertype,HttpServletRequest httpServletRequest){
+    public synchronized Mono<Message> register(@RequestBody UserSecurity userSecurity,@RequestParam("registertype")String registertype,HttpServletRequest httpServletRequest){
         UserSecurity info;
-        try {
-        switch (registertype){
-            case "0":
-                httpServletRequest.getParameter("navigator");
-                String a="1X"+UUID.randomUUID().toString().substring(0,9);
-                userSecurity.setRegister_ip(CodeLib.getLocalIp(httpServletRequest));
-                userSecurity.setStatus(UserStatus.Normal);
-                userSecurity.setPhonenumber(a);
-                userSecurity.setType(UserType.test);
-                userSecurity.setPassword(bCryptPasswordEncoder.encode("123456"));
-                userSecurityService.add(userSecurity);
-                MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
-                map.add("grant_type","password");
-                map.add("scope","web");
-                map.add("login_type","password");
-                map.add("username",a);
-                map.add("password","123456");
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-                headers.setBasicAuth("website","turbid");
-                HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-                JSONObject object=restTemplate.postForObject("http://127.0.0.1:10001/oauth/token",request,JSONObject.class);
-                return Mono.just(Message.SCUESSS("ok",object));
-            case "1":
-                info =userSecurityService.findBySMS(userSecurity.getPhonenumber(),userSecurity.getAuthcode());
-                if(null!=info){
-                    userSecurity.setRegister_ip(CodeLib.getLocalIp(httpServletRequest));
-                    userSecurity.setUser_code(info.getUser_code());
-                    userSecurity.setStatus(UserStatus.Normal);
-                    userSecurity.setType(UserType.GeneralPersonal);
-                    userSecurity.setPassword(bCryptPasswordEncoder.encode(userSecurity.getPassword()));
-                    if(0==userService.findUserCountByCode(info.getUser_code())){
-                        User user=new User();
-                        user.setCode(info.getUser_code());
-                        user.setNikename(new CodeLib().getNikeName(stringRedisTemplate));
-                        user.setHeadportrait("https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/userinfo/201905220924522005932570390559257.png");
-                        user.setCity(CodeLib.getAddressByIp(userSecurity.getRegister_ip()));
-                        userSecurityService.updateByPhoneSelective(userSecurity);
-                        userService.add(user);
-                    }else {
-                        return Mono.just(Message.SCUESSS("用户已存在",null));
-                    }
-                    return Mono.just(Message.SCUESSS("注册成功",null));
-                }else {
-                    return Mono.just(Message.ERROR("无效验证码"));
+            try {
+                switch (registertype) {
+                    case "0":
+                        httpServletRequest.getParameter("navigator");
+                        String a = "1X" + UUID.randomUUID().toString().substring(0, 9);
+                        userSecurity.setRegister_ip(CodeLib.getLocalIp(httpServletRequest));
+                        userSecurity.setStatus(UserStatus.Normal);
+                        userSecurity.setPhonenumber(a);
+                        userSecurity.setType(UserType.test);
+                        userSecurity.setPassword(bCryptPasswordEncoder.encode("123456"));
+                        userSecurityService.add(userSecurity);
+                        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+                        map.add("grant_type", "password");
+                        map.add("scope", "web");
+                        map.add("login_type", "password");
+                        map.add("username", a);
+                        map.add("password", "123456");
+                        HttpHeaders headers = new HttpHeaders();
+                        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+                        headers.setBasicAuth("website", "turbid");
+                        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+                        JSONObject object = restTemplate.postForObject("http://127.0.0.1:10001/oauth/token", request, JSONObject.class);
+                        return Mono.just(Message.SCUESSS("ok", object));
+                    case "1":
+                        info = userSecurityService.findBySMS(userSecurity.getPhonenumber(), userSecurity.getAuthcode());
+                        if (null != info) {
+                            if (0 == userService.findUserCountByCode(info.getUser_code())) {
+                                User user = new User();
+                                user.setCode(info.getUser_code());
+                                user.setNikename(new CodeLib().getNikeName(stringRedisTemplate));
+                                user.setHeadportrait("https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/userinfo/201905220924522005932570390559257.png");
+                                user.setCity(CodeLib.getAddressByIp(userSecurity.getRegister_ip()));
+                                userService.add(user);
+                                userSecurity.setRegister_ip(CodeLib.getLocalIp(httpServletRequest));
+                                userSecurity.setUser_code(info.getUser_code());
+                                userSecurity.setStatus(UserStatus.Normal);
+                                userSecurity.setType(UserType.GeneralPersonal);
+                                userSecurity.setPassword(bCryptPasswordEncoder.encode(userSecurity.getPassword()));
+                                userSecurityService.updateByPhoneSelective(userSecurity);
+                            } else {
+                                return Mono.just(Message.SCUESSS("用户已存在", null));
+                            }
+                            return Mono.just(Message.SCUESSS("注册成功", null));
+                        } else {
+                            return Mono.just(Message.ERROR("无效验证码"));
+                        }
+                    case "2":
+                        break;
                 }
-            case "2":
-                break;
+            } catch (Exception e) {
+                System.out.println(e);
+                return Mono.just(Message.ERROR("系统异常"));
             }
-        }catch (Exception e){
-            System.out.println(e);
-            return Mono.just(Message.ERROR("系统异常"));
-        }
         return Mono.just(Message.SCUESSS("注册成功",null));
     }
 
@@ -108,6 +108,37 @@ public class UserSecurityController {
     @PostMapping("/login")
     public Mono<Message> login(@RequestBody JSONObject jsonObject){
         try {
+            MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+            map.add("grant_type","password");
+            map.add("scope","web");
+            map.add("login_type",jsonObject.getString("login_type"));
+            map.add("username",jsonObject.getString("username"));
+            map.add("password", jsonObject.getString("password"));
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+            headers.setBasicAuth("website","turbid");
+            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+            JSONObject object=restTemplate.postForObject("http://127.0.0.1:10001/oauth/token",request,JSONObject.class);
+
+            if (null==object){
+                return Mono.just(Message.ERROR("登录失败"));
+            }
+            return Mono.just(Message.SCUESSS("登录成功",object));
+        }catch (Exception e){
+            System.out.println(e);
+            return Mono.just(Message.ERROR("帐号或密码错误"));
+        }
+    }
+
+
+    @PostMapping("/loginx")
+    public Mono<Message> loginx(@RequestBody JSONObject jsonObject){
+        try {
+            UserSecurity userSecurity = userSecurityService.findByPhone(jsonObject.getString("username"));
+            if(userSecurity.getType()!=UserType.GeneralAdministrator){
+                return Mono.just(Message.ERROR("非管理账号！"));
+            }
             MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
             map.add("grant_type","password");
             map.add("scope","web");
@@ -148,7 +179,7 @@ public class UserSecurityController {
         if(send_status==1) {
             return Mono.just(Message.SCUESSS("短信发送成功", null));
         }else {
-            return Mono.just(Message.ERROR("短信发送失败"));
+            return Mono.just(Message.ERROR("发送短信太频繁,请稍后再试！"));
         }
     }
 

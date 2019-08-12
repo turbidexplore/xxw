@@ -1,0 +1,214 @@
+<!doctype html>
+<html class="no-js h-100" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>零件邦-传奇</title>
+    <style>
+      /* fallback */
+      @font-face {
+        font-family: 'Material Icons';
+        font-style: normal;
+        font-weight: 400;
+        src: url(https://fonts.gstatic.com/s/materialicons/v47/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
+      }
+
+      .material-icons {
+        font-family: 'Material Icons';
+        font-weight: normal;
+        font-style: normal;
+        font-size: 24px;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-block;
+        white-space: nowrap;
+        word-wrap: normal;
+        direction: ltr;
+        -moz-font-feature-settings: 'liga';
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+    </style>
+    <link rel="stylesheet" href="/styles/bootstrap.min.css" >
+    <link rel="stylesheet" id="main-stylesheet" data-version="1.1.0" href="/styles/shards-dashboards.1.1.0.min.css">
+    <link rel="stylesheet" href="/styles/extras.1.1.0.min.css">
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/images/favicon.ico">
+  </head>
+  <body class="h-100">
+    <div class="container-fluid">
+      <div class="row">
+        <aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0">
+          <div class="main-navbar">
+            <nav class="navbar align-items-stretch navbar-light bg-white flex-md-nowrap border-bottom p-0">
+              <a class="navbar-brand w-100 mr-0" href="#" style="line-height: 25px;">
+                <div class="d-table m-auto">
+                  <img id="main-logo" class="d-inline-block align-top mr-1" style="max-width: 25px;" src="/images/favicon.ico" alt="Shards Dashboard">
+                  <span class="d-none d-md-inline ml-1">零件邦之传奇</span>
+                </div>
+              </a>
+            </nav>
+          </div>
+          <form action="#" class="main-sidebar__search w-100 border-right d-sm-flex d-md-none d-lg-none">
+            <div class="input-group input-group-seamless ml-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <i class="fas fa-search"></i>
+                </div>
+              </div>
+              <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> </div>
+          </form>
+          <div class="nav-wrapper">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link " href="/system/index">
+                  <i class="material-icons">view_module</i>
+                  <span>首页</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/system/task">
+                  <i class="material-icons">vertical_split</i>
+                  <span>LOGO任务</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/system/company">
+                  <i class="material-icons">vertical_split</i>
+                  <span>补全公司信息</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/system/tasks">
+                  <i class="material-icons">vertical_split</i>
+                  <span>已完成任务列表</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/system/filelib">
+                  <i class="material-icons">vertical_split</i>
+                  <span>样本提交列表 <span class="badge badge-pill badge-danger" id="yb"></span></span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/system/fk">
+                  <i class="material-icons">vertical_split</i>
+                  <span>反馈信息 <span class="badge badge-pill badge-danger" id="fk"></span></span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/system/fiveclass?id=0&comid=0">
+                  <i class="material-icons">vertical_split</i>
+                  <span>产品综合信息</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="/system/myfiveclass">
+                  <i class="material-icons">vertical_split</i>
+                  <span>已完成SKU列表</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/system/userdata">
+                  <i class="material-icons">vertical_split</i>
+                  <span>统计数据</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/system/messages">
+                  <i class="material-icons">vertical_split</i>
+                  <span>消息中心</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+        <main class="main-content col-lg-10 col-md-9 col-sm-12 p-0 offset-lg-2 offset-md-3">
+          <div class="main-navbar sticky-top bg-white">
+            <nav class="navbar align-items-stretch navbar-light flex-md-nowrap p-0">
+              <form action="#" class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
+                <div class="input-group input-group-seamless ml-3">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="fas fa-search"></i>
+                    </div>
+                  </div>
+                  <input class="navbar-search form-control" id="searchtext" oninput="newinit()" type="text" placeholder="输入关键字搜索内容" aria-label="Search"> </div>
+              </form>
+              <ul class="navbar-nav border-left flex-row ">
+                <li class="nav-item dropdown" ondblclick="logout()">
+                  <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    <img class="user-avatar rounded-circle mr-2" id="userimage" src="" alt="无图片">
+                    <span class="d-none d-md-inline-block" id="username">登录</span>
+                    <span style="color: #2d53fe;">双击退出</span>
+                  </a>
+                </li>
+              </ul>
+              <nav class="nav">
+                <a href="#" class="nav-link nav-link-icon toggle-sidebar d-md-inline d-lg-none text-center border-left" data-toggle="collapse" data-target=".header-navbar" aria-expanded="false" aria-controls="header-navbar">
+                  <i class="material-icons">&#xE5D2;</i>
+                </a>
+              </nav>
+            </nav>
+          </div>
+          <div class="main-content-container container-fluid px-4">
+            <div class="row" id="todaydata"></div>
+            <div class="row">
+              <div class="col">
+                <div class="card card-small overflow-hidden mb-4">
+                  <div class="card-header bg-dark">
+                    <input type="hidden" id="uname" value="">
+                    <h6 class="m-0 text-white"><select id="type" onchange="newinit()">
+                      <option value="0">所有人</option>
+                      <option value="1">我的</option>
+                    </select></h6>
+                  </div>
+                  <div class="card-body p-0 pb-3 bg-dark ">
+                    <table class="table table-dark mb-0">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th width="5%" scope="col" class="border-bottom-0">ID</th>
+                          <th width="15%" scope="col" class="border-bottom-0">名称</th>
+                          <th width="10%" scope="col" class="border-bottom-0">操作者</th>
+                          <th width="10%" scope="col" class="border-bottom-0">级别</th>
+                          <th width="25%" scope="col" class="border-bottom-0">路径</th>
+                          <th width="10%" scope="col" class="border-bottom-0">图片</th>
+                          <th width="18%" scope="col" class="border-bottom-0">操作时间</th>
+                          <th width="7%" scope="col" class="border-bottom-0">操作</th>
+                        </tr>
+                      </thead>
+                      <tbody id="data"></tbody>
+                    </table>
+                    <input type="hidden" id="size" value="10"/>
+                    <input type="hidden" id="page" value="0"/>
+                    <input type="hidden" id="allpagecount" />
+                    <div class="btn-group btn-group-toggle mb-3 " data-toggle="buttons" style="margin-left: 10px;">
+                      <label class="btn btn-white active" onclick="index()">
+                        <input type="radio" name="options" id="option1" autocomplete="off" checked=“checked” > 首页 </label>
+                      <label class="btn btn-white" onclick="back()">
+                        <input type="radio" name="options" id="option2" autocomplete="off" > 上一页 </label>
+                      <label class="btn btn-white" onclick="next()">
+                        <input type="radio" name="options" id="option3" autocomplete="off"> 下一页 </label>
+                      <label class="btn btn-white " onclick="last()">
+                        <input type="radio" name="options" id="option4" autocomplete="off" > 末页 </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+    <script src="/scripts/jquery-3.3.1.min.js" ></script>
+    <script src="/scripts/popper.min.js" ></script>
+    <script src="/scripts/bootstrap.min.js" ></script>
+    <script src="/scripts/shards.min.js"></script>
+    <script src="/scripts/jquery.sharrre.min.js"></script>
+    <script src="/scripts/extras.1.1.0.min.js"></script>
+    <script src="/scripts/jquery.cookie.min.js" ></script>
+    <script src="/scripts/buttons.js"></script>
+    <script src="/scripts/view/myfiveclass.js"></script>
+  </body>
+</html>

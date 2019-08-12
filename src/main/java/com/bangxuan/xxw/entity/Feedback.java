@@ -19,6 +19,16 @@ public class Feedback {
 
     private String create_time;
 
+    private String classid;
+
+    public String getClassid() {
+        return classid;
+    }
+
+    public void setClassid(String classid) {
+        this.classid = classid;
+    }
+
     public Integer getId() {
         return id;
     }

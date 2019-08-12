@@ -48,22 +48,22 @@ public class TasksService {
         return tasksMapper.updatetg(id);
     }
 
-    @Cacheable(cacheNames={"redis_cache"}, key = "'getAllCount'")
+    @Cacheable(cacheNames={"redis_cache"}, key = "'agetAllCount'")
     public Integer getAllCount() {
         return tasksMapper.getAllCount();
     }
 
-    @Cacheable(cacheNames={"redis_cache"}, key = "'getAllCount0'")
+    @Cacheable(cacheNames={"redis_cache"}, key = "'agetAllCount0'")
     public Integer getAllCount0() {
         return tasksMapper.getAllCount0();
     }
 
-    @Cacheable(cacheNames={"redis_cache"}, key = "'getLevel'+#s")
+    @Cacheable(cacheNames={"redis_cache"}, key = "'agetLevel'+#s")
     public Integer getLevel(String s) {
         return tasksMapper.getLevel(s);
     }
 
-    @Cacheable(cacheNames={"redis_cache"}, key = "'getLevelALL'+#s")
+    @Cacheable(cacheNames={"redis_cache"}, key = "'agetLevelALL'+#s")
     public Integer getLevelALL(String s) {
         return tasksMapper.getLevelALL(s);
     }

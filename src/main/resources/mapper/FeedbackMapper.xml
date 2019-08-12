@@ -10,6 +10,7 @@
       <arg column="phonenumer" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="email" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="create_time" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="classid" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
@@ -26,10 +27,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.bangxuan.xxw.entity.Feedback" >
-    insert into gy_feedback ( title, context,image, phonenumer, email, create_time,status)
+    insert into gy_feedback ( title, context,image, phonenumer, email, create_time,status,classid)
     values (#{title,jdbcType=VARCHAR}, #{context,jdbcType=VARCHAR},
       #{image,jdbcType=VARCHAR}, #{phonenumer,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      date_format(now(),'%Y-%m-%d %H:%i:%s'),0)
+      date_format(now(),'%Y-%m-%d %H:%i:%s'),0,#{classid,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.bangxuan.xxw.entity.Feedback" >
     insert into gy_feedback

@@ -393,7 +393,6 @@ function sc(id,i) {
                 processData: false,
                 contentType: false,
             }).done(function(result) {
-                console.log(result);
                 $("#mylogo"+id).attr("src","https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/brand/logo/"+result.data);
                 $("#mylogourl"+id).val(result.data);
             });

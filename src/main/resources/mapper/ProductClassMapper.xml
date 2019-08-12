@@ -70,7 +70,7 @@
 
 
   <select id="selectByConditionAuth"  resultType="com.alibaba.fastjson.JSONObject" parameterType="com.alibaba.fastjson.JSONObject" >
-    select a.*,x.level as isauth from gy_product_class a
+    select a.*,x.level as isauth,b.brand_name from gy_product_class a
     LEFT join gy_company x on a.company_id=x.id
     LEFT join gy_company_brand b on a.brand_id=b.id
     LEFT join gy_sys_area c on b.province_id=c.id

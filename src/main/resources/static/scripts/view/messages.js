@@ -70,35 +70,35 @@ function init() {
 
 function savetable() {
     var count=hot.countRows();
-
+    var data=[];
+    data.push($("#context").html());
     for (i=0;i<=count;i++){
         if(!hot.isEmptyRow(i)) {
             var scount=hot.getDataAtRow(i).length;
             for(a=0;a<=scount;a++){
                 if(""!=hot.getDataAtRow(i)[a]&&null!=hot.getDataAtRow(i)[a]&&"发送成功"!=hot.getDataAtRow(i)[a]) {
-                    var data=[];
-                    data.push($("#context").html());
+
+
                     data.push(hot.getDataAtRow(i)[a]);
-                    var settings = {
-                        "async": true,
-                        "crossDomain": true,
-                        "url": "/basedata/sendmail",
-                        "method": "POST",
-                        "processData": false,
-                        "data":JSON.stringify(data),
-                        "contentType": "application/json"
-                    }
-
-                    $.ajax(settings).done(function (response) {
-
-                    });
                     hot.setDataAtCell(i,(a+1),"发送成功","");
 
                 }
             }
         }
     }
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "/basedata/sendmail",
+        "method": "POST",
+        "processData": false,
+        "data":JSON.stringify(data),
+        "contentType": "application/json"
+    }
 
+    $.ajax(settings).done(function (response) {
+
+    });
 }
 
 $("#myp").on('paste', function(eventObj) {

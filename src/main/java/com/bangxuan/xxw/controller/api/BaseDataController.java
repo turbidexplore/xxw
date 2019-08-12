@@ -5,7 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.dao.MailInfoMapper;
 import com.bangxuan.xxw.dao.UnitMapper;
 import com.bangxuan.xxw.dao.UserMapper;
-import com.bangxuan.xxw.entity.*;
+import com.bangxuan.xxw.entity.FileLib;
+import com.bangxuan.xxw.entity.Tasks;
 import com.bangxuan.xxw.service.*;
 import com.bangxuan.xxw.util.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+
+import javax.servlet.http.HttpServletRequest;
 import java.math.RoundingMode;
 import java.security.Principal;
 import java.text.DecimalFormat;
@@ -45,23 +48,32 @@ public class BaseDataController {
     @Autowired
     private TasksService tasksService;
     @Autowired
-    private MailService mailService;
-    @Autowired
     private MongoTemplate mt;
     @Autowired
     private UnitMapper unitMapper;
     @Autowired
     private MailInfoMapper mailInfoMapper;
     @Autowired
-    private GeneralParametersService generalParametersService;
-
+    private SkuThread skuThread;
+    @Autowired
+    private SkuService skuService;
+    @Autowired
+    private SkuValuesService skuValuesService;
     @GetMapping("/getStatistics")
-    public Mono<Message> getStatistics(){
+    public Mono<Message> getStatistics(HttpServletRequest request, Principal principal){
+        if(null!=principal.getName()){
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("userinfo",principal.getName());
+            jsonObject.put("type",request.getHeader("Referer"));
+            userService.addUserLogs(jsonObject);
+        }
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("spareparts",productClassService.getSKUCount());
-        jsonObject.put("spareparts_class",productClassService.getCount());
+        jsonObject.put("spareparts_class",productClassService.getFiveClass());
         jsonObject.put("brand",companyService.getCount());
         jsonObject.put("pdf",productClassService.getPDFCount());
+        jsonObject.put("numberclass",productClassService.getNumberclass());
         jsonObject.put("threeD",productClassService.get3DCount());
         return Mono.just(Message.SCUESSS(Message.SECUESS,jsonObject));
     }
@@ -119,11 +131,11 @@ public class BaseDataController {
         data.put("count",tasksService.getAllCount0()+"/"+tasksService.getAllCount());
         data.put("level3",tasksService.getLevel("3")+"/"+tasksService.getLevelALL("3"));
         data.put("level4",tasksService.getLevel("4")+"/"+tasksService.getLevelALL("4"));
-        data.put("level5",tasksService.getLevel("5")+"/"+tasksService.getLevelALL("5"));
-        data.put("countb",accuracy(tasksService.getAllCount(),tasksService.getAllCount0(),1));
-        data.put("level3b",accuracy(tasksService.getLevelALL("3"),tasksService.getLevel("3"),1));
-        data.put("level4b",accuracy(tasksService.getLevelALL("4"),tasksService.getLevel("4"),1));
-        data.put("level5b",accuracy(tasksService.getLevelALL("5"),tasksService.getLevel("5"),1));
+        data.put("level5",(tasksService.getLevel("5"))+"/"+tasksService.getLevelALL("5"));
+//        data.put("countb",accuracy(tasksService.getAllCount(),tasksService.getAllCount0(),1));
+//        data.put("level3b",accuracy(tasksService.getLevelALL("3"),tasksService.getLevel("3"),1));
+//        data.put("level4b",accuracy(tasksService.getLevelALL("4"),tasksService.getLevel("4"),1));
+//        data.put("level5b",accuracy(tasksService.getLevelALL("5"),tasksService.getLevel("5"),1));
         data.put("data",tasksService.getTaskLogo(principal.getName(),level));
 
         JSONArray userdata=new JSONArray();
@@ -149,7 +161,11 @@ public class BaseDataController {
     @PutMapping("/updatetask")
     public Mono<Message> updatetask(@RequestParam("url")String url,@RequestParam("id")String id){
         productClassService.updateLogo(url,id);
-        tasksService.updateLogo(id);
+        try {
+            tasksService.updateLogo(id);
+        }catch (Exception e){
+
+        }
         return Mono.just(Message.SCUESSS(Message.SECUESS,null));
     }
 
@@ -182,6 +198,21 @@ public class BaseDataController {
         return Mono.just(Message.SCUESSS(String.valueOf(tasksService.getMyCount(principal.getName(),text)),tasksService.getMy(principal.getName(),page,size,text)));
     }
 
+    @GetMapping("/myfiveclass")
+    public Mono<Message> myfiveclass(Principal principal,@RequestParam("page") int page,@RequestParam("size")int size,@RequestParam("text")String text,@RequestParam("type")Integer type,@RequestParam("uname")String uname){
+        String name="";
+        if(type==1){
+            name="and p.skuuser = '"+principal.getName()+"' ";
+        }else if(type==2){
+            name="and p.skuuser = '"+uname+"' ";
+        }
+        JSONObject data=new JSONObject();
+        data.put("data",productClassService.myfiveclass(name,page,size,text));
+        data.put("user",principal.getName());
+        return Mono.just(Message.SCUESSS(String.valueOf(tasksService.getMyCount(principal.getName(),text)),data));
+    }
+
+
     @GetMapping("/areas")
     public Mono<Message> areas(@RequestParam("pid")String pid){
         return Mono.just(Message.SCUESSS(Message.SECUESS,areaService.getByPid(pid)));
@@ -208,44 +239,18 @@ public class BaseDataController {
         return Mono.just(Message.SCUESSS("ok",null));
     }
 
-    @PutMapping("/saveclassdata")
-    public Mono<Message> saveclassdata(@RequestBody JSONArray jsonArray,@RequestParam("id")String id){
-        List<List> lists= jsonArray.toJavaList(List.class);
-        JSONObject rowjson=new JSONObject();
-        List key=new ArrayList();
-        for (int i=0;i<lists.get(0).size();i++){
-            if(null!=lists.get(0).get(i)&&""!=lists.get(0).get(i)&&!"".equals(lists.get(0).get(i))) {
-                key.add(lists.get(0).get(i));
-            }
-        }
-        rowjson.put("key",key);
-        rowjson.put("type","pl");
-        int count=0;
-        for (int i=1;i<lists.size();i++){
-            List<JSONObject> row = new ArrayList<>();
-            for (int a=0;a<lists.get(i).size();a++) {
-                if(null!=lists.get(0).get(a)&&""!=lists.get(0).get(a)&&!"".equals(lists.get(0).get(a))) {
-                    JSONObject cell=new JSONObject();
-                    cell.put("key",lists.get(0).get(a));
-                    cell.put("value",lists.get(i).get(a));
-                    row.add(cell);
-                }
-            }
-            rowjson.put(String.valueOf(i),row);
-            count++;
-        }
-        rowjson.put("count",count);
-        if(mt.find(new Query(new Criteria()),JSONObject.class,id).size()!=0){
-            mt.remove(new Query(new Criteria()),id);
-        }
-        mt.insert(rowjson, id);
-        return Mono.just(Message.SCUESSS("保存成功",0));
-    }
-
     @PutMapping("/bdsclassdata")
-    public Mono<Message> bdsclassdata(@RequestBody JSONArray jsonArray,@RequestParam("id")String id){
+    public Mono<Message> bdsclassdata(@RequestBody JSONArray jsonArray,@RequestParam("id")String id) throws InterruptedException {
         List<List> lists= jsonArray.toJavaList(List.class);
-        lists.remove(0);
+        productClassService.tg(Integer.valueOf(id),1);
+        mt.remove(new Query(new Criteria()),"skuinfos"+id);
+        skuValuesService.deleteByClassId(id);
+        skuService.deleteByClassId(id);
+        for (int i=5;i<lists.size();i++){
+            String uuid=UUID.randomUUID().toString().replace("-", "");
+            skuThread.run(uuid,id,lists,i);
+            skuThread.addSkuValue(uuid,id,i,lists);
+        }
         JSONObject rowjson=new JSONObject();
         rowjson.put("data",lists);
         rowjson.put("type","bds");
@@ -256,67 +261,83 @@ public class BaseDataController {
         return Mono.just(Message.SCUESSS("保存成功",0));
     }
 
+    @PutMapping("/bdsclassdatapl")
+    public Mono<Message> bdsclassdatapl(@RequestBody JSONArray jsonArray,@RequestParam("id")String id) throws InterruptedException {
+        List<List> lists= jsonArray.toJavaList(List.class);
+        productClassService.tg(Integer.valueOf(id),1);
+        mt.remove(new Query(new Criteria()),"skuinfos"+id);
+        skuValuesService.deleteByClassId(id);
+        skuService.deleteByClassId(id);
+        for (int i=5;i<lists.size();i++){
+            String uuid=UUID.randomUUID().toString().replace("-", "");
+            skuThread.runpl(uuid,id,lists,i);
+            skuThread.addSkuValuepl(uuid,id,i,lists);
+
+        }
+        JSONObject rowjson=new JSONObject();
+        rowjson.put("data",lists);
+        rowjson.put("type","bds");
+        if(mt.find(new Query(new Criteria()),JSONObject.class,id).size()!=0){
+            mt.remove(new Query(new Criteria()),id);
+        }
+        mt.insert(rowjson, id);
+        return Mono.just(Message.SCUESSS("保存成功", productClassService.updateClassData(Integer.parseInt(id),2)));
+    }
+
+
     @PostMapping("/getclassdata")
     public Mono<Message> getclassdata(@RequestParam("id")String id){
-
-          JSONArray data=new JSONArray();
           List<JSONObject> list= mt.find(new Query(new Criteria()),JSONObject.class,id);
           if(list.size()>0){
-          if(list.get(0).getString("type").equals("pl")){
-              data.add(list.get(0).getJSONArray("key"));
-              for (int i=1;i<list.get(0).getInteger("count")+1;i++){
-                  JSONArray row=new JSONArray();
-                  int finalI = i;
-                  list.get(0).getJSONArray(String.valueOf(finalI)).forEach(b->{
-                      JSONObject col= (JSONObject) b;
-                      row.add(col.getString("value"));
-                  });
-                  data.add(row);
-              }
-              return Mono.just(Message.SCUESSS("ok",data));
-            }else if(list.get(0).getString("type").equals("bds")){
               return Mono.just(Message.SCUESSS("ok",list.get(0).getJSONArray("data")));
-          }
-        }
+             }
         return Mono.just(Message.SCUESSS("ok",0));
     }
 
-    @GetMapping("/classdata")
-    public Mono<Message> classdata(@RequestParam("id")String id){
-        if(mt.find(new Query(new Criteria()),JSONObject.class,id).size()!=0){
-            List<JSONObject> list= mt.find(new Query(new Criteria()),JSONObject.class,id);
-            JSONObject data =new JSONObject();
-            data.put("images", productClassService.getImages(id));
-            JSONArray array= new JSONArray();
-            for (int i=5;i<list.get(0).getInteger("count")+1;i++){
-                JSONObject sku=new JSONObject();
-                sku.put("name",list.get(0).getJSONArray(String.valueOf(i)).getObject(1,JSONObject.class).getString("value"));
-                JSONArray row=new JSONArray();
-                for (int j=2;j<list.get(0).getJSONArray(String.valueOf(i)).size();j++) {
-                    JSONObject col=list.get(0).getJSONArray(String.valueOf(i)).getObject(j,JSONObject.class);
-                    col.put("en",list.get(0).getJSONArray(String.valueOf(1)).getObject(j,JSONObject.class).getString("value"));
-                    col.put("code",list.get(0).getJSONArray(String.valueOf(2)).getObject(j,JSONObject.class).getString("value"));
-                    col.put("unit",list.get(0).getJSONArray(String.valueOf(3)).getObject(j,JSONObject.class).getString("value"));
-                    col.put("datatype",list.get(0).getJSONArray(String.valueOf(4)).getObject(j,JSONObject.class).getString("value"));
-                    row.add(col);
-                }
-                sku.put("data",row);
-                array.add(sku);
-            }
-            data.put("data",array);
-            return Mono.just(Message.SCUESSS("ok",data));
-        }
-        return Mono.just(Message.SCUESSS("ok",0));
-    }
+    String[] froms={
+            "lingjianbang01@163.com",
+            "catlib@163.com",
+            "fubei78907@163.com",
+            "yidiaos964530@163.com",
+            "yuyuesh152@163.com",
+            "yangwen015@163.com",
+            "lou234586059@163.com",
+            "quling1567@163.com",
+            "ji189342334231@163.com",
+            "lushu190196@163.com",
+            "jinlian04156@163.com",
+            "shao3315907837@163.com",
+            "huxiang19018@163.com",
+            "lajin87267123@163.com",
+            "wei904827823@163.com",
+            "wei04833826055@163.com",
+            "mahuang2220489@163.com",
+            "jiaobia69342@163.com",
+            "dimutia3089345@163.com",
+            "mai37856389378@163.com",
+            "yan33085345907@163.com",
+            "yangbei6745@163.com",
+            "anqianm88908@163.com",
+            "yang3419045319@163.com",
+            "guan82948160@163.com",
+            "quanshe015905@163.com",
+            "yinian5536056@163.com",
+            "ming372604@163.com"
 
+    };
     @PostMapping("/sendmail")
     @Transactional
     public Mono<Message> sendmail(@RequestBody JSONArray jsonArray){
         String text=jsonArray.get(0).toString().replace("ondrag=\"changeurl(this)\"","").replace("onclick=\"changeimg(this)\"","").replace("onclick=\"changeword(this)\"","").replace("border: 2px solid green;","");
         mailInfoMapper.install(jsonArray.get(0).toString().replace("border: 2px solid green;",""));
-        jsonArray.forEach(a->{
-            mailService.sendHtmlMail(a.toString(), text);
-        });
+        int index=0;
+        for (int i=1;i<jsonArray.size();i++){
+            if(index>=froms.length){
+                index=0;
+            }
+          skuThread.sendmail(jsonArray.getString(i),text,froms[index]);
+          index++;
+      }
         return Mono.just(Message.SCUESSS("发送成功",0));
     }
 
@@ -337,4 +358,31 @@ public class BaseDataController {
     public Mono<Message> getCodes(){
         return Mono.just(Message.SCUESSS("ok",unitMapper.codes()));
     }
+
+    @PutMapping("/saveskunames")
+    public Mono<Message> saveskunames(@RequestBody JSONArray jsonArray,@RequestParam("id")String id){
+        List<List> lists= jsonArray.toJavaList(List.class);
+        JSONObject rowjson=new JSONObject();
+        rowjson.put("data",lists);
+        if(mt.find(new Query(new Criteria()),JSONObject.class,"saveskunames"+id).size()!=0){
+            mt.remove(new Query(new Criteria()),"saveskunames"+id);
+        }
+        mt.insert(rowjson, "saveskunames"+id);
+        return Mono.just(Message.SCUESSS("保存成功",0));
+    }
+
+    @GetMapping("/getskunames")
+    public Mono<Message> getskunames(@RequestParam("id")String id){
+        return Mono.just(Message.SCUESSS("ok",mt.find(new Query(new Criteria()),JSONObject.class,"saveskunames"+id).get(0).getJSONArray("data")));
+    }
+
+    @GetMapping("/getenname")
+    public Mono<Message> getEnname(@RequestParam("text")String text){
+        if(text.equals("")||text==""||text==null){
+            return Mono.just(Message.SCUESSS("ok",""));
+        }
+        return Mono.just(Message.SCUESSS("ok",productClassService.getEnname(text)));
+    }
+
+
 }

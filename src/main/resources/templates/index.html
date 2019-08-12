@@ -6,41 +6,19 @@
     <title>零件邦-传奇</title>
     <meta name="description" content="A high-quality &amp; free Bootstrap admin dashboard template pack that comes with lots of templates and components.">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <style>
-      /* fallback */
-      @font-face {
-        font-family: 'Material Icons';
-        font-style: normal;
-        font-weight: 400;
-        src: url(https://fonts.gstatic.com/s/materialicons/v47/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
-      }
-
-      .material-icons {
-        font-family: 'Material Icons';
-        font-weight: normal;
-        font-style: normal;
-        font-size: 24px;
-        line-height: 1;
-        letter-spacing: normal;
-        text-transform: none;
-        display: inline-block;
-        white-space: nowrap;
-        word-wrap: normal;
-        direction: ltr;
-        -moz-font-feature-settings: 'liga';
-        -moz-osx-font-smoothing: grayscale;
-      }
-
-    </style>
-    <link rel="stylesheet" href="/styles/bootstrap.min.css" >
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" id="main-stylesheet" data-version="1.1.0" href="/styles/shards-dashboards.1.1.0.min.css">
     <link rel="stylesheet" href="/styles/extras.1.1.0.min.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/images/favicon.ico">
   </head>
   <body class="h-100" >
     <div class="container-fluid">
       <div class="row">
+        <!-- Main Sidebar -->
         <aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0">
           <div class="main-navbar">
             <nav class="navbar align-items-stretch navbar-light bg-white flex-md-nowrap border-bottom p-0">
@@ -50,6 +28,7 @@
                   <span class="d-none d-md-inline ml-1">零件邦之传奇</span>
                 </div>
               </a>
+
             </nav>
           </div>
           <form action="#" class="main-sidebar__search w-100 border-right d-sm-flex d-md-none d-lg-none">
@@ -67,6 +46,12 @@
                 <a class="nav-link active" href="/system/index">
                   <i class="material-icons">view_module</i>
                   <span>首页</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/system/task">
+                  <i class="material-icons">vertical_split</i>
+                  <span>LOGO任务</span>
                 </a>
               </li>
               <li class="nav-item">
@@ -94,9 +79,15 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/system/fiveclass?id=0">
+                <a class="nav-link" href="/system/fiveclass?id=0&comid=0">
                   <i class="material-icons">vertical_split</i>
                   <span>产品综合信息</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/system/myfiveclass">
+                  <i class="material-icons">vertical_split</i>
+                  <span>已完成SKU列表</span>
                 </a>
               </li>
               <li class="nav-item">
@@ -143,157 +134,370 @@
             </nav>
           </div>
           <div class="main-content-container container-fluid px-4">
-            <div class="page-header row no-gutters py-4">
-              <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-                <span class="text-uppercase page-subtitle">零件邦</span>
-                <h3 class="page-title">今日排行榜</h3>
-              </div>
+            <div class="row">
+              <div id="container" style="width: 100%;height:300px"></div>
             </div>
-            <div class="row" id="todaydata"></div>
+            &nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="tj()">查看历史统计</a>
             <div class="row">
               <div class="col-lg col-md-6 col-sm-6 mb-4">
                 <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex">
+                  <div class="card-body p-0 d-flex"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
                     <div class="d-flex flex-column m-auto">
                       <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">已完成三级/总数</span>
-                        <h6 class="stats-small__value count my-3" id="level3">0</h6>
-                      </div>
-                      <div class="stats-small__data">
-                        <span class="stats-small__percentage stats-small__percentage--increase" id="level3b"></span>
+                        <span class="stats-small__label text-uppercase">今日会员登录人数</span>
+                        <h6 class="stats-small__value count my-3" id="todayuser">0</h6>
                       </div>
                     </div>
-                    <canvas height="120" class="blog-overview-stats-small-1"></canvas>
+                    <canvas height="348" class="blog-overview-stats-small-1 chartjs-render-monitor" width="874" style="display: block; width: 437px; height: 174px;"></canvas>
                   </div>
                 </div>
               </div>
               <div class="col-lg col-md-6 col-sm-6 mb-4">
                 <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex">
+                  <div class="card-body p-0 d-flex"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
                     <div class="d-flex flex-column m-auto">
                       <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">已完成四级/总数</span>
-                        <h6 class="stats-small__value count my-3" id="level4">0</h6>
-                      </div>
-                      <div class="stats-small__data">
-                        <span class="stats-small__percentage stats-small__percentage--increase" id="level4b">12.4%</span>
+                        <span class="stats-small__label text-uppercase">今日游客访问人数</span>
+                        <h6 class="stats-small__value count my-3" id="todaynouser">0</h6>
                       </div>
                     </div>
-                    <canvas height="120" class="blog-overview-stats-small-2"></canvas>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg col-md-4 col-sm-6 mb-4">
-                <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex">
-                    <div class="d-flex flex-column m-auto">
-                      <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">已完成五级/总数</span>
-                        <h6 class="stats-small__value count my-3" id="level5">0</h6>
-                      </div>
-                      <div class="stats-small__data">
-                        <span class="stats-small__percentage stats-small__percentage--increase" id="level5b"></span>
-                      </div>
-                    </div>
-                    <canvas height="120" class="blog-overview-stats-small-3"></canvas>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg col-md-4 col-sm-6 mb-4">
-                <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex">
-                    <div class="d-flex flex-column m-auto">
-                      <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">已完成/任务总数</span>
-                        <h6 class="stats-small__value count my-3" id="count">0</h6>
-                      </div>
-                      <div class="stats-small__data">
-                        <span class="stats-small__percentage stats-small__percentage--increase" id="countb"></span>
-                      </div>
-                    </div>
-                    <canvas height="120" class="blog-overview-stats-small-4"></canvas>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg col-md-6 col-sm-6 mb-4">
-                <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex">
-                    <div class="d-flex flex-column m-auto">
-                      <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">今日已完成任务数</span>
-                        <h6 class="stats-small__value count my-3" id="todaycount">0</h6>
-                      </div>
-                    </div>
-                    <canvas height="120" class="blog-overview-stats-small-1"></canvas>
+                    <canvas height="348" class="blog-overview-stats-small-2 chartjs-render-monitor" width="874" style="display: block; width: 437px; height: 174px;"></canvas>
                   </div>
                 </div>
               </div>
               <div class="col-lg col-md-6 col-sm-6 mb-4">
                 <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex">
+                  <div class="card-body p-0 d-flex"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
                     <div class="d-flex flex-column m-auto">
                       <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">已完成总数</span>
-                        <h6 class="stats-small__value count my-3" id="okcount">0</h6>
+                        <span class="stats-small__label text-uppercase">今日页面访问量</span>
+                        <h6 class="stats-small__value count my-3" id="fwl">0</h6>
                       </div>
-
                     </div>
-                    <canvas height="120" class="blog-overview-stats-small-2"></canvas>
+                    <canvas height="348" class="blog-overview-stats-small-1 chartjs-render-monitor" width="874" style="display: block; width: 437px; height: 174px;"></canvas>
                   </div>
                 </div>
               </div>
-              <div class="col-lg col-md-4 col-sm-6 mb-4">
+              <div class="col-lg col-md-6 col-sm-6 mb-4">
                 <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex">
+                  <div class="card-body p-0 d-flex"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
                     <div class="d-flex flex-column m-auto">
                       <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">待完成</span>
-                        <h6 class="stats-small__value count my-3" id="ingcount">0</h6>
+                        <span class="stats-small__label text-uppercase">本月页面访问量</span>
+                        <h6 class="stats-small__value count my-3" id="mfwl">0</h6>
                       </div>
-
                     </div>
-                    <canvas height="120" class="blog-overview-stats-small-3"></canvas>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg col-md-4 col-sm-6 mb-4">
-                <div class="stats-small stats-small--1 card card-small">
-                  <div class="card-body p-0 d-flex">
-                    <div class="d-flex flex-column m-auto">
-                      <div class="stats-small__data text-center">
-                        <span class="stats-small__label text-uppercase">任务总数</span>
-                        <h6 class="stats-small__value count my-3" id="allcount">0</h6>
-                      </div>
-
-                    </div>
-                    <canvas height="120" class="blog-overview-stats-small-4"></canvas>
+                    <canvas height="348" class="blog-overview-stats-small-2 chartjs-render-monitor" width="874" style="display: block; width: 437px; height: 174px;"></canvas>
                   </div>
                 </div>
               </div>
             </div>
-              <div class="col-lg-12 col-md-12 col-sm-12 mb-4">
-                <div class="card card-small blog-comments">
-                  <div class="card-header border-bottom">
-                    <h6 class="m-0">任务列表</h6>
+            <div class="row">
+              <div class="col-lg col-md-6 col-sm-6 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                  <div class="card-body p-0 d-flex"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                    <div class="d-flex flex-column m-auto">
+                      <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">一级目录</span>
+                        <h6 class="stats-small__value count my-3" id="class1">0</h6>
+                      </div>
+                    </div>
+                    <canvas height="348" class="blog-overview-stats-small-1 chartjs-render-monitor" width="874" style="display: block; width: 437px; height: 174px;"></canvas>
                   </div>
-                  <div class="card-body p-0" id="data">
+                </div>
+              </div>
+              <div class="col-lg col-md-6 col-sm-6 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                  <div class="card-body p-0 d-flex"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                    <div class="d-flex flex-column m-auto">
+                      <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">二级目录</span>
+                        <h6 class="stats-small__value count my-3" id="class2">0</h6>
+                      </div>
+                    </div>
+                    <canvas height="348" class="blog-overview-stats-small-2 chartjs-render-monitor" width="874" style="display: block; width: 437px; height: 174px;"></canvas>
                   </div>
+                </div>
               </div>
+              <div class="col-lg col-md-4 col-sm-6 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                  <div class="card-body p-0 d-flex"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                    <div class="d-flex flex-column m-auto">
+                      <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">三级目录</span>
+                        <h6 class="stats-small__value count my-3" id="class3">0</h6>
+                      </div>
+                    </div>
+                    <canvas height="348" class="blog-overview-stats-small-3 chartjs-render-monitor" width="874" style="display: block; width: 437px; height: 174px;"></canvas>
+                  </div>
+                </div>
               </div>
-          </div>
+              <div class="col-lg col-md-4 col-sm-6 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                  <div class="card-body p-0 d-flex"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                    <div class="d-flex flex-column m-auto">
+                      <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">四级目录</span>
+                        <h6 class="stats-small__value count my-3" id="class4">0</h6>
+                      </div>
+                    </div>
+                    <canvas height="348" class="blog-overview-stats-small-4 chartjs-render-monitor" width="874" style="display: block; width: 437px; height: 174px;"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg col-md-4 col-sm-12 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                  <div class="card-body p-0 d-flex"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                    <div class="d-flex flex-column m-auto">
+                      <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">五级目录</span>
+                        <h6 class="stats-small__value count my-3" id="class5">0</h6>
+                      </div>
+                    </div>
+                    <canvas height="348" class="blog-overview-stats-small-5 chartjs-render-monitor" width="874" style="display: block; width: 437px; height: 174px;"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg col-md-4 col-sm-12 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                  <div class="card-body p-0 d-flex"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                    <div class="d-flex flex-column m-auto">
+                      <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">型号数量</span>
+                        <h6 class="stats-small__value count my-3" id="sku">0</h6>
+                      </div>
+                    </div>
+                    <canvas height="348" class="blog-overview-stats-small-5 chartjs-render-monitor" width="874" style="display: block; width: 437px; height: 174px;"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg col-md-6 col-sm-6 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                  <div class="card-body p-0 d-flex"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                    <div class="d-flex flex-column m-auto">
+                      <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">公司数量</span>
+                        <h6 class="stats-small__value count my-3" id="company">0</h6>
+                      </div>
+                    </div>
+                    <canvas height="348" class="blog-overview-stats-small-1 chartjs-render-monitor" width="874" style="display: block; width: 437px; height: 174px;"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg col-md-6 col-sm-6 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                  <div class="card-body p-0 d-flex"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                    <div class="d-flex flex-column m-auto">
+                      <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">品牌数量</span>
+                        <h6 class="stats-small__value count my-3" id="brand">0</h6>
+                      </div>
+                    </div>
+                    <canvas height="348" class="blog-overview-stats-small-2 chartjs-render-monitor" width="874" style="display: block; width: 437px; height: 174px;"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg col-md-4 col-sm-6 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                  <div class="card-body p-0 d-flex"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                    <div class="d-flex flex-column m-auto">
+                      <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">个人会员</span>
+                        <h6 class="stats-small__value count my-3" id="puser">0</h6>
+                      </div>
+                    </div>
+                    <canvas height="348" class="blog-overview-stats-small-3 chartjs-render-monitor" width="874" style="display: block; width: 437px; height: 174px;"></canvas>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg col-md-4 col-sm-12 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                  <div class="card-body p-0 d-flex"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                    <div class="d-flex flex-column m-auto">
+                      <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">本日注册人数</span>
+                        <h6 class="stats-small__value count my-3" id="day">0</h6>
+                      </div>
+                    </div>
+                    <canvas height="348" class="blog-overview-stats-small-5 chartjs-render-monitor" width="874" style="display: block; width: 437px; height: 174px;"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg col-md-4 col-sm-12 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                  <div class="card-body p-0 d-flex"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                    <div class="d-flex flex-column m-auto">
+                      <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase" >本月注册人数</span>
+                        <h6 class="stats-small__value count my-3" id="mo">0</h6>
+                      </div>
+                    </div>
+                    <canvas height="348" class="blog-overview-stats-small-5 chartjs-render-monitor" width="874" style="display: block; width: 437px; height: 174px;"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg col-md-4 col-sm-6 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                  <div class="card-body p-0 d-flex"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                    <div class="d-flex flex-column m-auto">
+                      <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">本年注册人数</span>
+                        <h6 class="stats-small__value count my-3" id="year">0</h6>
+                      </div>
+                    </div>
+                    <canvas height="348" class="blog-overview-stats-small-4 chartjs-render-monitor" width="874" style="display: block; width: 437px; height: 174px;"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            </div>
         </main>
       </div>
     </div>
-    <script src="/scripts/jquery-3.3.1.min.js" ></script>
-    <script src="/scripts/jquery.cookie.min.js" ></script>
-    <script src="/scripts/view/index.js"></script>
-    <script src="/scripts/popper.min.js" ></script>
-    <script src="/scripts/bootstrap.min.js" ></script>
-    <script src="/scripts/shards.min.js"></script>
-    <script src="/scripts/jquery.sharrre.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/shards-ui@latest/dist/js/shards.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sharrre/2.0.1/jquery.sharrre.min.js"></script>
     <script src="/scripts/extras.1.1.0.min.js"></script>
-    <script src="/scripts/buttons.js"></script>
+    <script src="/scripts/jquery.cookie.min.js" type="text/javascript"></script>
+    <script src="https://code.highcharts.com.cn/highcharts/modules/oldie.js"></script>
+    <script src="https://code.highcharts.com.cn/highcharts/highcharts.js"></script>
+    <script src="https://code.highcharts.com.cn/highcharts/highcharts-3d.js"></script>
+    <script src="https://code.highcharts.com.cn/highcharts/modules/exporting.js"></script>
+    <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+    <script src="https://code.highcharts.com.cn/highcharts/highcharts-more.js"></script>
+
+  <script>
+    
+    function tj() {
+        var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "/count/day",
+            "method": "GET",
+            "processData": false
+        }
+
+
+        $.ajax(settings).done(function (response) {
+            window.open(response.toString(),'_blank','');
+        });
+    }
+
+      function logout() {
+          $.removeCookie("ACCESS_TOKEN", {path:"/",domain:"chuanqi.lingjianbang.com"});
+          $.removeCookie("ACCESS_TOKEN",{path:"/"});
+          window.location.href="/system/login";
+      }
+
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "/user/get",
+      "method": "GET",
+      "processData": false,
+      "headers": {
+        "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+        "cache-control": "no-cache",
+        "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+      }
+    }
+
+
+    $.ajax(settings).done(function (response) {
+      if(response.status!=200){
+       window.location.href="/system/login";
+      }else {
+      $("#userimage").attr("src",response.data.headportrait);
+      $("#username").html(response.data.name);
+        if(response.data.ybcount!=0){
+          $("#yb").html(response.data.ybcount);
+        }
+        if(response.data.fkcount!=0) {
+          $("#fk").html(response.data.fkcount);
+        }
+      }
+    });
+
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "/count/all",
+      "method": "GET",
+      "processData": false,
+      "headers": {
+        "Authorization": "Bearer " + $.cookie("ACCESS_TOKEN"),
+        "cache-control": "no-cache",
+        "Postman-Token": "0d83bfb4-ef46-46d6-ae5e-02b7a296a3e2"
+      }
+    }
+
+
+    $.ajax(settings).done(function (response) {
+
+        $("#class1").html(response.data.class1);
+        $("#class2").html(response.data.class2);
+        $("#class3").html(response.data.class3);
+        $("#class4").html(response.data.class4);
+        $("#class5").html(response.data.class5);
+        $("#sku").html(response.data.sku);
+
+        $("#company").html(response.data.company);
+        $("#brand").html(response.data.brand);
+        $("#puser").html(response.data.user);
+        $("#day").html(response.data.duser);
+        $("#mo").html(response.data.muser);
+        $("#year").html(response.data.yuser);
+
+        $("#todayuser").html(response.data.todayuser);
+        $("#todaynouser").html(response.data.todaynouser);
+
+        $("#fwl").html(response.data.fwl);
+        $("#mfwl").html(response.data.mfwl);
+
+
+      var chart = Highcharts.chart('container', {
+        chart: {
+          type: 'line'
+        },
+        title: {
+          text: '注册会员人数统计(按周)'
+        },
+        subtitle: {
+          text: '零件邦'
+        },
+        xAxis: {
+          categories: response.data.days
+        },
+        yAxis: {
+          title: {
+            text: '人数'
+          }
+        },
+        plotOptions: {
+          line: {
+            dataLabels: {
+              // 开启数据标签
+              enabled: true
+            },
+            // 关闭鼠标跟踪，对应的提示框、点击事件会失效
+            enableMouseTracking: false
+          }
+        },
+        series: [{
+          name: '人数',
+          data: response.data.daycounts
+        }]
+      });
+    });
+
+  </script>
 
   </body>
 </html>

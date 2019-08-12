@@ -1,10 +1,31 @@
 package com.bangxuan.xxw.entity;
 
-public class GeneralParameters {
+import org.springframework.stereotype.Component;
 
-    private Integer id;
+import java.util.ArrayList;
+import java.util.List;
+@Component
+public class SkuInfo {
+
+   public SkuInfo(){
+        this.skuValuesList=new ArrayList<>();
+    }
+
+    private List<SkuValues> skuValuesList;
+
+    public List<SkuValues> getSkuValuesList() {
+        return skuValuesList;
+    }
+
+    public void setSkuValuesList(List<SkuValues> skuValuesList) {
+        this.skuValuesList = skuValuesList;
+    }
+
+    private String id;
 
     private Integer classid;
+
+    private String skuname;
 
     private String brandname;
 
@@ -14,17 +35,19 @@ public class GeneralParameters {
 
     private String origin;
 
-    private Double unitprice;
+    private String unitprice;
 
-    private Double wholesaleprice;
+    private String wholesaleprice;
 
-    private Integer mpq;
+    private String mpq;
 
-    private Integer moq;
+    private String moq;
 
     private String qualityassurancetime;
 
     private String sample;
+
+    private String zzsample;
 
     private String pdf;
 
@@ -34,11 +57,25 @@ public class GeneralParameters {
 
     private String video;
 
-    public Integer getId() {
+    private String logo;
+
+    private Integer idx;
+
+    private Integer isauth;
+
+    public Integer getIsauth() {
+        return isauth;
+    }
+
+    public void setIsauth(Integer isauth) {
+        this.isauth = isauth;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -48,6 +85,14 @@ public class GeneralParameters {
 
     public void setClassid(Integer classid) {
         this.classid = classid;
+    }
+
+    public String getSkuname() {
+        return skuname;
+    }
+
+    public void setSkuname(String skuname) {
+        this.skuname = skuname;
     }
 
     public String getBrandname() {
@@ -82,35 +127,35 @@ public class GeneralParameters {
         this.origin = origin;
     }
 
-    public Double getUnitprice() {
+    public String getUnitprice() {
         return unitprice;
     }
 
-    public void setUnitprice(Double unitprice) {
+    public void setUnitprice(String unitprice) {
         this.unitprice = unitprice;
     }
 
-    public Double getWholesaleprice() {
+    public String getWholesaleprice() {
         return wholesaleprice;
     }
 
-    public void setWholesaleprice(Double wholesaleprice) {
+    public void setWholesaleprice(String wholesaleprice) {
         this.wholesaleprice = wholesaleprice;
     }
 
-    public Integer getMpq() {
+    public String getMpq() {
         return mpq;
     }
 
-    public void setMpq(Integer mpq) {
+    public void setMpq(String mpq) {
         this.mpq = mpq;
     }
 
-    public Integer getMoq() {
+    public String getMoq() {
         return moq;
     }
 
-    public void setMoq(Integer moq) {
+    public void setMoq(String moq) {
         this.moq = moq;
     }
 
@@ -128,6 +173,14 @@ public class GeneralParameters {
 
     public void setSample(String sample) {
         this.sample = sample;
+    }
+
+    public String getZzsample() {
+        return zzsample;
+    }
+
+    public void setZzsample(String zzsample) {
+        this.zzsample = zzsample;
     }
 
     public String getPdf() {
@@ -160,5 +213,21 @@ public class GeneralParameters {
 
     public void setVideo(String video) {
         this.video = video;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public Integer getIdx() {
+        return idx;
+    }
+
+    public void setIdx(Integer idx) {
+        this.idx = idx;
     }
 }

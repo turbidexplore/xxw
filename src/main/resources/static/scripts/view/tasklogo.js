@@ -125,10 +125,10 @@ function init() {
 
             $.ajax(settings).done(function (response) {
                 response.data.forEach(function (v,i) {
-                    $("#level5space").append("<div style='width:165px;height:165px;margin: 10px; ' onclick=\"putlogo('"+v.logo+"')\">\n" +
+                    $("#level5space").append("<div style='width:165px;height:165px;margin: 20px; ' onclick=\"putlogo('"+v.logo+"')\">\n" +
+                        "                              <a style='border-radius: 0px;' href=\"/system/tasklogo?id="+v.id+"\" class=\"card-post__category badge badge-pill badge-warning\">"+v.class_name+"</a>\n"+
                         "                      <div class=\"card card-small card-post card-post--1\">\n" +
                         "                          <div class=\"card-post__image\" style=\"border-radius: 0px;background-image: url('https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/images/"+v.logo+"');\">\n" +
-                        "                              <a href=\"/system/tasklogo?id="+v.id+"\" class=\"card-post__category badge badge-pill badge-warning\">"+v.class_name+"</a>\n"+
                         "                          </div>\n" +
                         "                      </div>\n" +
                         "                  </div>" );

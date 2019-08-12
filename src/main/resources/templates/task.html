@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>零件邦-传奇</title>
+    <meta name="description" content="A high-quality &amp; free Bootstrap admin dashboard template pack that comes with lots of templates and components.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+      /* fallback */
+      @font-face {
+        font-family: 'Material Icons';
+        font-style: normal;
+        font-weight: 400;
+        src: url(https://fonts.gstatic.com/s/materialicons/v47/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
+      }
+
+      .material-icons {
+        font-family: 'Material Icons';
+        font-weight: normal;
+        font-style: normal;
+        font-size: 24px;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-block;
+        white-space: nowrap;
+        word-wrap: normal;
+        direction: ltr;
+        -moz-font-feature-settings: 'liga';
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+    </style>
+    <link rel="stylesheet" href="/styles/bootstrap.min.css" >
+    <link rel="stylesheet" id="main-stylesheet" data-version="1.1.0" href="/styles/shards-dashboards.1.1.0.min.css">
+    <link rel="stylesheet" href="/styles/extras.1.1.0.min.css">
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/images/favicon.ico">
+  </head>
+  <body class="h-100" >
+    <div class="container-fluid">
+      <div class="row">
+        <aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0">
+          <div class="main-navbar">
+            <nav class="navbar align-items-stretch navbar-light bg-white flex-md-nowrap border-bottom p-0">
+              <a class="navbar-brand w-100 mr-0" href="#" style="line-height: 25px;">
+                <div class="d-table m-auto">
+                  <img id="main-logo" class="d-inline-block align-top mr-1" style="max-width: 25px;" src="/images/favicon.ico" alt="Shards Dashboard">
+                  <span class="d-none d-md-inline ml-1">零件邦之传奇</span>
+                </div>
+              </a>
+            </nav>
+          </div>
+          <form action="#" class="main-sidebar__search w-100 border-right d-sm-flex d-md-none d-lg-none">
+            <div class="input-group input-group-seamless ml-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <i class="fas fa-search"></i>
+                </div>
+              </div>
+              <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> </div>
+          </form>
+          <div class="nav-wrapper">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link " href="/system/index">
+                  <i class="material-icons">view_module</i>
+                  <span>首页</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="/system/task">
+                  <i class="material-icons">vertical_split</i>
+                  <span>LOGO任务</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/system/company">
+                  <i class="material-icons">vertical_split</i>
+                  <span>补全公司信息</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/system/tasks">
+                  <i class="material-icons">vertical_split</i>
+                  <span>已完成任务列表</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/system/filelib">
+                  <i class="material-icons">vertical_split</i>
+                  <span>样本提交列表 <span class="badge badge-pill badge-danger" id="yb"></span></span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/system/fk">
+                  <i class="material-icons">vertical_split</i>
+                  <span>反馈信息 <span class="badge badge-pill badge-danger" id="fk"></span></span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/system/fiveclass?id=0&comid=0">
+                  <i class="material-icons">vertical_split</i>
+                  <span>产品综合信息</span>
+                </a>
+              </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/system/myfiveclass">
+                        <i class="material-icons">vertical_split</i>
+                        <span>已完成SKU列表</span>
+                    </a>
+                </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/system/userdata">
+                  <i class="material-icons">vertical_split</i>
+                  <span>统计数据</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/system/messages">
+                  <i class="material-icons">vertical_split</i>
+                  <span>消息中心</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+        <main class="main-content col-lg-10 col-md-9 col-sm-12 p-0 offset-lg-2 offset-md-3">
+          <div class="main-navbar sticky-top bg-white">
+            <nav class="navbar align-items-stretch navbar-light flex-md-nowrap p-0">
+              <form action="#" class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
+                <div class="input-group input-group-seamless ml-3">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="fas fa-search"></i>
+                    </div>
+                  </div>
+                  <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> </div>
+              </form>
+              <ul class="navbar-nav border-left flex-row ">
+                <li class="nav-item dropdown" ondblclick="logout()">
+                  <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    <img class="user-avatar rounded-circle mr-2" id="userimage" src="" alt="无图片">
+                    <span class="d-none d-md-inline-block" id="username">登录</span>
+                    <span style="color: #2d53fe;">双击退出</span>
+                  </a>
+                </li>
+              </ul>
+              <nav class="nav">
+                <a href="#" class="nav-link nav-link-icon toggle-sidebar d-md-inline d-lg-none text-center border-left" data-toggle="collapse" data-target=".header-navbar" aria-expanded="false" aria-controls="header-navbar">
+                  <i class="material-icons">&#xE5D2;</i>
+                </a>
+              </nav>
+            </nav>
+          </div>
+          <div class="main-content-container container-fluid px-4">
+            <div class="page-header row no-gutters py-4">
+              <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+                <span class="text-uppercase page-subtitle">零件邦</span>
+                <h3 class="page-title">今日排行榜</h3>
+              </div>
+            </div>
+            <div class="row" id="todaydata"></div>
+            <div class="row">
+              <div class="col-lg col-md-6 col-sm-6 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                  <div class="card-body p-0 d-flex">
+                    <div class="d-flex flex-column m-auto">
+                      <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">已完成三级/总数</span>
+                        <h6 class="stats-small__value count my-3" id="level3">0</h6>
+                      </div>
+                      <div class="stats-small__data">
+                        <span class="stats-small__percentage stats-small__percentage--increase" id="level3b"></span>
+                      </div>
+                    </div>
+                    <canvas height="120" class="blog-overview-stats-small-1"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg col-md-6 col-sm-6 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                  <div class="card-body p-0 d-flex">
+                    <div class="d-flex flex-column m-auto">
+                      <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">已完成四级/总数</span>
+                        <h6 class="stats-small__value count my-3" id="level4">0</h6>
+                      </div>
+                      <div class="stats-small__data">
+                        <span class="stats-small__percentage stats-small__percentage--increase" id="level4b">%</span>
+                      </div>
+                    </div>
+                    <canvas height="120" class="blog-overview-stats-small-2"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg col-md-4 col-sm-6 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                  <div class="card-body p-0 d-flex">
+                    <div class="d-flex flex-column m-auto">
+                      <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">已完成五级/总数</span>
+                        <h6 class="stats-small__value count my-3" id="level5">0</h6>
+                      </div>
+                      <div class="stats-small__data">
+                        <span class="stats-small__percentage stats-small__percentage--increase" id="level5b"></span>
+                      </div>
+                    </div>
+                    <canvas height="120" class="blog-overview-stats-small-3"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg col-md-4 col-sm-6 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                  <div class="card-body p-0 d-flex">
+                    <div class="d-flex flex-column m-auto">
+                      <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">已完成/任务总数</span>
+                        <h6 class="stats-small__value count my-3" id="count">0</h6>
+                      </div>
+                      <div class="stats-small__data">
+                        <span class="stats-small__percentage stats-small__percentage--increase" id="countb"></span>
+                      </div>
+                    </div>
+                    <canvas height="120" class="blog-overview-stats-small-4"></canvas>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg col-md-6 col-sm-6 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                  <div class="card-body p-0 d-flex">
+                    <div class="d-flex flex-column m-auto">
+                      <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">今日已完成任务数</span>
+                        <h6 class="stats-small__value count my-3" id="todaycount">0</h6>
+                      </div>
+                    </div>
+                    <canvas height="120" class="blog-overview-stats-small-1"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg col-md-6 col-sm-6 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                  <div class="card-body p-0 d-flex">
+                    <div class="d-flex flex-column m-auto">
+                      <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">已完成总数</span>
+                        <h6 class="stats-small__value count my-3" id="okcount">0</h6>
+                      </div>
+
+                    </div>
+                    <canvas height="120" class="blog-overview-stats-small-2"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg col-md-4 col-sm-6 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                  <div class="card-body p-0 d-flex">
+                    <div class="d-flex flex-column m-auto">
+                      <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">待完成</span>
+                        <h6 class="stats-small__value count my-3" id="ingcount">0</h6>
+                      </div>
+
+                    </div>
+                    <canvas height="120" class="blog-overview-stats-small-3"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg col-md-4 col-sm-6 mb-4">
+                <div class="stats-small stats-small--1 card card-small">
+                  <div class="card-body p-0 d-flex">
+                    <div class="d-flex flex-column m-auto">
+                      <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">任务总数</span>
+                        <h6 class="stats-small__value count my-3" id="allcount">0</h6>
+                      </div>
+
+                    </div>
+                    <canvas height="120" class="blog-overview-stats-small-4"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 mb-4">
+                <div class="card card-small blog-comments">
+                  <div class="card-header border-bottom">
+                    <h6 class="m-0">任务列表</h6>
+                  </div>
+                  <div class="card-body p-0" id="data">
+                  </div>
+              </div>
+              </div>
+          </div>
+        </main>
+      </div>
+    </div>
+    <script src="/scripts/jquery-3.3.1.min.js" ></script>
+    <script src="/scripts/jquery.cookie.min.js" ></script>
+    <script src="/scripts/view/index.js"></script>
+    <script src="/scripts/popper.min.js" ></script>
+    <script src="/scripts/bootstrap.min.js" ></script>
+    <script src="/scripts/shards.min.js"></script>
+    <script src="/scripts/jquery.sharrre.min.js"></script>
+    <script src="/scripts/extras.1.1.0.min.js"></script>
+    <script src="/scripts/buttons.js"></script>
+  </body>
+</html>

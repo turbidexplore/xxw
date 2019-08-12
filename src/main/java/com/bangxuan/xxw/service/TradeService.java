@@ -23,4 +23,11 @@ public class TradeService {
         return tradeMapper.getClassByPcode(pcode);
     }
 
+    public JSONObject getByCode(String code) {
+        return tradeMapper.getByCode(code);
+    }
+
+    public List<JSONObject> getByPCode(String pcode) {
+        return tradeMapper.getByPCode(pcode);
+    }
 }

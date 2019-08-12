@@ -57,8 +57,13 @@ function init() {
             if(v.status==1){
                 status="已处理"
             }
+            var type="其他";
+            if(v.classid!=""&&v.classid!=null&&v.classid!=undefined){
+                type=v.classid;
+            }
             $("#data").append("  <tr>\n" +
                 "                          <td style='padding: 2px 10px' >"+v.title+"</td>\n" +
+                "                          <td style='padding: 2px 10px' >"+type+"</td>\n" +
                 "                          <td style='padding: 2px 10px' >"+v.context+"</td>\n" +
                 "                          <td style='padding: 2px 10px' ><img style='width: 100px;max-height: 100px;' src='"+v.image+"'></td>\n" +
                 "                          <td style='padding: 2px 10px' >"+v.phonenumer+"</td>\n" +

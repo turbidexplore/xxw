@@ -71,7 +71,7 @@ layui.use('layer', function () {
             var settings = {
                 "async": true,
                 "crossDomain": true,
-                "url": "/usersecurity/login",
+                "url": "/usersecurity/loginx",
                 "method": "POST",
                 "headers": {
                     "Content-Type": "application/json",

@@ -12,6 +12,14 @@ public class Message {
 
     private Object data;
 
+    public static Message SCUESSS(Integer status,String msg,Object data){
+        Message message=new Message();
+        message.setStatus(status);
+        message.setMessage(msg);
+        message.setData(data);
+        return message;
+    }
+
     public static Message SCUESSS(String msg,Object data){
         Message message=new Message();
         message.setStatus(200);

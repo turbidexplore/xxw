@@ -83,12 +83,17 @@ function init() {
         $("#data").html("");
         $("#allpagecount").val(Math.ceil(response.message/20));
         response.data.forEach(function(v,i){
+            var urltype=v.url.split(".")[5];
+            if(1< v.url.split(",").length){
+                urltype="多文件";
+            }
             $("#data").append("  <tr>\n" +
                 "                          <td style='padding: 2px 10px' >"+v.company_name+"</td>\n" +
                 "                          <td style='padding: 2px 10px' >"+v.brand_name+"</td>\n" +
                 "                          <td style='padding: 2px 10px' >"+v.title+"</td>\n" +
-                "                          <td style='padding: 2px 10px' >"+v.url.split(".")[5]+"</td>\n" +
+                "                          <td style='padding: 2px 10px' >"+urltype+"</td>\n" +
                 "                          <td style='padding: 2px 10px' >"+v.phone+"</td>\n" +
+                "                          <td style='padding: 2px 10px' >"+v.email+"</td>\n" +
                 "                          <td style='padding: 2px 10px' >"+v.name+"</td>\n" +
                 "                          <td style='padding: 2px 10px' >"+v.create_time+"</td>\n" +
                 "                          <td style='padding: 2px 10px' ><button style='padding: 2px 10px'  class=\"mb-2 btn btn-success mr-2\" onclick=\"download('"+v.url+"')\">下载</button></td>\n" +
@@ -111,6 +116,12 @@ function download(url){
         }
     }
     $.ajax(settings).done(function (response) {
-        window.open(url);
+       if(1< url.split(",").length){
+           url.split(",").forEach(function (value) {
+               window.open(value);
+           })
+       }else {
+           window.open(url);
+       }
     });
 }

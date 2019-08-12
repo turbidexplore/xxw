@@ -1,9 +1,9 @@
 package com.bangxuan.xxw.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bangxuan.xxw.dao.UserLogsMapper;
 import com.bangxuan.xxw.dao.UserMapper;
 import com.bangxuan.xxw.entity.User;
-import com.bangxuan.xxw.entity.UserSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -17,6 +17,9 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private UserLogsMapper userLogsMapper;
+
     @Transactional
     public int add(User user){
         return  userMapper.insert(user);
@@ -27,7 +30,6 @@ public class UserService {
         return userMapper.updateByPrimaryKeySelective(user);
     }
 
-    @Cacheable(cacheNames={"redis_cache"}, key = "'getUserinfo'+#name")
     public User get(String name) {
         return userMapper.get(name);
     }
@@ -48,6 +50,10 @@ public class UserService {
 
     public int getUserCountByTime(String time) {
        return userMapper.findUserCountByTime(time);
+    }
+
+    public int addUserLogs(JSONObject jsonObject){
+        return userLogsMapper.insert(jsonObject);
     }
 }
 

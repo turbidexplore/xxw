@@ -2,6 +2,12 @@ if($.cookie("ACCESS_TOKEN")==undefined){
     window.location.href="/system/login";
 }
 
+$(document).ready(function(){
+    $('.my-editor').notebook();
+});
+
+$("#go").hide();
+$("#hgo").hide();
 hidemenu();
 function hidemenu() {
     if ($("#hidden").val()==1){
@@ -40,11 +46,11 @@ function save(value) {
     });
 }
 
-
+var url="";
 var settings = {
     "async": true,
     "crossDomain": true,
-    "url": "/productclass/getOne?id="+$("#coreid").val(),
+    "url": "/productclass/getOne?id="+$("#coreid").val()+"&comid="+$("#comid").val(),
     "method": "GET",
     "processData": false,
     "headers": {
@@ -54,13 +60,18 @@ var settings = {
     }
 }
 $.ajax(settings).done(function (response) {
-    if(response.status!=200){
-        window.location.href="/system/nodata";
+
+    if(response.data==null){
+        window.location.href="/system/nodatafiveclass";
     }
     if(response.data.skutype==1){
-        location.href = "/system/fiveclassview?id="+response.data.id;
+        url = "/system/fiveclassview?id="+response.data.id;
+        $("#hgo").show();
     }else if(response.data.skutype==2){
-        location.href = "/system/fiveclassviewpl?id="+response.data.id;
+        url = "/system/fiveclassviewpl?id="+response.data.id;
+        $("#hgo").show();
+    }else {
+        $("#go").show();
     }
 
     var routh_paths=response.data.route_path.split("//")[1];
@@ -78,15 +89,138 @@ $.ajax(settings).done(function (response) {
         $("#companylogo").attr("src", "https://iph.href.lu/500x500?text=%E9%9B%B6%E4%BB%B6%E9%82%A6&fg=666666&bg=CCCCCC");
     }
 
-    $("#company").html("公司:<span style='font-weight: bold;'> "+response.data.company_name +" </span>  " +
+    $("#company").html("ID:<span style='font-weight: bold;'> "+response.data.id+" </span><br>"+"公司:<span style='font-weight: bold;'> "+response.data.company_name +" </span>  " +
         "品牌:<span style='font-weight: bold;'> "+response.data.brand_name+" </span>");
-    $("#add_user").html("创建者:["+response.data.add_user+"] <button type=\"button\" onclick=\"save(1)\"  class=\"mb-2 btn btn-sm btn-outline-warning mr-1\">  跳 过  </button>&nbsp;&nbsp;" +
-        "              <button type=\"button\" onclick=\"save(2)\"  class=\"mb-2 btn btn-outline-success mr-2\">  完  成 </button>&nbsp;&nbsp;");
-    $("#desc").val(response.data.class_desc);
+    $("#add_user").html("创建者:["+response.data.add_user+"] <button type=\"button\" onclick=\"save(4)\"  class=\"mb-2 btn btn-sm btn-outline-warning mr-1\" id='atg'>  跳 过  </button>&nbsp;&nbsp;" +
+        "              &nbsp;&nbsp;");
+    $("#desc").html(response.data.class_desc);
     $("#level5space").append(
-        "<object width=\"100%\" height=\"900px\" data=\""+"https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/pdf/"+response.data.pdf_file+"\"> \n" +
+        "<object width=\"100%\" height=\"1000px\" data=\""+"https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/pdf/"+response.data.pdf_file+"\"> \n" +
         "</object>");
 
+    if(null!=response.data.industry) {
+        var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "/trade/getByCode?code=" + response.data.industry,
+            "method": "GET",
+            "processData": false
+        }
+        $.ajax(settings).done(function (res) {
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "/trade/getByPCode?pcode=0",
+                "method": "GET",
+                "processData": false
+            }
+            $.ajax(settings).done(function (response) {
+                response.data.forEach(function (v) {
+                    if (res.data.c == v.id) {
+                        $("#lv1").append("<option value='" + v.id + "' selected>" + v.name + "</option>")
+                    } else {
+                        $("#lv1").append("<option value='" + v.id + "'>" + v.name + "</option>")
+                    }
+                })
+
+            });
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "/trade/getByPCode?pcode=" + res.data.c,
+                "method": "GET",
+                "processData": false
+            }
+            $.ajax(settings).done(function (response) {
+                response.data.forEach(function (v) {
+                    if (res.data.b == v.id) {
+                        $("#lv2").append("<option value='" + v.id + "' selected>" + v.name + "</option>")
+                    } else {
+                        $("#lv2").append("<option value='" + v.id + "'>" + v.name + "</option>")
+                    }
+                })
+
+            });
+
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "/trade/getByPCode?pcode=" + res.data.b,
+                "method": "GET",
+                "processData": false
+            }
+            $.ajax(settings).done(function (response) {
+                response.data.forEach(function (v) {
+                    if (res.data.a == v.id) {
+                        $("#lv3").append("<option value='" + v.id + "' selected>" + v.name + "</option>")
+                    } else {
+                        $("#lv3").append("<option value='" + v.id + "'>" + v.name + "</option>")
+                    }
+                })
+
+            });
+
+        });
+    }else {
+
+        var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "/trade/getByPCode?pcode=0",
+            "method": "GET",
+            "processData": false
+        }
+        $.ajax(settings).done(function (response) {
+            var i=0;
+            response.data.forEach(function (v) {
+                if (i==0) {
+                    var settings = {
+                        "async": true,
+                        "crossDomain": true,
+                        "url": "/trade/getByPCode?pcode=" + v.id,
+                        "method": "GET",
+                        "processData": false
+                    }
+                    $.ajax(settings).done(function (response) {
+                        var ii=0;
+                        response.data.forEach(function (b) {
+                            if (ii==0) {
+                                $("#lv2").append("<option value='" + b.id + "' selected>" + b.name + "</option>")
+                                var settings = {
+                                    "async": true,
+                                    "crossDomain": true,
+                                    "url": "/trade/getByPCode?pcode=" + b.id,
+                                    "method": "GET",
+                                    "processData": false
+                                }
+                                $.ajax(settings).done(function (response) {
+                                    var iii=0;
+                                    response.data.forEach(function (c) {
+                                        if (iii==0) {
+                                            $("#lv3").append("<option value='" + c.id + "' selected>" + c.name + "</option>")
+                                            iii++;
+                                        } else {
+                                            $("#lv3").append("<option value='" + c.id + "'>" + c.name + "</option>")
+                                        }
+                                    })
+
+                                });
+                                ii++;
+                            } else {
+                                $("#lv2").append("<option value='" + b.id + "'>" + b.name + "</option>")
+                            }
+                        })
+
+                    });
+                    $("#lv1").append("<option value='" + v.id + "' selected>" + v.name + "</option>")
+                    i++;
+                } else {
+                    $("#lv1").append("<option value='" + v.id + "'>" + v.name + "</option>")
+                }
+            })
+
+        });
+    }
 
     response.data.images.forEach(function (value){
         $("#imgs").append("<div onclick='rmimgs(this)'  style='float: left;margin: 10px;'><input type='hidden' value='" + value.url + "'><img src=\"https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/images/" +value.url+ "\" alt=\"logo\"  width=\"80px;\"></div>");
@@ -217,7 +351,7 @@ function update() {
     $("#imgs input[type=hidden]").each(function () {
         imgs.push(this.value);
     });
-    var data ={"id":$("#coreid").val(),"desc":$("#desc").val(),"imgs":imgs};
+    var data ={"id":$("#coreid").val(),"desc":$("#desc").html(),"imgs":imgs,"industry":$("#lv3").val()};
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -233,16 +367,13 @@ function update() {
         }
     }
     $.ajax(settings).done(function (response) {
-        go();
+        $("#atg").hide();
+        alert("保存成功！");
     });
 }
 
-function gobds(){
-    window.open("/system/fiveclassview?id="+$("#coreid").val(), "_blank", "scrollbars=yes,resizable=1,modal=false,alwaysRaised=yes");
-}
 
-
-function go() {
+function next() {
     $.confirm({
         title: '上传sku',
         content: '请选择sku的上传类型！',
@@ -253,14 +384,14 @@ function go() {
                 text: '表达式',
                 btnClass: 'btn-primary',
                 action: function() {
-                    location.href = "/system/fiveclassview?id="+$("#coreid").val();
+                    window.open("/system/fiveclassview?id="+$("#coreid").val(),'_blank','')
                 }
             },
             pl: {
                 text: '批量',
                 btnClass: 'btn-primary',
                 action: function() {
-                    location.href = "/system/fiveclassviewpl?id="+$("#coreid").val();
+                    window.open("/system/fiveclassviewpl?id="+$("#coreid").val(),'_blank','')
                 }
             },
             cancel: {
@@ -268,5 +399,56 @@ function go() {
                 btnClass: 'btn-error'
             }
         }
+    });
+}
+
+
+function skugo() {
+    window.open(url,'_blank','');
+}
+
+function changevalue(type,ntype,obj) {
+    $("#"+type).html(" <option value=\"\">无</option>");
+    if(type=="lv2") {
+        $("#" + ntype).html(" <option value=\"\">无</option>");
+    }
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "/trade/getByPCode?pcode=" + $(obj).val(),
+        "method": "GET",
+        "processData": false
+    }
+    $.ajax(settings).done(function (response) {
+        var iii=0;
+        response.data.forEach(function (c) {
+            if (iii==0) {
+                var settings = {
+                    "async": true,
+                    "crossDomain": true,
+                    "url": "/trade/getByPCode?pcode=" + c.id,
+                    "method": "GET",
+                    "processData": false
+                }
+                $.ajax(settings).done(function (response) {
+                    var ii=0;
+
+                    response.data.forEach(function (b) {
+                        if (ii==0) {
+                            $("#"+ntype).append("<option value='" + b.id + "' selected>" + b.name + "</option>")
+                            ii++;
+                        } else {
+                            $("#"+ntype).append("<option value='" + b.id + "'>" + b.name + "</option>")
+                        }
+                    })
+
+                });
+                $("#"+type).append("<option value='" + c.id + "' selected>" + c.name + "</option>")
+                iii++;
+            } else {
+                $("#"+type).append("<option value='" + c.id + "'>" + c.name + "</option>")
+            }
+        })
+
     });
 }

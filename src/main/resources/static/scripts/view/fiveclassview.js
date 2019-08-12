@@ -1,18 +1,20 @@
 var yss=[];
 var data=[];
-
+$("#cz").html("<button type=\"submit\" id=\"bcsj\" class=\"btn btn-accent\" onclick=\"save()\">生成数据</button><button type=\"submit\" id=\"bcsj\" class=\"btn btn-sm btn-success\" onclick=\"bcsj(this)\">保存数据</button>")
 if($.cookie("ACCESS_TOKEN")==undefined){
     window.location.href="/system/login";
 }
 function inityueshu() {
     yss=[];
+    var index=0;
     $("#yueshu").html("");
     for(var i =0;i<data.length;i++){
         for(var j =0;j<data.length;j++) {
             if (i < j) {
                 if ($("#codename" + (j + 1)).length > 0&&$("#codename" + (i + 1)).length > 0) {
+                    index++;
                     var table = " <table  class=\"gridtable\" style='float: left;margin: 10px;' >";
-                    table += "<tr><td colspan=\"2\" rowspan=\"2\"></td><td colspan=\"" + (data[j].rowsize + 2) + "\">" + $("#codename" + (j + 1)).html() + "</td></tr>";
+                    table += "<tr><td colspan=\"2\" rowspan=\"2\">约束"+index+"</td><td colspan=\"" + (data[j].rowsize + 2) + "\">" + $("#codename" + (j + 1)).html() + "</td></tr>";
                     table += "<tr>";
                     for (var a = 0; a < data[j].rowsize; a++) {
                         if ($("#csvalue" + (j + 1) + a + "10h").length > 0) {
@@ -28,7 +30,7 @@ function inityueshu() {
                         if ($("#csvalue" + (i + 1) + a + "10h").length > 0) {
                             table += "<td>" + $("#csvalue" + (i + 1) + a + "10h").val() + "</td>";
                             for (var x = 0; x < data[j].rowsize; x++) {
-                                table += "<td style='font-weight: bold;' onclick=\"seleced(this,'csvalue" + (j + 1) + x + "','csvalue" + (i + 1) + a + "')\">◎</td>";
+                                table += "<td style='font-weight: bold;' onclick=\"seleced(this,'csvalue" + (j + 1) + x + "','csvalue" + (i + 1) + a + "')\"><div class='yuan'></div></td>";
                             }
                         }
                         table += "</tr>";
@@ -42,14 +44,14 @@ function inityueshu() {
 }
 
 function seleced(obj,value1,value2) {
-    if($(obj).html()=="◎"){
+    if($(obj).html().substr(0,4)=="<div"){
         $(obj).css("color","white");
         $(obj).html(yss.length);
         yss.push([value1,value2]);
     }else {
         yss[$(obj).html()]=["0","0"];
         $(obj).css("color","black");
-        $(obj).html("◎");
+        $(obj).html("<div class='yuan'></div>");
     }
 }
 
@@ -104,16 +106,6 @@ function addtable() {
 }
 
 function addcs(value) {
-
-    var colsize=data[value-1].colsize= data[value-1].colsize+1;
-    var index=data[value-1].index;
-    data[value-1].col.push(index);
-    $("#addtd"+value).remove();
-    $("#addth"+value).remove();
-    $("#view"+value).append(" <tr id=\"addth"+value+"\"><td colspan=\""+colsize+"\"><center> <button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-success \" onclick=\"adddaoru("+value+")\">导入数据</button></center></td></tr>");
-    $("#a"+value).append("<td  id='a"+value+index+"'><input oninput='changecss(this)' id='avalue"+value+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='中文名称'></td> <td rowspan=\"5\" id=\"addtd"+value+"\"><button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-success \" onclick=\"addcs("+value+")\">添加列</button></td>");
-    $("#b"+value).append("<td  id='b"+value+index+"'><input  id='bvalue"+value+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='英文名称'></td>");
-    $("#c"+value).append("<td id='c"+value+index+"'><input  id='cvalue"+value+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='代码'></td>");
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -122,6 +114,17 @@ function addcs(value) {
         "processData": false
     }
     $.ajax(settings).done(function (response) {
+
+        var colsize=data[value-1].colsize= data[value-1].colsize+1;
+        var index=data[value-1].index;
+        data[value-1].col.push(index);
+        $("#addtd"+value).remove();
+        $("#addth"+value).remove();
+        $("#view"+value).append(" <tr id=\"addth"+value+"\"><td colspan=\""+colsize+"\"><center> <button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-success \" onclick=\"adddaoru("+value+")\">导入数据</button></center></td></tr>");
+        $("#a"+value).append("<td  id='a"+value+index+"'><input oninput='changecss(this)' id='avalue"+value+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='中文名称'></td> <td rowspan=\"5\" id=\"addtd"+value+"\"><button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-success \" onclick=\"addcs("+value+")\">添加列</button></td>");
+        $("#b"+value).append("<td  id='b"+value+index+"'><input  id='bvalue"+value+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='英文名称'></td>");
+        $("#c"+value).append("<td id='c"+value+index+"'><input  id='cvalue"+value+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='代码'></td>");
+
         var unit="<select id='dvalue"+value+index+"' style='height: 20px;line-height: 0px;'><option value='默认'>默认</option>"
         response.data.unit.forEach(function (val) {
             unit=unit+"<option value='"+val.unit_name+"("+val.unit+")"+"'>"+val.unit_name+"("+val.unit+")"+"</option>"
@@ -135,9 +138,10 @@ function addcs(value) {
         datatype=datatype+"</select>";
         $("#e"+value).append("<td  id='e"+value+index+"'>"+datatype+"<button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-danger \" onclick='rm("+value+index+","+value+","+index+")'>删除列</button></td>");
         data[value-1].index=data[value-1].index+1;
+        adddaoru(value);
+        inityueshu();
     });
-    adddaoru(value);
-    inityueshu();
+
 }
 
 function changecss(obj) {
@@ -264,19 +268,46 @@ function qingkong() {
     });
 }
 
+
+var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "/basedata/getclassdata?id="+$("#coreid").val(),
+    "method": "POST",
+    "processData": false
+}
+$.ajax(settings).done(function (response) {
+    if(response.data!=0){
+        hot = new Handsontable(container,
+            {
+                data: response.data,
+                minSpareRows:2,//空出多少行
+                minSpareCols:2,
+                colHeaders:true,//显示表头　
+                contextMenu:true//显示表头下拉菜单
+            });
+    }
+});
+
+var skunames=[];
+
 function save() {
+    skunames=[];
     var bdsdata = new Array();
     var sku = new Array();
     var status = 0;
     for (var x = 0; x < data.length; x++) {
         if (data[x] != null) {
             var skudata = new Array();
+            var skuname=[];
             for (var i = 0; i < data[x].rowsize; i++) {
                 var rowdata = new Array();
+                var skunamev="";
                 for (var a = 0; a < data[x].col.length; a++) {
                     if ($("#avalue" + (x + 1) + data[x].col[a]).length > 0) {
                         var coldata = {};
-                        coldata.sku = $("#bdstype" + (x + 1)).val() + $("#csvalue" + (x + 1) + i + data[x].col[0] + "0h").val();
+                        skunamev=$("#csvalue" + (x + 1) + i + data[x].col[0] + "0h").val();
+                        coldata.sku = $("#bdstype" + (x + 1)).val() + "{"+$("#csvalue" + (x + 1) + i + data[x].col[0] + "0h").val()+"}";
                         coldata.value = $("#csvalue" + (x + 1) + i + data[x].col[a] + a).val();
                         coldata.a = $("#avalue" + (x + 1) + data[x].col[a]).val();
                         coldata.b = $("#bvalue" + (x + 1) + data[x].col[a]).val();
@@ -291,16 +322,16 @@ function save() {
                         }
                     }
                 }
+                skuname.push(skunamev);
                 skudata.push(rowdata);
             }
+            skunames.push(skuname);
             bdsdata.push(skudata);
         }
     }
     if (status > 0) {
         alert("请完整填写信息！")
     } else {
-        console.log(bdsdata);
-        console.log(dke);
         var dke = descartes(bdsdata);
         dke.forEach(function (val) {
             var isok = 0;
@@ -329,7 +360,6 @@ function save() {
         })
 
         var dataa = [];
-        dataa.push(["sku名称", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""])
         var dw = 0;
         sku.forEach(function (value) {
             var datab = [];
@@ -377,6 +407,7 @@ function save() {
 
         })
         $("#example").html("");
+        alert("共有"+(dataa.length-5)+"条数据！");
         hot = new Handsontable(container, {
             data: dataa,
             minSpareRows: 2,//空出多少行
@@ -384,7 +415,6 @@ function save() {
             colHeaders: true,//显示表头　
             contextMenu: true//显示表头下拉菜单
         });
-        $("#cz").html("<button type=\"submit\" id=\"bcsj\" class=\"btn btn-accent\" onclick=\"save()\">生成数据</button><button type=\"submit\" id=\"bcsj\" class=\"btn btn-sm btn-success\" onclick=\"bcsj()\">保存数据</button>")
     }
 }
 
@@ -403,7 +433,16 @@ function distinct(a, b) {
     return arr
 }
 
-function bcsj() {
+function goback() {
+    location.href = "/system/fiveclass?id="+$("#coreid").val()+"&comid=0";
+}
+
+function next() {
+    location.href = "/system/skuinfo?id="+$("#coreid").val();
+}
+
+function bcsj(obj) {
+    $(obj).attr("disabled",true);
     var count=hot.countRows();
     var data=[];
     for (i=0;i<=count;i++){
@@ -412,18 +451,34 @@ function bcsj() {
         }
     }
     if (data.length>0){
+        var index = layer.load();
+        console.log(skunames);
         var settings = {
             "async": true,
             "crossDomain": true,
-            "url": "/basedata/bdsclassdata?id="+$("#coreid").val(),
+            "url": "/basedata/saveskunames?id="+$("#coreid").val(),
             "method": "PUT",
             "processData": false,
-            "data":JSON.stringify(data),
+            "data":JSON.stringify(skunames),
             "contentType": "application/json"
         }
         $.ajax(settings).done(function (response) {
-            alert(response.message);
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "/basedata/bdsclassdata?id="+$("#coreid").val(),
+                "method": "PUT",
+                "processData": false,
+                "data":JSON.stringify(data),
+                "contentType": "application/json"
+            }
+            $.ajax(settings).done(function (response) {
+                layer.close(index);
+                alert(response.message);
+                location.href = "/system/skuinfo?id="+$("#coreid").val();
+            });
         });
+
     }
 }
 
