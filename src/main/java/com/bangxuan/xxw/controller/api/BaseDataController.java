@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -97,10 +98,15 @@ public class BaseDataController {
     }
 
     @GetMapping("/advertisement")
-    public Mono<Message> advertisement(){
+    public Mono<Message> advertisement(@RequestParam(required = false) String postionId){
         JSONObject data = new JSONObject();
         data.put("basicurl"," https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/ad/");
-        data.put("data",advertisementService.all());
+        if(StringUtils.isEmpty(postionId)){
+            data.put("data",advertisementService.all());
+        }else{
+            data.put("data",advertisementService.getByPostionId(postionId));
+        }
+
         return Mono.just(Message.SCUESSS(Message.SECUESS,data));
     }
 

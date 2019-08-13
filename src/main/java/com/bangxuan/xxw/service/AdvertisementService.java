@@ -16,4 +16,7 @@ public class AdvertisementService {
         return advertisementMapper.all();
     }
 
+    public  List<Advertisement> getByPostionId(String postionId) {
+        return advertisementMapper.getByPostionId(postionId);
+    }
 }

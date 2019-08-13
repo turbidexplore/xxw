@@ -24,4 +24,7 @@ public interface AdvertisementMapper {
 
     @Select("select * from gy_ad")
     List<Advertisement> all();
+
+    @Select("select * from gy_ad where pc_position=#{postionId}")
+    List<Advertisement> getByPostionId(String postionId);
 }
