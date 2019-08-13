@@ -103,7 +103,7 @@ public class BaseDataController {
         data.put("basicurl"," https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/ad/");
         if(StringUtils.isEmpty(postionId)){
             data.put("data",advertisementService.all());
-        }else{
+        }else{ 
             data.put("data",advertisementService.getByPostionId(postionId));
         }
 
