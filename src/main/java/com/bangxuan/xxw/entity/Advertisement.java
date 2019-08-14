@@ -14,6 +14,8 @@ public class Advertisement {
 
     private String url;
 
+    private String video_url;
+
     public Integer getId() {
         return id;
     }
@@ -60,5 +62,13 @@ public class Advertisement {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getVideo_url() {
+        return video_url;
+    }
+
+    public void setVideo_url(String video_url) {
+        this.video_url = video_url;
     }
 }
