@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.service.DaypdfCountService;
 import com.bangxuan.xxw.service.FileService;
 import com.bangxuan.xxw.service.ProductClassService;
-import com.bangxuan.xxw.service.UserSecurityService;
 import com.bangxuan.xxw.util.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,8 +31,6 @@ public class FileController {
     @Autowired
     private DaypdfCountService daypdfCountService;
 
-    @Autowired
-    private UserSecurityService userSecurityService;
 
     @PostMapping(value = "/upload")
     public Mono<Message> images(@RequestParam("file") MultipartFile filePart) {
@@ -112,17 +109,6 @@ public class FileController {
 
     @GetMapping("/pdf")
     public Mono<Message> getPDF(Principal principal, @RequestParam("id") String id){
-//        if(userSecurityService.findByPhone(principal.getName()).getType()== UserType.test){
-//            if(3<=daypdfCountService.todayCount(principal.getName())){
-//                return Mono.just(Message.ERROR("您今日已查看3次！请登录查看更多"));
-//            }
-//        }else if(userSecurityService.findByPhone(principal.getName()).getType()== UserType.GeneralAdministrator){
-//
-//        }else if (userSecurityService.findByPhone(principal.getName()).getType()== UserType.GeneralPersonal){
-//            if(50<=daypdfCountService.todayCount(principal.getName())){
-//                return Mono.just(Message.ERROR("您今日已查看50次！权限已用完"));
-//            }
-//        }
         JSONObject data=new JSONObject();
         data.put("basicurl","https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/pdf/");
         data.put("data",productClassService.getPDF(id));
@@ -148,16 +134,6 @@ public class FileController {
         data.put("data",productClassService.getPDF(id));
         data.put("company",productClassService.getCompany(id));
         return Mono.just(Message.SCUESSS(Message.SECUESS,data));
-    }
-
-    @GetMapping("/seo")
-    public Mono<Message> seo(){
-        return Mono.just(Message.SCUESSS(Message.SECUESS,fileService.seo()));
-    }
-
-    @GetMapping("/seoxml")
-    public Mono<Message> seoxml(){
-        return Mono.just(Message.SCUESSS(Message.SECUESS,fileService.seoxml()));
     }
 
 }

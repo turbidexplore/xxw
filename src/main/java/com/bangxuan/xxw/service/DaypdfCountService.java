@@ -16,8 +16,4 @@ public class DaypdfCountService {
     public int add(String user){
         return daypafCountMapper.insert(new DaypafCount(user));
     }
-
-    public int todayCount(String user){
-        return daypafCountMapper.todayCount(user);
-    }
 }

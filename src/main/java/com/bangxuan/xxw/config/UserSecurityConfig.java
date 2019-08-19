@@ -1,6 +1,6 @@
 package com.bangxuan.xxw.config;
 
-import com.bangxuan.xxw.service.CustomerUserDetailsService;
+import com.bangxuan.xxw.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 public class UserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private CustomerUserDetailsService customerUserDetailsService;
+    private CustomerService customerService;
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -34,12 +34,12 @@ public class UserSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customerUserDetailsService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(customerService).passwordEncoder(passwordEncoder());
     }
     @Override
     @Bean
     @Primary
     public UserDetailsService userDetailsService(){
-        return customerUserDetailsService;
+        return customerService;
     }
 }

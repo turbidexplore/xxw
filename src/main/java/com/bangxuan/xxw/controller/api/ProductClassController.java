@@ -131,7 +131,6 @@ public class ProductClassController {
 
     @GetMapping("/getOne")
     public Mono<Message> getOne(Principal principal, @RequestParam("id")String id, @RequestParam("comid")String comid){
-
         List<JSONObject> datas=productClassService.getInfos(id,principal.getName());
         if(datas.size()>0||datas.size()==1&&datas.get(0).getString("status").equals("1")){
             JSONObject data= datas.get(0);
@@ -220,7 +219,6 @@ public class ProductClassController {
         if(s==1&&skuInfos.size()==0){
             return Mono.just(Message.SCUESSS("nodata",skuInfos));
         }
-
         return Mono.just(Message.SCUESSS(String.valueOf(skuService.countById(id,ids)),skuInfos));
     }
 
@@ -243,8 +241,13 @@ public class ProductClassController {
 
     @PutMapping("/saveSkuInfos")
     public Mono<Message> saveSkuInfos(@RequestBody JSONArray jsonArray,@RequestParam("id")String id){
-        skuThread.skuinfo(id, jsonArray);
-        return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.updateClassData(Integer.parseInt(id),2)));
+        if(mt.find(new Query(new Criteria()),JSONObject.class,"saveSkuInfos"+id).size()!=0){
+            mt.remove(new Query(new Criteria()),"saveSkuInfos"+id);
+        }
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("data",jsonArray);
+        mt.insert(jsonArray, "saveSkuInfos"+id);
+        return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.updateClassData(Integer.parseInt(id),5)));
     }
 
     @PutMapping("/saveSkuInfopls")
@@ -307,6 +310,24 @@ public class ProductClassController {
         }catch (Exception e){
             return Mono.just(Message.ERROR( "错误!"));
         }
+    }
 
+    @PutMapping("/savehis")
+    public Mono<Message> savehis(@RequestBody JSONObject jsonObject,@RequestParam("id")String id){
+        if(mt.find(new Query(new Criteria()),JSONObject.class,"savehis"+id).size()!=0){
+            mt.remove(new Query(new Criteria()),"savehis"+id);
+        }
+        mt.insert(jsonObject, "savehis"+id);
+        return Mono.just(Message.SCUESSS(Message.SECUESS,null));
+    }
+
+    @GetMapping("/gethis")
+    public Mono<Message> gethis(@RequestParam("id")String id){
+       List<JSONObject> jsonObjects= mt.find(new Query(new Criteria()),JSONObject.class,"savehis"+id);
+       if(jsonObjects.size()>0) {
+           return Mono.just(Message.SCUESSS(Message.SECUESS, jsonObjects.get(0)));
+       }else {
+           return Mono.just(Message.SCUESSS(Message.SECUESS, null));
+       }
     }
 }

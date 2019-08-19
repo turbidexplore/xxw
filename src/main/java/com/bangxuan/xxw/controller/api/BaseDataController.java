@@ -2,7 +2,6 @@ package com.bangxuan.xxw.controller.api;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.bangxuan.xxw.dao.MailInfoMapper;
 import com.bangxuan.xxw.dao.UnitMapper;
 import com.bangxuan.xxw.dao.UserMapper;
 import com.bangxuan.xxw.entity.FileLib;
@@ -13,17 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import javax.servlet.http.HttpServletRequest;
-import java.math.RoundingMode;
 import java.security.Principal;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/basedata")
@@ -53,8 +51,6 @@ public class BaseDataController {
     @Autowired
     private UnitMapper unitMapper;
     @Autowired
-    private MailInfoMapper mailInfoMapper;
-    @Autowired
     private SkuThread skuThread;
     @Autowired
     private SkuService skuService;
@@ -68,7 +64,6 @@ public class BaseDataController {
             jsonObject.put("type",request.getHeader("Referer"));
             userService.addUserLogs(jsonObject);
         }
-
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("spareparts",productClassService.getSKUCount());
         jsonObject.put("spareparts_class",productClassService.getFiveClass());
@@ -106,7 +101,6 @@ public class BaseDataController {
         }else{ 
             data.put("data",advertisementService.getByPostionId(postionId));
         }
-
         return Mono.just(Message.SCUESSS(Message.SECUESS,data));
     }
 
@@ -138,10 +132,6 @@ public class BaseDataController {
         data.put("level3",tasksService.getLevel("3")+"/"+tasksService.getLevelALL("3"));
         data.put("level4",tasksService.getLevel("4")+"/"+tasksService.getLevelALL("4"));
         data.put("level5",(tasksService.getLevel("5"))+"/"+tasksService.getLevelALL("5"));
-//        data.put("countb",accuracy(tasksService.getAllCount(),tasksService.getAllCount0(),1));
-//        data.put("level3b",accuracy(tasksService.getLevelALL("3"),tasksService.getLevel("3"),1));
-//        data.put("level4b",accuracy(tasksService.getLevelALL("4"),tasksService.getLevel("4"),1));
-//        data.put("level5b",accuracy(tasksService.getLevelALL("5"),tasksService.getLevel("5"),1));
         data.put("data",tasksService.getTaskLogo(principal.getName(),level));
 
         JSONArray userdata=new JSONArray();
@@ -154,14 +144,6 @@ public class BaseDataController {
         data.put("todaydata",jsonArraySort("today",userdata.toJSONString()));
         data.put("alldata",jsonArraySort("all",userdata.toJSONString()));
         return Mono.just(Message.SCUESSS(Message.SECUESS,data));
-    }
-
-    public String accuracy(double total, double num, int scale){
-        DecimalFormat df = (DecimalFormat) NumberFormat.getInstance();
-        df.setMaximumFractionDigits(scale);
-        df.setRoundingMode(RoundingMode.HALF_UP);
-        double accuracy_num = num / total * 100;
-        return df.format(accuracy_num)+"%";
     }
 
     @PutMapping("/updatetask")
@@ -250,13 +232,13 @@ public class BaseDataController {
         List<List> lists= jsonArray.toJavaList(List.class);
         productClassService.tg(Integer.valueOf(id),1);
         mt.remove(new Query(new Criteria()),"skuinfos"+id);
-        skuValuesService.deleteByClassId(id);
-        skuService.deleteByClassId(id);
-        for (int i=5;i<lists.size();i++){
-            String uuid=UUID.randomUUID().toString().replace("-", "");
-            skuThread.run(uuid,id,lists,i);
-            skuThread.addSkuValue(uuid,id,i,lists);
-        }
+//        skuValuesService.deleteByClassId(id);
+//        skuService.deleteByClassId(id);
+//        for (int i=5;i<lists.size();i++){
+//            String uuid=UUID.randomUUID().toString().replace("-", "");
+//            skuThread.run(uuid,id,lists,i);
+//            skuThread.addSkuValue(uuid,id,i,lists);
+//        }
         JSONObject rowjson=new JSONObject();
         rowjson.put("data",lists);
         rowjson.put("type","bds");
@@ -268,7 +250,7 @@ public class BaseDataController {
     }
 
     @PutMapping("/bdsclassdatapl")
-    public Mono<Message> bdsclassdatapl(@RequestBody JSONArray jsonArray,@RequestParam("id")String id) throws InterruptedException {
+    public synchronized Mono<Message> bdsclassdatapl(@RequestBody JSONArray jsonArray,@RequestParam("id")String id) throws InterruptedException {
         List<List> lists= jsonArray.toJavaList(List.class);
         productClassService.tg(Integer.valueOf(id),1);
         mt.remove(new Query(new Criteria()),"skuinfos"+id);
@@ -300,57 +282,6 @@ public class BaseDataController {
         return Mono.just(Message.SCUESSS("ok",0));
     }
 
-    String[] froms={
-            "lingjianbang01@163.com",
-            "catlib@163.com",
-            "fubei78907@163.com",
-            "yidiaos964530@163.com",
-            "yuyuesh152@163.com",
-            "yangwen015@163.com",
-            "lou234586059@163.com",
-            "quling1567@163.com",
-            "ji189342334231@163.com",
-            "lushu190196@163.com",
-            "jinlian04156@163.com",
-            "shao3315907837@163.com",
-            "huxiang19018@163.com",
-            "lajin87267123@163.com",
-            "wei904827823@163.com",
-            "wei04833826055@163.com",
-            "mahuang2220489@163.com",
-            "jiaobia69342@163.com",
-            "dimutia3089345@163.com",
-            "mai37856389378@163.com",
-            "yan33085345907@163.com",
-            "yangbei6745@163.com",
-            "anqianm88908@163.com",
-            "yang3419045319@163.com",
-            "guan82948160@163.com",
-            "quanshe015905@163.com",
-            "yinian5536056@163.com",
-            "ming372604@163.com"
-
-    };
-    @PostMapping("/sendmail")
-    @Transactional
-    public Mono<Message> sendmail(@RequestBody JSONArray jsonArray){
-        String text=jsonArray.get(0).toString().replace("ondrag=\"changeurl(this)\"","").replace("onclick=\"changeimg(this)\"","").replace("onclick=\"changeword(this)\"","").replace("border: 2px solid green;","");
-        mailInfoMapper.install(jsonArray.get(0).toString().replace("border: 2px solid green;",""));
-        int index=0;
-        for (int i=1;i<jsonArray.size();i++){
-            if(index>=froms.length){
-                index=0;
-            }
-          skuThread.sendmail(jsonArray.getString(i),text,froms[index]);
-          index++;
-      }
-        return Mono.just(Message.SCUESSS("发送成功",0));
-    }
-
-    @GetMapping("/getemail")
-    public Mono<Message> getemail(){
-        return Mono.just(Message.SCUESSS("发送成功",mailInfoMapper.select()));
-    }
 
     @GetMapping("/parameter")
     public Mono<Message> getParameter(){

@@ -3,7 +3,6 @@ package com.bangxuan.xxw.controller.api;
 import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.service.CountService;
 import com.bangxuan.xxw.service.ProductClassService;
-import com.bangxuan.xxw.util.CodeLib;
 import com.bangxuan.xxw.util.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -39,9 +38,9 @@ public class CountController {
     }
 
     @PutMapping("/followClass")
-    public Mono<Message> followClass(Principal principal, HttpServletRequest request, @RequestParam("id")String id) {
+    public Mono<Message> followClass(Principal principal, HttpServletRequest request, @RequestParam("id")String id,@RequestParam("ip")String ip) {
         JSONObject jsonObject=new JSONObject();
-        jsonObject.put("ip",CodeLib.getLocalIp(request));
+        jsonObject.put("ip",ip);
         jsonObject.put("userinfo",principal.getName());
         jsonObject.put("classid",id);
         jsonObject.put("companyid",productClassService.getCompany(id).getId());
@@ -49,9 +48,7 @@ public class CountController {
     }
 
     @GetMapping("/followInfo")
-    public Mono<Message> followInfo() {
-
-
-        return Mono.just(Message.SCUESSS("ok",countService.followInfo()));
+    public Mono<Message> followInfo(@RequestParam("page") int page) {
+        return Mono.just(Message.SCUESSS(countService.followInfoCount().toString(),countService.followInfo()));
     }
 }

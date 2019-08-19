@@ -19,14 +19,8 @@ public interface SkuMapper {
     @Update("update gy_class_generalparameters set status=1,create_time=date_format(now(),'%Y-%m-%d %H:%i:%s') where id=#{id}")
     int update(SkuInfo skuinfo);
 
-    @Select("select * from gy_class_skuinfo where classid = #{id} order by idx asc")
-    List<SkuInfo> findById(@Param("id")String id);
-
     @Select("select * from gy_class_skuinfo where id = #{id} ")
     SkuInfo getOne(@Param("id")String id);
-
-    @Select("select skuname from gy_class_skuinfo where classid = #{classid} ")
-    List<String> findSkunameByClassid(@Param("classid")String classid);
 
     @Select("select * from gy_class_skuinfo where skuname like '${skuname}'  and  classid = #{classid}")
     List<SkuInfo> findBySkunameAndClassid(@Param("skuname")String skuname, @Param("classid")String classid);

@@ -15,8 +15,8 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan(basePackages = MasterDataSourceConfig.PACKAGE, sqlSessionFactoryRef = "masterSqlSessionFactory")
-public class MasterDataSourceConfig {
+@MapperScan(basePackages = DataSourceConfig.PACKAGE, sqlSessionFactoryRef = "masterSqlSessionFactory")
+public class DataSourceConfig {
     static final String PACKAGE = "com.bangxuan.xxw.dao";
     static final String MAPPER_LOCATION = "classpath:mapper/*.xml";
     @Bean(name = "masterDataSource")
@@ -37,7 +37,7 @@ public class MasterDataSourceConfig {
         final SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(masterDataSource);
         sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver()
-                .getResources(MasterDataSourceConfig.MAPPER_LOCATION));
+                .getResources(DataSourceConfig.MAPPER_LOCATION));
         return sessionFactory.getObject();
     }
 }

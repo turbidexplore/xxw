@@ -134,4 +134,8 @@ public class CountService {
     public List<JSONObject> followInfo() {
         return countMapper.followInfo();
     }
+
+    public Integer followInfoCount() {
+        return countMapper.followInfoCount();
+    }
 }

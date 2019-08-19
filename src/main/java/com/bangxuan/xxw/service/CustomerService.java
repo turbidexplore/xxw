@@ -14,7 +14,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 
 @Component
-public class CustomerUserDetailsService implements UserDetailsService {
+public class CustomerService implements UserDetailsService {
 
     @Autowired
     private UserSecurityService userSecurityService;

@@ -29,6 +29,11 @@ public class NavController {
         return "index";
     }
 
+    @RequestMapping("/system/followInfo")
+    public String followInfo(){
+        return "followInfo";
+    }
+
     @RequestMapping("/system/task")
     public String task(){
         return "task";
@@ -84,11 +89,6 @@ public class NavController {
     @RequestMapping("/system/myfiveclass")
     public String myfiveclass(){
         return "myfiveclass";
-    }
-
-    @RequestMapping("/system/messages")
-    public String messages(){
-        return "messages";
     }
 
     @RequestMapping("/system/fiveclassview")

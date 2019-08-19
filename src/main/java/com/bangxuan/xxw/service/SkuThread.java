@@ -108,7 +108,6 @@ public class SkuThread  {
             skuInfo.setUnitprice("未提供");
         }
         if(lists.get(i).get(3)!=null&&lists.get(i).get(3)!="") {
-            System.out.println("aaa"+lists.get(i).get(3).toString());
         skuInfo.setWholesaleprice(lists.get(i).get(3).toString());
         }else {
             skuInfo.setWholesaleprice("未提供");
@@ -198,11 +197,46 @@ public class SkuThread  {
 
     }
 
+    @Async("asyncServiceAddSkuValueplx")
+    public  void addSkuValueplx(String uuid,String id,int i,List<List> lists){
+        for (int a=1;a<lists.get(i).size();a++) {
+            if(null!=lists.get(0).get(a)&&""!=lists.get(0).get(a)&&!"".equals(lists.get(0).get(a))) {
+                SkuValues skuValues = new SkuValues();
+                skuValues.setId(UUID.randomUUID().toString().replace("-", ""));
+                skuValues.setSkuid(uuid);
+                skuValues.setClassid(id);
+                if(lists.get(0).get(a)!=null) {
+                    skuValues.setSkukey(lists.get(0).get(a).toString());
+                }
+                if(lists.get(1).get(a)!=null) {
+                    skuValues.setKey_en(lists.get(1).get(a).toString());
+                }
+                if(lists.get(2).get(a)!=null) {
+                    skuValues.setSkucode(lists.get(2).get(a).toString());
+                }
+                if(lists.get(3).get(a)!=null) {
+                    skuValues.setUnit(lists.get(3).get(a).toString());
+                }
+                if(lists.get(4).get(a)!=null) {
+                    skuValues.setDatatype(lists.get(4).get(a).toString());
+                }
+                if(lists.get(i).get(a)!=null) {
+                    skuValues.setSkuvalue(lists.get(i).get(a).toString());
+                }
+
+                skuValues.setIndex(a);
+                skuValuesService.insert(skuValues);
+
+            }
+        }
+
+    }
+
 
     String[] codes={"origin","unitprice","wholesaleprice","mpq","moq","qualityassurancetime","sample","zzsample","pdf","sd","td","video","logo"};
 
     @Async("asyncServiceSkuinfo")
-    public void skuinfo(String id,JSONArray jsonArray) {
+    public  void skuinfo(String id,JSONArray jsonArray) {
 
         productClassService.updateInfo(id," information=1 ");
             jsonArray.forEach(v->{
@@ -267,13 +301,35 @@ public class SkuThread  {
         }
     }
 
-    @Autowired
-    private MailService mailService;
 
 
-    @Async("asyncServiceSendMail")
-    public void sendmail(String a, String text,String f){
-            mailService.sendHtmlMail(a.replace("`","").replace("'","").replace(" ","").replace("  ","").trim(), text,f);
+    @Async("asyncServiceExecutorplx")
+    public void runplx(String uuid,String id,List<List> lists,int i) throws InterruptedException {
+        productClassService.updateInfo(id," information=1 ");
+        SkuInfo skuInfo=new SkuInfo();
+        skuInfo.setId(uuid);
+        skuInfo.setClassid(Integer.parseInt(id));
+        skuInfo.setSkuname(lists.get(i).get(0).toString());
+
+
+            skuInfo.setUnitprice("未提供");
+
+            skuInfo.setWholesaleprice("未提供");
+
+            skuInfo.setMpq("1");
+
+            skuInfo.setMoq("1");
+
+            skuInfo.setQualityassurancetime("12");
+
+            skuInfo.setSample("未提供");
+
+            skuInfo.setZzsample("未提供");
+
+
+        skuInfo.setIdx(i-4);
+        skuService.insert(skuInfo);
+
     }
 }
 

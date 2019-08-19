@@ -3,13 +3,6 @@ server:
 spring:
   application:
     name: xxw
-  mail:
-    host: smtp.163.com
-    account: catlib@163.com
-    from: catlib@163.com
-    pass: ljb123qwe
-    port: 465
-    protocol: smtp
   thymeleaf:
     cache: false
     prefix: classpath:/templates/
@@ -63,6 +56,12 @@ master:
     username: www_datlogs_cn
     password: jKXankiaGNHi3jK2
     driverClassName: com.mysql.jdbc.Driver
+#master:
+#  datasource:
+#    url: jdbc:mysql://192.168.1.191:3306/www_datlogs_cn_data
+#    username: root
+#    password: zhangan@28
+#    driverClassName: com.mysql.jdbc.Driver
 mybatis:
   configuration:
     cache-enabled: true
@@ -87,7 +86,7 @@ security:
   oauth2:
     resource:
       jwt:
-        key-value: auth.turbidexplore.com
+        key-value: auth.ljb.com
 logging:
   level:
    com:

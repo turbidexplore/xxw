@@ -35,9 +35,6 @@ public class SkuService {
     public int deleteByClassId(String classid){
         return skuMapper.deleteByClassId(classid);
     }
-    public List<SkuInfo> findById(String id){
-        return skuMapper.findById(id);
-    }
 
     @Cacheable(cacheNames = {"redis_cache"}, key = "'skufindById'+#id+'-'+#page+'-'+#size+'-'+#ids")
     public List<SkuInfo> findById(String id, Integer page, Integer size, String ids){

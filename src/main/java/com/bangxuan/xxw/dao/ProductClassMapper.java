@@ -123,9 +123,6 @@ public interface ProductClassMapper {
     @Update("update gy_product_class set taskstatus=#{taskstatus} where id=#{id}")
     int updateStatus(@Param("taskstatus")Integer taskstatus,@Param("id")Integer id);
 
-    @Update("update gy_product_class set taskstatus=0 where 1=1")
-    int updateTaskLogo();
-
     @Select("select * from gy_product_class")
     List<ProductClass> all();
 
@@ -141,14 +138,9 @@ public interface ProductClassMapper {
     @Select("select * from filegroup where class_id=#{id}")
     List<JSONObject> getImages(@Param("id") String id);
 
-    @Select("select skutype from gy_product_class where id=#{id}")
-    Integer selectSkutypeById(@Param("id")String id);
 
     @Update("update gy_product_class set skutype=#{skutype} where id=#{id}")
     int updateSkutype(@Param("id")String id,@Param("skutype")Integer skutype);
-
-    @Update("update gy_product_class set skuuser=#{user} where id=#{id}")
-    int updateUser(@Param("user")String user,@Param("id")String id);
 
     @Select("select a.industry as hy,a.*,b.pdf_file,c.company_name,c.logo as companylogo,c.id as company_id,d.* from gy_product_class a,gy_class_pdf b,gy_company c,gy_company_brand d where a.company_id=c.id and a.brand_id =d.id and a.id=b.class_id and a.status !=2  and a.id=#{id} and a.skuuser=#{user}  and a.company_id!=129  order by a.status,a.company_id desc  ")
     List<JSONObject> getInfos(@Param("id") String id,@Param("user") String user);
@@ -163,11 +155,6 @@ public interface ProductClassMapper {
             "order by p.skutime desc LIMIT #{page},#{size}")
     List<JSONObject> myfiveclass(@Param("name") String name, @Param("page")int page,@Param("size") int size,@Param("text") String text);
 
-    @Select("select a.id from gy_product_class a,gy_company b where a.company_id=b.id and b.company_name like '%盘起%';")
-    List<String> getcom();
-
-    @Update("update gy_product_class set skuuser=#{user} where id=#{id}")
-    int updateUserc(@Param("user")String user,@Param("id")String id);
 
     @Select("select logo from gy_product_class where id=#{id}")
     String getFiveClassLogo(@Param("id") String id);
@@ -196,7 +183,5 @@ public interface ProductClassMapper {
     @Select("select a.*,b.pdf_file,c.company_name,c.logo as companylogo,c.id as company_id,d.* from gy_product_class a,gy_class_pdf b,gy_company c,gy_company_brand d where a.skuuser =#{name} and a.company_id=c.id and a.brand_id =d.id and a.id=b.class_id and a.status !=2 and a.company_id=#{comid}   order by a.status,a.company_id asc limit 0,1")
     JSONObject getOneC(@Param("name") String name,@Param("comid") String comid);
 
-    @Select("select * from gy_product_class where level>=3")
-    List<ProductClass> getBySeo();
 }
 

@@ -1,9 +1,10 @@
 var yss=[];
 var data=[];
-$("#cz").html("<button type=\"submit\" id=\"bcsj\" class=\"btn btn-accent\" onclick=\"save()\">生成数据</button><button type=\"submit\" id=\"bcsj\" class=\"btn btn-sm btn-success\" onclick=\"bcsj(this)\">保存数据</button>")
+$("#cz").html("<button type=\"submit\" id=\"bcsj\" class=\"btn btn-accent\" onclick=\"save()\">生成数据</button><button type=\"submit\" id=\"bcsja\" class=\"btn btn-sm btn-success\" onclick=\"bcsj(this)\">保存数据</button>")
 if($.cookie("ACCESS_TOKEN")==undefined){
     window.location.href="/system/login";
 }
+
 function inityueshu() {
     yss=[];
     var index=0;
@@ -59,7 +60,7 @@ function changecodename(obj,value) {
     $("#codename"+value).html(obj.value);
     bdsword();
 }
-addtable();
+
 function addtable() {
     data.push({"index":1,"col":[],"colsize":2,"rowsize":0});
     var settings = {
@@ -85,7 +86,8 @@ function addtable() {
 
         $("#tables").append(" <table  class=\"gridtable\" style='float: left;margin: 10px;' id=\"gridtable"+data.length+"\" >\n" +
             "<tr id=\"a"+data.length+"\">\n" +
-            "<td><span style='font-weight: bold;color: red;' id='codename"+data.length+"'>[A"+data.length+"]</span>/中文名称</td>\n" +
+            "<td><span style='font-weight: bold;color: red;' id='codename"+data.length+"'>[A"+data.length+"]</span>/中文名称<br>" +
+            "<button type=\"button\" class=\"btn btn-sm btn-success \"  style='height: 20px;line-height: 0px;' onclick=\"hideview('view"+data.length+"')\" >隐藏</button>&nbsp;<button type=\"button\" class=\"btn btn-sm btn-success \"  style='height: 20px;line-height: 0px;' onclick=\"showview('view"+data.length+"')\" >显示</button></td>\n" +
             "<td rowspan=\"5\" id=\"addtd"+data.length+"\">\n" +
             "<button type=\"button\" class=\"btn btn-sm btn-success \"  style='height: 20px;line-height: 0px;' onclick=\"addcs('"+data.length+"')\">添加列</button>\n" +
             "</td>\n" +
@@ -95,14 +97,19 @@ function addtable() {
             "<tr id=\"d"+data.length+"\"><td>单位</td></tr>\n" +
             "<tr id=\"e"+data.length+"\"><td>数据类型</td></tr>\n" +
             "<tr id=\"addth"+data.length+"\">\n" +
-            "<td colspan=\"2\"><center> <button type=\"button\" class=\"btn btn-sm btn-success \"  style='height: 20px;line-height: 0px;' onclick=\"adddaoru('"+data.length+"')\" >导入数据</button></center></td>\n" +
+            "<td colspan=\"2\"><center><button type=\"button\" class=\"btn btn-sm btn-success \"  style='height: 20px;line-height: 0px;' onclick=\"adddaoru('"+data.length+"')\" >导入数据</button></center></td>\n" +
             "</tr><tbody id='view"+data.length+"'></tbody>\n" +
             "</table>");
         bdsword();
         inityueshu();
     });
+}
 
-
+function hideview(id) {
+    $("#"+id).hide();
+}
+function showview(id) {
+    $("#"+id).show();
 }
 
 function addcs(value) {
@@ -147,25 +154,6 @@ function addcs(value) {
 function changecss(obj) {
     $(obj).css("border", "1px solid black");
 }
-// function addrow(value) {
-//
-//     var tds="";
-//     for(var i=0;i<data[value-1].col.length;i++){
-//         var index= data[value-1].col[i];
-//         if($("#avalue"+value+index).length>0){
-//             if(i==0){
-//                 tds+="<td id='cs"+value+data[value-1].rowsize+index+i+"h'><input oninput='inityueshu()' id='csvalue"+value+data[value-1].rowsize+index+"0h' type='text' style=\"border-style:none;width: 100px;\" placeholder='参数'></td>";
-//             }
-//             tds+="<td id='cs"+value+data[value-1].rowsize+index+i+"'><input  id='csvalue"+value+data[value-1].rowsize+index+i+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='参数'></td>";
-//         }
-//     }
-//     tds+="<td id='cs"+value+data[value-1].rowsize+i+"'><button type=\"button\" style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-danger \" onclick=\"rmrow('csrow"+value+data[value-1].rowsize+"')\">删除行</button></td>";
-//     $("#view"+value).append("<tr id=\"csrow"+value+data[value-1 ].rowsize+"\">"+tds+"</tr>");
-//     data[value-1].rowsize=data[value-1].rowsize+1;
-//     $("#addth"+value).remove();
-//     $("#view"+value).append("<tr id=\"addth"+value+"\"><td colspan=\""+data[value-1].colsize+"\"><center><button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-success \" onclick=\"adddaoru("+value+")\">导入数据</button></center></td></tr>");
-//     inityueshu();
-// }
 
 function adddaoru(value) {
     $("#view"+value).html("");
@@ -202,7 +190,7 @@ function adddaoru(value) {
                 $("#view"+value).append("<tr id=\"csrow"+value+data[value-1 ].rowsize+"\">"+tds+"</tr>");
                 data[value-1].rowsize=data[value-1].rowsize+1;
                 $("#addth"+value).remove();
-                $("#view"+value).append("<tr id=\"addth"+value+"\"><td colspan=\""+data[value-1].colsize+"\"><center><button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-success \" onclick=\"adddaoru("+value+")\">导入数据</button></center></td></tr>");
+                $("#view"+value).append("<tr id=\"addth"+value+"\"><td colspan=\""+data[value-1].colsize+"\"><center><button type=\"button\"  style='height: 20px;line-height: 0px;' class=\"btn btn-sm btn-success \" onclick=\"adddaoru('"+value+"')\">导入数据</button></center></td></tr>");
             }
         }
     }
@@ -223,13 +211,6 @@ function rm(obj,value,index) {
     adddaoru(value);
 }
 
-function rmrow(obj,value) {
-
-    data[value-1].rowsize=data[value-1].rowsize-1;
-    $("#"+obj).remove()
-    inityueshu()
-}
-
 function rmbds(value) {
 
     $("#bds"+value).remove();
@@ -244,18 +225,101 @@ function bdsword() {
     for (var i=1;i<=data.length;i++){if($("#bdsname"+i).val()!=""&&$("#bdsname"+i).val()!=undefined) {word += $("#bdstype"+i).val() + "  {" + $("#bdsname"+i).val() + "}  ";}}
     $("#bdsword").html(word);
 }
-
-var container = document.getElementById('example');
 var hot=null;
+var hot1= null;
+var container =null;
+var container1=null;
 
-var container1 = document.getElementById('example1');
-var hot1=  new Handsontable(container1, {
-    data: [["","","","","","",""]],
-    minSpareRows:2,//空出多少行
-    minSpareCols:2,
-    colHeaders:true,//显示表头　
-    contextMenu:true//显示表头下拉菜单
+var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "/productclass/gethis?id="+$("#coreid").val(),
+    "method": "GET",
+    "processData": false
+}
+$.ajax(settings).done(function (response) {
+    if(response.data!=null){
+        $("#bodyhis").html(response.data.bodyhis);
+        $("#bcsja").attr("disabled",false);
+        yss=response.data.yss;
+        data=response.data.data;
+        for(var i=0;i<response.data.values.length;i++){
+            $("#"+response.data.values[i].key).val(response.data.values[i].value);
+        }
+        for(var i=0;i<response.data.valuesa.length;i++){
+            $("#"+response.data.valuesa[i].key+ " option[value='"+response.data.valuesa[i].value+"']").attr("selected","selected");
+        }
+
+        $("#example1").html("");
+        $("#example").html("");
+        container=document.getElementById('example');
+        container1= document.getElementById('example1');
+        hot1=  new Handsontable(container1, {
+            data: [["","","","","","",""]],
+            minSpareRows:2,//空出多少行
+            minSpareCols:2,
+            colHeaders:true,//显示表头　
+            contextMenu:true//显示表头下拉菜单
+        });
+        var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "/basedata/getclassdata?id="+$("#coreid").val(),
+            "method": "POST",
+            "processData": false
+        }
+        $.ajax(settings).done(function (response) {
+            if(response.data!=0){
+                hot = new Handsontable(container,
+                    {
+                        data: response.data,
+                        minSpareRows:2,//空出多少行
+                        minSpareCols:2,
+                        colHeaders:true,//显示表头　
+                        contextMenu:true//显示表头下拉菜单
+                    });
+            }
+        });
+    }else {
+        container=document.getElementById('example');
+        container1= document.getElementById('example1');
+        addtable();
+    }
 });
+
+
+setInterval(function () {
+    var values= [];
+    var valuesa= [];
+    var inputs= $("#tables :input[type='text']");
+    for (var i=0;i<inputs.length;i++){
+        values.push({"key":$(inputs[i]).attr("id"),"value":$(inputs[i]).val()});
+    }
+
+    var selects= $(" select");
+    for (var i=0;i<selects.length;i++){
+        valuesa.push({"key":$(selects[i]).attr("id"),"value":$(selects[i]).val()});
+    }
+    var mydata = {
+        "bodyhis": $("#bodyhis").html(),
+        "yss": yss,
+        "data": data,
+        "values":values,
+        "valuesa":valuesa
+    }
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "/productclass/savehis?id=" + $("#coreid").val(),
+        "method": "PUT",
+        "processData": false,
+        "data": JSON.stringify(mydata),
+        "contentType": "application/json"
+    }
+    $.ajax(settings).done(function (response) {
+    });
+},10000);
+
 
 function qingkong() {
     $("#example1").html("");
@@ -268,26 +332,6 @@ function qingkong() {
     });
 }
 
-
-var settings = {
-    "async": true,
-    "crossDomain": true,
-    "url": "/basedata/getclassdata?id="+$("#coreid").val(),
-    "method": "POST",
-    "processData": false
-}
-$.ajax(settings).done(function (response) {
-    if(response.data!=0){
-        hot = new Handsontable(container,
-            {
-                data: response.data,
-                minSpareRows:2,//空出多少行
-                minSpareCols:2,
-                colHeaders:true,//显示表头　
-                contextMenu:true//显示表头下拉菜单
-            });
-    }
-});
 
 var skunames=[];
 
@@ -320,14 +364,23 @@ function save() {
                             $("#avalue" + (x + 1) + data[x].col[a]).css("border", "2px solid red");
                             status++;
                         }
+                        setTimeout(function(){
+                        },1000);
                     }
                 }
                 skuname.push(skunamev);
                 skudata.push(rowdata);
+                setTimeout(function(){
+                },1000);
             }
             skunames.push(skuname);
             bdsdata.push(skudata);
+            setTimeout(function(){
+            },1000);
+
         }
+        setTimeout(function(){
+        },5000);
     }
     if (status > 0) {
         alert("请完整填写信息！")
@@ -345,6 +398,8 @@ function save() {
                         });
                     }
                 })
+                setTimeout(function(){
+                },1000);
             })
             if (isok == 0) {
                 var tsku = [];
@@ -357,6 +412,8 @@ function save() {
                 })
                 sku.push(tsku);
             }
+            setTimeout(function(){
+            },1000);
         })
 
         var dataa = [];
@@ -392,6 +449,8 @@ function save() {
                     }
                     index++;
                 }
+                setTimeout(function(){
+                },1000);
             })
             if (dw == 0) {
                 dataa.push(datac);
@@ -404,7 +463,8 @@ function save() {
             if (datab.length > 0) {
                 dataa.push(datab)
             }
-
+            setTimeout(function(){
+            },1000);
         })
         $("#example").html("");
         alert("共有"+(dataa.length-5)+"条数据！");
@@ -452,7 +512,6 @@ function bcsj(obj) {
     }
     if (data.length>0){
         var index = layer.load();
-        console.log(skunames);
         var settings = {
             "async": true,
             "crossDomain": true,
@@ -482,10 +541,8 @@ function bcsj(obj) {
     }
 }
 
-
 //笛卡儿积组合
-function descartes(list)
-{
+function descartes(list) {
     //parent上一级索引;count指针计数
     var point  = {};
     var result = [];
@@ -493,24 +550,19 @@ function descartes(list)
     var tempCount = 0;
     var temp   = [];
     //根据参数列生成指针对象
-    for(var index in list)
-    {
-        if(typeof list[index] == 'object')
-        {
+    for(var index in list) {
+        if(typeof list[index] == 'object') {
             point[index] = {'parent':pIndex,'count':0}
             pIndex = index;
         }
     }
     //单维度数据结构直接返回
-    if(pIndex == null)
-    {
+    if(pIndex == null) {
         return list;
     }
     //动态生成笛卡尔积
-    while(true)
-    {
-        for(var index in list)
-        {
+    while(true) {
+        for(var index in list) {
             tempCount = point[index]['count'];
             temp.push(list[index][tempCount]);
         }
@@ -518,25 +570,21 @@ function descartes(list)
         result.push(temp);
         temp = [];
         //检查指针最大值问题
-        while(true)
-        {
-            if(point[index]['count']+1 >= list[index].length)
-            {
+        while(true) {
+            if(point[index]['count']+1 >= list[index].length) {
                 point[index]['count'] = 0;
                 pIndex = point[index]['parent'];
-                if(pIndex == null)
-                {
+                if(pIndex == null) {
                     return result;
                 }
                 //赋值parent进行再次检查
                 index = pIndex;
-            }
-            else
-            {
+            } else {
                 point[index]['count']++;
                 break;
             }
         }
     }
 }
+
 

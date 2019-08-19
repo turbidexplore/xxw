@@ -76,7 +76,6 @@ public class CodeLib {
         return flag;
     }
 
-
     public static void deleteFile(File... files) {
         for (File file : files) {
             if (file.exists()) {
@@ -156,8 +155,6 @@ public class CodeLib {
             "A","B","C","D","E","F","G","H","J","K","M","N","P","Q","R",
             "S","T","U","V","W","X","Y"};
 
-
-
     public String getNikeName(StringRedisTemplate stringRedisTemplate){
 
         String[] strNow = new SimpleDateFormat("yyyy-MM-dd").format(new Date()).toString().split("-");
@@ -194,18 +191,12 @@ public class CodeLib {
 
     }
 
-    public static String getCurrDateStr() {
-        SimpleDateFormat std = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return std.format(new Date()).toString();
-    }
-
     public static String getSHC() {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String str = sdf.format(date);
         return str;
     }
-
 
     private static String Url = "http://106.ihuyi.cn/webservice/sms.php?method=Submit";
 

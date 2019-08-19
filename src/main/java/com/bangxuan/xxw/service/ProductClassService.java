@@ -140,7 +140,7 @@ public class ProductClassService {
         return productClassMapper.getOne(user);
     }
 
-    @Cacheable(cacheNames = {"redis_cache"}, key = "'getOne'+#id")
+
     public JSONObject get(String id) {
         return productClassMapper.get(id);
     }
@@ -151,10 +151,6 @@ public class ProductClassService {
 
     public int updateStatus(String id) {
         return productClassMapper.updateStatus(9, Integer.parseInt(id));
-    }
-
-    public int updateTaskLogo() {
-        return productClassMapper.updateTaskLogo();
     }
 
     public List<ProductClass> all() {
@@ -178,18 +174,9 @@ public class ProductClassService {
         return productClassMapper.getImages(id);
     }
 
-    public Integer getSkutypeById(String id) {
-        return productClassMapper.selectSkutypeById(id);
-    }
-
     @Transactional
     public Integer updateSkutype(String id, Integer skutype) {
         return productClassMapper.updateSkutype(id, skutype);
-    }
-
-    @Transactional
-    public int updateUser(String user, String id) {
-        return productClassMapper.updateUser(user, id);
     }
 
     public List<JSONObject> getInfos(String id, String name) {
@@ -237,7 +224,4 @@ public class ProductClassService {
         return productClassMapper.getOneC(name,comid);
     }
 
-    public List<ProductClass> getBySeo() {
-    return productClassMapper.getBySeo();
-    }
 }

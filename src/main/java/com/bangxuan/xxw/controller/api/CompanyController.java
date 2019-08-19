@@ -3,22 +3,23 @@ package com.bangxuan.xxw.controller.api;
 import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.entity.Brand;
 import com.bangxuan.xxw.entity.Company;
-import com.bangxuan.xxw.util.Message;
 import com.bangxuan.xxw.service.BrandService;
 import com.bangxuan.xxw.service.CompanyService;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.List;
 import com.bangxuan.xxw.util.CodeLib;
+import com.bangxuan.xxw.util.Message;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.model.PutObjectRequest;
 import com.qcloud.cos.model.PutObjectResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.List;
 
 @RestController
 @RequestMapping("/company")
@@ -69,7 +70,6 @@ public class CompanyController {
         }
         data.put("brands",brands);
         data.put("company",company);
-
         return Mono.just(Message.SCUESSS(Message.SECUESS,data));
     }
 

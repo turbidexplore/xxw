@@ -20,6 +20,7 @@ public class AuthConfig extends AuthorizationServerConfigurerAdapter {
     private UserDetailsService userDetailsService;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     public void configure(AuthorizationServerSecurityConfigurer security)  {
     }
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
@@ -37,7 +38,7 @@ public class AuthConfig extends AuthorizationServerConfigurerAdapter {
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter(){
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey("auth.turbidexplore.com");
+        converter.setSigningKey("auth.ljb.com");
         return converter;
     }
 
