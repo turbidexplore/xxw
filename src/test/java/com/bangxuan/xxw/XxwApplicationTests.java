@@ -15,8 +15,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class XxwApplicationTests {
 
-
-
     @Test
     public void contextLoads() {
 
