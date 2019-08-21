@@ -91,6 +91,6 @@ public interface CountMapper {
     @Select("select count(*) from follow_class ")
     Integer followInfoCount();
 
-    @Select("select id from gy_product_class where level=5 and status=2 and skutype=2 order by id desc limit 0,1000 ")
-    List<String> getaaa();
+    @Select("select id from gy_product_class where level=5 and status=2 and skutype=2 order by id desc limit ${a},${b}")
+    List<String> getaaa(@Param("a")Integer a,@Param("b")Integer b);
 }

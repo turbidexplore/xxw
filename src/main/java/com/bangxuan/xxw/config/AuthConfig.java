@@ -26,8 +26,8 @@ public class AuthConfig extends AuthorizationServerConfigurerAdapter {
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory().withClient("website")
                 .secret(bCryptPasswordEncoder.encode("turbid"))
-                .authorizedGrantTypes("authorization_code","password")
-                .scopes("web").scopes("mobile")
+                .authorizedGrantTypes("password")
+                .scopes("web")
                 .accessTokenValiditySeconds(3600*24*30);
     }
     public void configure(AuthorizationServerEndpointsConfigurer endpoints)  {

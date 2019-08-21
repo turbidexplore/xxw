@@ -44,11 +44,11 @@ spring:
     shutdown-timeout: 100ms
   data:
     mongodb:
-      host: anoax.com
+      host: heidong.lingjianbang.com
       port: 27017
       database: anoax_database
-      username: anoax
-      password: zhangan@28
+      username: admin
+      password: admin
       repositories: true
 master:
   datasource:
@@ -87,9 +87,4 @@ security:
     resource:
       jwt:
         key-value: auth.ljb.com
-logging:
-  level:
-   com:
-    bangxuan:
-      xxw:
-        dao: debug
+
