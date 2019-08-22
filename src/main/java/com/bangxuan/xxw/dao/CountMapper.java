@@ -55,7 +55,7 @@ public interface CountMapper {
     @Select("select count(*) from gy_product_class where skuuser=#{user} and status!=2 and level=5")
     Integer getUserNotCount(@Param("user") String user);
 
-    @Select("select count(*) from gy_product_class where skuuser=#{user} and status=2 and level=5 and day(skutime)=day(now())")
+    @Select("select count(*) from gy_product_class where skuuser=#{user} and status=2 and level=5 and date(skutime)=date(now())")
     Integer getDayUserCount(@Param("user") String user);
 
     @Select("select * from user_logs where userinfo ${sql} like '%-%' and date(create_time)=date(now()) group by userinfo")
