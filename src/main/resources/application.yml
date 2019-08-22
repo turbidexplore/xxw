@@ -56,12 +56,6 @@ master:
     username: www_datlogs_cn
     password: jKXankiaGNHi3jK2
     driverClassName: com.mysql.jdbc.Driver
-#master:
-#  datasource:
-#    url: jdbc:mysql://192.168.1.191:3306/www_datlogs_cn_data
-#    username: root
-#    password: zhangan@28
-#    driverClassName: com.mysql.jdbc.Driver
 mybatis:
   configuration:
     cache-enabled: true

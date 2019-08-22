@@ -530,7 +530,6 @@ function bcsj(obj) {
     }
 }
 
-//笛卡儿积组合
 function descartes(list) {
     //parent上一级索引;count指针计数
     var point  = {};
@@ -538,7 +537,6 @@ function descartes(list) {
     var pIndex = null;
     var tempCount = 0;
     var temp   = [];
-    //根据参数列生成指针对象
     for(var index in list) {
         if(typeof list[index] == 'object') {
             point[index] = {'parent':pIndex,'count':0}

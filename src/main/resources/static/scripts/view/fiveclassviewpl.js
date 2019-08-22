@@ -116,7 +116,7 @@ function add() {
         "processData": false
     }
     $.ajax(settings).done(function (response) {
-        $("#a").append("<td id='a"+index+"'><input onchange='rmcss(this)' oninput=\"enname(this,'bvalue"+index+"')\" id='avalue"+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='中文名称'></td> </td>");
+        $("#a").append("<td id='a"+index+"'><input onchange='rmcss(this)' oninput=\"enname(this,'bvalue"+index+"')\" id='avalue"+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='中文名称'></td></td>");
         $("#b").append("<td id='b"+index+"'><input onchange='rmcss(this)' id='bvalue"+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='英文名称'></td>");
         $("#c").append("<td id='c"+index+"'><input onchange='rmcss(this)' id='cvalue"+index+"' type='text' style=\"border-style:none;width: 100px;\" placeholder='代码'></td>");
         var unit="<select id='dvalue"+index+"'><option value=\"无\">默认</option>" ;
@@ -125,7 +125,7 @@ function add() {
         });
         unit=unit+"</select>";
         $("#d").append("<td ondblclick='rm("+index+")' id='d"+index+"'>"+unit+"</td>");
-            var datatype="<select  id='evalue"+index+"'>"
+            var datatype="<select id='evalue"+index+"'>"
         response.data.datatype.forEach(function (value) {
             datatype=datatype+"<option value='"+value.datatype+"'>"+value.datatype+"</option>"
         });
