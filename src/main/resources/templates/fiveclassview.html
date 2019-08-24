@@ -1,125 +1,167 @@
 <!doctype html>
 <html class="no-js h-100" lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>零件邦-传奇</title>
-    <meta name="description" content="A high-quality &amp; free Bootstrap admin dashboard template pack that comes with lots of templates and components.">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <style>
-      /* fallback */
-      @font-face {
-        font-family: 'Material Icons';
-        font-style: normal;
-        font-weight: 400;
-        src: url(https://fonts.gstatic.com/s/materialicons/v47/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
-      }
-      .material-icons {
-        font-family: 'Material Icons';
-        font-weight: normal;
-        font-style: normal;
-        font-size: 24px;
-        line-height: 1;
-        letter-spacing: normal;
-        text-transform: none;
-        display: inline-block;
-        white-space: nowrap;
-        word-wrap: normal;
-        direction: ltr;
-        -moz-font-feature-settings: 'liga';
-        -moz-osx-font-smoothing: grayscale;
-      }
+  <meta charset="UTF-8">
+  <title>表达式操作</title>
+  <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+  <link rel="stylesheet" href="/styles/H-ui.css"/>
+  <link rel="stylesheet" type="text/css" href="/styles/Hui-iconfont/1.0.8/iconfont.min.css"/>
+  <!-- vue-->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="/scripts/jquery-3.3.1.min.js"></script>
+  <!-- handsontable-->
+  <script src="/scripts/handsontable.full.js"></script>
+  <link rel="stylesheet" media="screen" href="/styles/handsontable.full.css">
+  <style>
+    .w-80{
+      width: 80px;
+    }
+  </style>
+</head>
+<body>
+<div style="padding: 50px">
+  <div><input type="button" class="btn btn-primary radius size-S" value="清空表格" onclick="expressModule.cleanInputExcel()"></input></div>
+  <div id="inputExcel"></div>
+</div>
 
-      .yuan{
-        background-color: #0a0c0d;width: 20px;height: 20px;border-radius: 64px;
-      }
+<div id="app" style="padding: 50px">
+  <div>
+    <!-- 表达式显示模块start -->
+    <h3 class="c-red">
+      <span v-for="(main,index) in expList">{{main.symob}}{{main.name}}</span>
+    </h3>
+    <div class="panel panel-primary">
+      <div class="panel-header">表达式<input type="button" class="btn btn-secondary radius size-S ml-40" value="添加表达式" @click="addExpress"></input>
+        <span class="f-r">
+                    <input type="button" class="btn btn-secondary radius size-S ml-40" value="展开全部" @click="extendExpress"></input>
+                    <input type="button" class="btn btn-secondary radius size-S ml-40" value="合并全部" @click="closeExpress"></input>
+                </span>
+      </div>
+      <div class="panel-body">
+        <div class="cl">
+          <div class="f-l bk-gray pd-10 mb-5 mr-15" v-for="(main,index) in expList" style="width: 70px;">
+            <p><select v-model="expList[index].symob">
+              <option></option>
+              <option>*</option>
+              <option>-</option>
+            </select><span class="f-18 c-red">{{main.name}}</span></p>
 
-    </style>
-    <link rel="stylesheet" href="/styles/bootstrap.min.css" >
-    <link rel="stylesheet" id="main-stylesheet" data-version="1.1.0" href="/styles/shards-dashboards.1.1.0.min.css">
-    <link rel="stylesheet" href="/styles/extras.1.1.0.min.css">
-    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/images/favicon.ico">
-    <link rel="stylesheet" media="screen" href="/styles/handsontable.full.css">
-    <style type="text/css">
-      table.gridtable {
-        font-family: verdana,arial,sans-serif;
-        font-size:11px;
-        color:#333333;
-        border-width: 1px;
-        border-color: #666666;
-        border-collapse: collapse;
-      }
-      table.gridtable th {
-        border-width: 1px;
-        padding: 8px;
-        border-style: solid;
-        border-color: #666666;
-        background-color: #dedede;
-      }
-      table.gridtable td {
-        border-width: 1px;
-        padding: 8px;
-        border-style: solid;
-        border-color: #666666;
-        background-color: #ffffff;
-      }
-      .clear { clear: both; }
-    </style>
-
-
-  </head>
-  <body class="h-100" >
-    <div class="container-fluid" id="bodyhis">
-      <div class="row">
-          <div class="main-content-container container-fluid px-4">
-            <div class="page-header row no-gutters py-4">
-              <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-                <span class="text-uppercase page-subtitle">零件邦 <button type="submit" style="margin-right: 10px;" class="btn btn-accent" onclick="goback(this)">返回修改</button><button type="submit" style="margin-right: 80px;" class="btn btn-accent" onclick="next()">下一步</button></span>
-                <span id="add_user"></span>
-              </div>
-            </div>
-            <div class="row" >
-
-              <div class="col-lg-12" id="mydata">
-                <div id="bds" style="width: 100%;">
-                  <button type="submit" style="float: left;" class="btn btn-accent" onclick="addtable()">添加表达式</button><span id="bdsword" style="margin-left: 10px;margin-top:6px;font-weight: bold;"></span>
-                  <div class="clear"></div>
-                </div>
-                <hr>
-                <div class="clear"></div>
-                <button type="submit" class="btn btn-accent" onclick="qingkong()">清空表格</button>
-                <div id="example1" ></div>
-                <hr>
-                <div class="clear"></div>
-                <form id="tables">
-                </form>
-                  <div class="clear"></div>
-                <hr>
-                <div id="yueshu" style="width: 100%;"></div>
-                <div class="clear"></div>
-                <div id="cz">
-                  <button type="submit" id="bcsj" class="btn btn-accent" onclick="save()">生成数据</button>
-                </div>
-                <div id="example" style="height: 500px;overflow: scroll;" ></div>
-                <input type="hidden" id="coreid"  th:value="${id}">
-                <br>
-              </div>
-            </div>
+            <p><label>主SKU:<input type="checkbox"  v-model="expList[index].isMainSku"></input></label></p>
+            <p>
+              <input class="btn btn-danger-outline radius size-S" type="button" value="删除"
+                     @click="removeExpress(index)">
+            </p>
           </div>
+        </div>
+
+        <!--SKU VALUE数据操作模块 start-->
+        <ul id="Huifold1" class="Huifold mt-25">
+          <li class="item mt-10 panel-warning" v-for="(main,index) in expList" >
+            <h4 @click="hideExpress(index)">
+              <span class="f-18 c-red">表达式：{{main.name}}</span>
+              <input type="button" class="btn btn-secondary radius size-S" value="导入" @click.stop="importCol(index)">
+              <input type="button" class="btn btn-secondary radius size-S" value="添加列" @click.stop="addCol(index)">
+              <!--<input type="button" class="btn btn-danger radius size-S" value="删除列" @click="removeCol(index)">-->
+              <b>+</b>
+            </h4>
+            <div class="pl-20 pr-20 pb-20 bk-gray" v-show="main.isHidden">
+              <table class="table table-border table-bordered table-striped">
+                <tbody> 
+                <tr v-for="(sub,index2) in main.titles">
+                  <td v-for="(subsub,index3) in sub" width="80px">
+                    <p v-if="index2===0&&index3!=0" class="text-c">
+                      <input type="button" class="btn btn-danger-outline radius size-MINI" @click.stop="removeCol(index,index3)" value="删除列"></input>
+                    </p>
+
+                    <span v-if="index3===0" >{{subsub.placeholder}}</span>
+                    <input class="input-text size-S w-80" v-if="index3!=0"
+                           v-model="expList[index].titles[index2][index3].value"
+                           :placeholder="subsub.placeholder" required="required"
+                           :ref="`expListTitle${index}_${index2}_${index3}`" />
+
+                  </td>
+                </tr>
+                           
+                <tr v-for="(sub,index2) in main.values">                 
+                  <td v-for="(subsub,index3) in sub">
+                            <div style="width: 150px;">
+                                <span v-if="index3===0" style="width: 50px;float: left">
+                                     <input type="button" class="btn btn-danger-outline radius size-MINI" @click.stop="removeRow(index,index2)" value="删除行"></input>
+                                </span>
+                               <span>
+                                     <input class="input-text size-S w-80 "
+                                            v-model="expList[index].values[index2][index3].value"
+                                            placeholder="参数"
+                                            required="required"
+                                            :ref="`expListValue${index}_${index2}_${index3}`"/>
+                                </span>
+                            </div>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </li>
+        </ul>
+        <!--SKU VALUE数据操作模块 end-->
       </div>
     </div>
-    <script src="/scripts/handsontable.full.js"></script>
-    <script src="/scripts/jquery-3.3.1.min.js" ></script>
-    <script src="/scripts/layer.js"></script>
-    <script src="/scripts/jquery.cookie.min.js" ></script>
-    <script src="/scripts/view/fiveclassview.js"></script>
-    <script src="/scripts/popper.min.js" ></script>
-    <script src="/scripts/bootstrap.min.js" ></script>
-    <script src="/scripts/shards.min.js"></script>
-    <script src="/scripts/jquery.sharrre.min.js"></script>
-    <script src="/scripts/extras.1.1.0.min.js"></script>
-    <script src="/scripts/buttons.js"></script>
-  </body>
+    <!-- 表达式显示模块end -->
 
+
+
+    <!--约束操作模块 start-->
+    <div class="panel panel-warning mt-15">
+      <div class="panel-header">
+        约束：
+        <select v-model="ysA">
+          <option v-for="(main,index) in expList" :value="index">{{main.name}}</option>
+        </select>
+        和
+        <select v-model="ysB">
+          <option v-for="(main,index) in expList" :value="index">{{main.name}}</option>
+        </select>
+
+        <input type="button" class="btn btn-secondary radius size-S" value="生成约束" @click="createYueSu"></input>
+      </div>
+      <div class="panel-body">
+        <div  v-for="(ys,index) in ysList">
+          <div class="Huialert Huialert-info">{{ys.A.name}}和{{ys.B.name}}的约束关系 <input type="button" class="btn btn-primary radius size-S" value="移除约束" @click="createYueSu"></input></div>
+          <table  class="table table-border table-bordered table-striped">
+            <tbody> 
+            <tr v-for="(row,index1) in ys.A.values">
+              <td v-if="index1==0"></td>
+              <td v-if="index1==0" v-for="(col,index2) in ys.B.values" @click="addYs(row,col)">
+                {{col[0].value}}
+              </td>
+            </tr>
+            <tr v-for="(row,index1) in ys.A.values">
+              <td>{{row[0].value}}</td>
+              <td class="f-30" v-for="(col,index2) in ys.B.values" @click="addYs(index,index1,index2)">
+                <span v-if="ys.listAdot[ys.B.values.length*index1+index2].checked">●</span>
+                <!--                        {{ys.listAdot[ys.A.values.length*index1+index2].checked}}-->
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!--约束操作模块 end-->
+    共{{totalCount}}
+  </div>
+
+
+</div>
+<!--根据笛卡儿积生成SKU start-->
+<div style="padding: 50px">
+  <div>
+    <input type="button" class="btn btn-primary radius size-S" value="生成数据表" onclick="expressModule.descartes()"></input>
+    <input type="button" class="btn btn-primary radius size-S" value="保存数据" onclick="expressModule.saveExpList()"></input>
+  </div>
+  <div id="outExcel"></div>
+</div>
+<!--根据笛卡儿积生成SKU end-->
+<script src="/scripts/view/fiveclassview_vue.js" th:inline="none"></script>
+</body>
 </html>

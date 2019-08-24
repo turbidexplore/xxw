@@ -15,17 +15,11 @@ var app = new Vue({
                 symob: '-',
                 isMainSku: false, // 是否是主SKU(可进行笛卡尔积进行计算SKU)
                 name: titleValues[0],
-                titles: [[{value: '', placeholder: '中文名称'}], [{value: '', placeholder: '英文名称'}], [{
-                    value: '',
-                    placeholder: '代码'
-                }], [{value: '', placeholder: '单位'}]],
+                titles: [[{value: '', placeholder: '中文名称'}], [{value: '', placeholder: '英文名称'}], [{value: '',placeholder: '代码'}], [{value: '', placeholder: '单位'}], [{value: '', placeholder: '数据类型'}]],
                 values: [[]]
             }],
         ysList:[], // 约束列表
-        titless: [{value: '长度', placeholder: '中文名称'}, {value: 'L', placeholder: '英文名称'}, {
-            value: 'L',
-            placeholder: '代码'
-        }, {value: 'mm', placeholder: '单位'}],
+        titless: [{value: '长度', placeholder: '中文名称'}, {value: 'L', placeholder: '英文名称'}, {value: 'L',placeholder: '代码'}, {value: 'mm', placeholder: '单位'}, {value: '实数', placeholder: '数据类型'}],
         totalCount:0,
         ysA:'', // 约束A的数组下标
         ysB:''  //约束B的数组下标
@@ -157,6 +151,13 @@ var app = new Vue({
                 res.push(value.values)
             })
 
+            // 计算约束的型号
+
+            for(let i=0;i<this.ysList.length;i++){
+                // var
+                // A:ys0,B:ys1
+            }
+
             var skuinfos = cartesian.multiCartesian(res);
             this.totalCount = skuinfos.length
 
@@ -182,6 +183,7 @@ var app = new Vue({
             var yw =[""];
             var dm =[""];
             var dw =[""];
+            var sjlx =[""];
             for(var i=0;i<diker.length;i++){
                 // for(var j=0;j<diker[i].titles.length;j++){
                 for( var k=1;k<diker[i].titles[0].length;k++){
@@ -189,12 +191,14 @@ var app = new Vue({
                     yw.push(diker[i].titles[1][k].value);
                     dm.push(diker[i].titles[2][k].value);
                     dw.push(diker[i].titles[3][k].value);
+                    sjlx.push(diker[i].titles[4][k].value);
                 }
             }
             dataExcellTitle.push(zw);
             dataExcellTitle.push(yw);
             dataExcellTitle.push(dm);
             dataExcellTitle.push(dw);
+            dataExcellTitle.push(sjlx);
             return dataExcellTitle;
         },
         flatten(arr) {
@@ -229,16 +233,18 @@ var app = new Vue({
         },
         createYueSu(){
             // 2个表达式型号的笛卡儿积
-            var ys0 = Object.assign({},this.expList[this.ysA]);
-            var ys1 = Object.assign({},this.expList[this.ysB]);
+            if(this.ysA!==''&&this.ysB!==''){
+                var ys0 = Object.assign({},this.expList[this.ysA]);
+                var ys1 = Object.assign({},this.expList[this.ysB]);
 
-            var listAdot= [];
-            for(var i=0;i<ys0.values.length;i++){
-                for(var j=0;j<ys1.values.length;j++){
-                    listAdot.push({checked:true,A:ys0.values[i],B:ys1.values[j]});
+                var listAdot= [];
+                for(var i=0;i<ys0.values.length;i++){
+                    for(var j=0;j<ys1.values.length;j++){
+                        listAdot.push({checked:true,A:ys0.values[i],B:ys1.values[j]});
+                    }
                 }
+                this.ysList.push({A:ys0,B:ys1,listAdot:listAdot})
             }
-            this.ysList.push({A:ys0,B:ys1,listAdot:listAdot})
             // console.log(JSON.stringify(result))
         },
         addYs(index,index1,index2){
@@ -281,7 +287,30 @@ var app = new Vue({
             $.ajax(settings).done(function (response) {
                 console.log(response)
             });
+        },
+        initData(){
+            var _this = this;
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "/basedata/getexpressbyclassid?classId=93604",
+                "method": "GET",
+                "processData": false,
+                "contentType": "application/json"
+            }
+            $.ajax(settings).done(function (response) {
+                if(response.status==200){
+                    _this.expList = JSON.parse(response.data.expressjson);
+                    // _this.expList = response.data.skuinfos;
+                    _this.ysList = JSON.parse(response.data.ysjson);
+                    expressModule.descartes();
+                }
+                console.log(response)
+            });
         }
+    },
+    created: function () {
+        this.initData();
     }
 })
 

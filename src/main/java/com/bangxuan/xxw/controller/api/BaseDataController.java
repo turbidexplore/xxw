@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.dao.UnitMapper;
 import com.bangxuan.xxw.dao.UserMapper;
-import com.bangxuan.xxw.entity.FileLib;
-import com.bangxuan.xxw.entity.SkuInfo;
-import com.bangxuan.xxw.entity.SkuValues;
-import com.bangxuan.xxw.entity.Tasks;
+import com.bangxuan.xxw.entity.*;
 import com.bangxuan.xxw.service.*;
 import com.bangxuan.xxw.util.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +17,7 @@ import reactor.core.publisher.Mono;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/basedata")
@@ -58,6 +52,9 @@ public class BaseDataController {
     private SkuService skuService;
     @Autowired
     private SkuValuesService skuValuesService;
+    @Autowired
+    private ExpressService expressService;
+
     @GetMapping("/getStatistics")
     public Mono<Message> getStatistics(HttpServletRequest request, Principal principal){
         if(null!=principal.getName()){
@@ -310,16 +307,53 @@ public class BaseDataController {
         return Mono.just(Message.SCUESSS("保存成功",0));
     }
 
+    @GetMapping("/getexpressbyclassid")
+    public Mono<Message> getExpressByClassId(@RequestParam("classId")String classId){
+        return Mono.just(Message.SCUESSS("ok",expressService.getByClassId(classId)));
+    }
+
 
     @PostMapping("/saveskuinfos")
     public Mono<Message> saveskuinfos(@RequestBody JSONObject expList, @RequestParam("id")String id){
         System.out.println("expList="+expList.getJSONArray("expList"));
         System.out.println("skuInfos="+expList.getJSONArray("skuInfos"));
+        JSONArray lists = expList.getJSONArray("skuInfos");
+
+        Express express = expressService.getByClassId(id);
+        if(express!=null){
+            express.setExpressjson(expList.getJSONArray("expList").toJSONString());
+            express.setCreatedate(new Date());
+            express.setUpdatedate(new Date());
+            if(expList.getJSONArray("ysList")!=null){
+                express.setYsjson(expList.getJSONArray("ysList").toJSONString());
+            }
+            if(expList.getJSONArray("skuInfos")!=null){
+                express.setSkuinfos(expList.getJSONArray("skuInfos").toJSONString());
+            }
+            expressService.update(express);
+        }else {
+                // 保存表达式，保存约束
+                express = new Express();
+                express.setHasbuild(0);
+                express.setClassid(Integer.valueOf(id));
+                express.setExpressjson(expList.getJSONArray("expList").toJSONString());
+                express.setCreatedate(new Date());
+                express.setUpdatedate(new Date());
+                if(expList.getJSONArray("ysList")!=null){
+                    express.setYsjson(expList.getJSONArray("ysList").toJSONString());
+                }
+                if(expList.getJSONArray("skuInfos")!=null){
+                    express.setSkuinfos(expList.getJSONArray("skuInfos").toJSONString());
+                }
+                expressService.insert(express);
+        }
+
+
         // 删除原来的skuValue
         skuValuesService.deleteByClassId(id);
         // 删除原来的skuInfo
         skuService.deleteByClassId(id);
-        JSONArray lists = expList.getJSONArray("skuInfos");
+
         for (int i=5;i<lists.size();i++){
             JSONArray skuValuesArr = lists.getJSONArray(i);
             String uuid=UUID.randomUUID().toString().replace("-", "");
