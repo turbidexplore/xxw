@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 @Api(description = "ProductClass接口")
 @RestController
@@ -223,6 +224,21 @@ public class ProductClassController {
             return Mono.just(Message.SCUESSS("nodata",skuInfos));
         }
         return Mono.just(Message.SCUESSS(String.valueOf(skuService.countById(id,ids)),skuInfos));
+    }
+
+
+    @GetMapping("/getSkuinfos")
+    public Mono<Message> getSkuinfos(@RequestParam("id") String id){
+
+      List<JSONObject> list=  mt.find(new Query(new Criteria()),JSONObject.class,id);
+
+      if(list.size()==0){
+          return Mono.just(Message.SCUESSS("nodata",null));
+      }else {
+        List<JSONObject> data=new ArrayList<>();
+
+          return Mono.just(Message.SCUESSS("ok",list.get(0).getJSONArray("data")) );
+      }
     }
 
     @GetMapping("/skuvales")

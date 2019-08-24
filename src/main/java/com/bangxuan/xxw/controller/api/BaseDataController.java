@@ -234,13 +234,13 @@ public class BaseDataController {
         List<List> lists= jsonArray.toJavaList(List.class);
         productClassService.tg(Integer.valueOf(id),1);
         mt.remove(new Query(new Criteria()),"skuinfos"+id);
-//        skuValuesService.deleteByClassId(id);
-//        skuService.deleteByClassId(id);
-//        for (int i=5;i<lists.size();i++){
-//            String uuid=UUID.randomUUID().toString().replace("-", "");
-//            skuThread.run(uuid,id,lists,i);
-//            skuThread.addSkuValue(uuid,id,i,lists);
-//        }
+        skuValuesService.deleteByClassId(id);
+        skuService.deleteByClassId(id);
+        for (int i=5;i<lists.size();i++){
+            String uuid=UUID.randomUUID().toString().replace("-", "");
+            skuThread.run(uuid,id,lists,i);
+            skuThread.addSkuValue(uuid,id,i,lists);
+        }
         JSONObject rowjson=new JSONObject();
         rowjson.put("data",lists);
         rowjson.put("type","bds");
@@ -384,6 +384,5 @@ public class BaseDataController {
         }
         return Mono.just(Message.SCUESSS("ok",productClassService.getEnname(text)));
     }
-
 
 }

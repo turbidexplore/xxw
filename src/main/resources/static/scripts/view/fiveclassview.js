@@ -121,7 +121,6 @@ function addcs(value) {
         "processData": false
     }
     $.ajax(settings).done(function (response) {
-
         var colsize=data[value-1].colsize= data[value-1].colsize+1;
         var index=data[value-1].index;
         data[value-1].col.push(index);
@@ -212,7 +211,6 @@ function rm(obj,value,index) {
 }
 
 function rmbds(value) {
-
     $("#bds"+value).remove();
     $("#gridtable"+value).remove();
     data[value-1]=null;
@@ -364,23 +362,14 @@ function save() {
                             $("#avalue" + (x + 1) + data[x].col[a]).css("border", "2px solid red");
                             status++;
                         }
-                        setTimeout(function(){
-                        },1000);
                     }
                 }
                 skuname.push(skunamev);
                 skudata.push(rowdata);
-                setTimeout(function(){
-                },1000);
             }
             skunames.push(skuname);
             bdsdata.push(skudata);
-            setTimeout(function(){
-            },1000);
-
         }
-        setTimeout(function(){
-        },5000);
     }
     if (status > 0) {
         alert("请完整填写信息！")
@@ -541,7 +530,6 @@ function bcsj(obj) {
     }
 }
 
-//笛卡儿积组合
 function descartes(list) {
     //parent上一级索引;count指针计数
     var point  = {};
@@ -549,7 +537,6 @@ function descartes(list) {
     var pIndex = null;
     var tempCount = 0;
     var temp   = [];
-    //根据参数列生成指针对象
     for(var index in list) {
         if(typeof list[index] == 'object') {
             point[index] = {'parent':pIndex,'count':0}
@@ -574,6 +561,9 @@ function descartes(list) {
             if(point[index]['count']+1 >= list[index].length) {
                 point[index]['count'] = 0;
                 pIndex = point[index]['parent'];
+                if(result.length>=1000){
+                    return result;
+                }
                 if(pIndex == null) {
                     return result;
                 }
@@ -586,5 +576,3 @@ function descartes(list) {
         }
     }
 }
-
-
