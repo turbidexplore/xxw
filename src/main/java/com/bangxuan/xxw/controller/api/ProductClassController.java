@@ -8,6 +8,8 @@ import com.bangxuan.xxw.entity.SkuValues;
 import com.bangxuan.xxw.entity.User;
 import com.bangxuan.xxw.service.*;
 import com.bangxuan.xxw.util.Message;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -17,7 +19,7 @@ import reactor.core.publisher.Mono;
 
 import java.security.Principal;
 import java.util.List;
-
+@Api(description = "ProductClass接口")
 @RestController
 @RequestMapping("/productclass")
 @CrossOrigin
@@ -98,7 +100,7 @@ public class ProductClassController {
     public Mono<Message> getByText(@RequestParam("text") String text){
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.getByText(text)));
     }
-
+    @ApiOperation(value = "搜索" ,  notes="搜索")
     @GetMapping("/getByCompany")
     public Mono<Message> getByCompany(@RequestParam("text") String text){
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.getByCompany(text)));
@@ -187,6 +189,7 @@ public class ProductClassController {
         return Mono.just(Message.SCUESSS(Message.SECUESS,skuInfos.get(0)));
     }
 
+    @ApiOperation(value = "查询skuinfo" ,  notes="查询skuinfo")
     @PostMapping("/skuinfos")
     public Mono<Message> skuinfos(@RequestParam("id") String id,@RequestParam("page")Integer page,@RequestParam("size")Integer size,@RequestBody JSONArray jsonArray){
         String ids="where a.classid = "+id+" ";
@@ -274,6 +277,7 @@ public class ProductClassController {
     @Autowired
     private UserService userService;
 
+    @ApiOperation(value = "六级查询" ,  notes="六级查询")
     @GetMapping("/getSixClass")
     public Mono<Message> getSixClass(Principal principal,@RequestParam("skuid") String skuid){
         try {

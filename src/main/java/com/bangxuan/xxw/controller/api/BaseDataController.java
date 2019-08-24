@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.dao.UnitMapper;
 import com.bangxuan.xxw.dao.UserMapper;
 import com.bangxuan.xxw.entity.FileLib;
+import com.bangxuan.xxw.entity.SkuInfo;
+import com.bangxuan.xxw.entity.SkuValues;
 import com.bangxuan.xxw.entity.Tasks;
 import com.bangxuan.xxw.service.*;
 import com.bangxuan.xxw.util.Message;
@@ -305,6 +307,68 @@ public class BaseDataController {
             mt.remove(new Query(new Criteria()),"saveskunames"+id);
         }
         mt.insert(rowjson, "saveskunames"+id);
+        return Mono.just(Message.SCUESSS("保存成功",0));
+    }
+
+
+    @PostMapping("/saveskuinfos")
+    public Mono<Message> saveskuinfos(@RequestBody JSONObject expList, @RequestParam("id")String id){
+        System.out.println("expList="+expList.getJSONArray("expList"));
+        System.out.println("skuInfos="+expList.getJSONArray("skuInfos"));
+        // 删除原来的skuValue
+        skuValuesService.deleteByClassId(id);
+        // 删除原来的skuInfo
+        skuService.deleteByClassId(id);
+        JSONArray lists = expList.getJSONArray("skuInfos");
+        for (int i=5;i<lists.size();i++){
+            JSONArray skuValuesArr = lists.getJSONArray(i);
+            String uuid=UUID.randomUUID().toString().replace("-", "");
+            // 保存skuinfo
+            SkuInfo skuInfo=new SkuInfo();
+            skuInfo.setId(uuid);
+            skuInfo.setClassid(Integer.parseInt(id));
+            skuInfo.setSkuname((skuValuesArr.get(0).toString()));
+            skuInfo.setIdx(i-4);
+            skuService.insert(skuInfo);
+
+
+            for (int a=1;a<skuValuesArr.size();a++) {
+                if(!StringUtils.isEmpty(skuValuesArr.get(a))) {
+                    SkuValues skuValues = new SkuValues();
+                    skuValues.setId(UUID.randomUUID().toString().replace("-", ""));
+                    skuValues.setSkuid(uuid);
+                    skuValues.setClassid(id);
+
+//                    JSONObject skuValue = skuValuesArr.getJSONObject(a);
+
+                    if(!StringUtils.isEmpty(lists.getJSONArray(0).get(a))) {
+                        skuValues.setSkukey(lists.getJSONArray(0).get(a).toString());
+                    }
+
+                    if(!StringUtils.isEmpty(lists.getJSONArray(1).get(a))) {
+                        skuValues.setKey_en(lists.getJSONArray(1).get(a).toString());
+                    }
+                    if(!StringUtils.isEmpty(lists.getJSONArray(2).get(a))) {
+                        skuValues.setSkucode(lists.getJSONArray(2).get(a).toString());
+                    }
+                    if(!StringUtils.isEmpty(lists.getJSONArray(3).get(a))) {
+                        skuValues.setUnit(lists.getJSONArray(3).get(a).toString());
+                    }
+                    if(!StringUtils.isEmpty(lists.getJSONArray(4).get(a))) {
+                        skuValues.setDatatype(lists.getJSONArray(4).get(a).toString());
+                    }
+                    if(!StringUtils.isEmpty(skuValuesArr.get(a))) {
+                        skuValues.setSkuvalue(skuValuesArr.get(a).toString());
+                    }
+
+                    skuValues.setIndex(a);
+                    skuValuesService.insert(skuValues);
+                }
+            }
+        }
+
+        System.out.println("ysList="+expList.getJSONArray("ysList"));
+        System.out.println("id="+id);
         return Mono.just(Message.SCUESSS("保存成功",0));
     }
 
