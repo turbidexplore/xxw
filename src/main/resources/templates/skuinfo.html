@@ -461,14 +461,14 @@
       var settings = {
           "async": true,
           "crossDomain": true,
-          "url": "/basedata/getskunames?id="+$("#coreid").val(),
+          "url": "/basedata/getskurules?id="+$("#coreid").val(),
           "method": "GET",
           "processData": false
       }
 
       var skunames=[];
       $.ajax(settings).done(function (res) {
-         skunames= res.data;
+         skunames= JSON.parse(res.data);
          console.log(skunames);
           value1();
           value2();
@@ -829,9 +829,9 @@
           }
 
           $.ajax(settings).done(function (res) {
-            alert("已保存"+(values.length-5)+"条数据！");
-              window.open("https://www.lingjianbang.com/level5/"+$("#coreid").val(),'_blank','');
-              location.href = "/system/fiveclass?id=0&comid=0";
+             alert("已保存"+(values.length-5)+"条数据！");
+               window.open("https://www.lingjianbang.com/level5/"+$("#coreid").val(),'_blank','');
+               location.href = "/system/fiveclass?id=0&comid=0";
           });
       }
   </script>

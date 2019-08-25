@@ -16,6 +16,10 @@ public interface SkuMapper {
             " values(#{id},#{classid},#{skuname},#{brandname},#{brandarea},#{brandtype},#{origin},#{unitprice},#{wholesaleprice},#{mpq},#{moq},#{qualityassurancetime},#{sample},#{zzsample},#{pdf},#{sd},#{td},#{video},#{logo},#{idx})")
     int insertSKU(SkuInfo skuinfo);
 
+    @Update("update gy_class_skuinfo set classid=#{classid},skuname=#{skuname},brandname=#{brandname},brandarea=#{brandarea},brandtype=#{brandtype},origin=#{origin},unitprice=#{unitprice},wholesaleprice=#{wholesaleprice}" +
+            ",mpq=#{mpq},moq=#{moq},qualityassurancetime=#{qualityassurancetime},sample=#{sample},zzsample=#{zzsample},pdf=#{pdf},sd=#{sd},video=#{video},logo=#{logo} where id=#{id}")
+     int updateSKU(SkuInfo skuinfo);
+
     @Update("update gy_class_generalparameters set status=1,create_time=date_format(now(),'%Y-%m-%d %H:%i:%s') where id=#{id}")
     int update(SkuInfo skuinfo);
 
@@ -39,4 +43,8 @@ public interface SkuMapper {
 
     @Select("select a.* from gy_class_skuinfo a  ${ids}  order by a.idx asc  limit #{s},#{e}")
     List<SkuInfo> findByPageId(@Param("id") String id, @Param("s") Integer s, @Param("e")Integer e, @Param("ids")String ids);
+//    @Select("select * from gy_class_skuinfo where skuname like '${skuname}'  and  classid = #{classid}")
+    @Select("select * from gy_class_skuinfo where classid = #{classid}")
+    List<SkuInfo> findByClassid(@Param("classid") String classid);
+
 }

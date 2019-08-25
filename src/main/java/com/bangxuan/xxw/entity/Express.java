@@ -34,6 +34,8 @@ public class Express {
 
     private Date updatedate;
 
+    private String skurules;
+
     public Integer getId() {
         return id;
     }
@@ -96,5 +98,13 @@ public class Express {
 
     public void setUpdatedate(Date updatedate) {
         this.updatedate = updatedate;
+    }
+
+    public String getSkurules() {
+        return skurules;
+    }
+
+    public void setSkurules(String skurules) {
+        this.skurules = skurules;
     }
 }

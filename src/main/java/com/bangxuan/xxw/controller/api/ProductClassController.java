@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -266,6 +267,126 @@ public class ProductClassController {
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("data",jsonArray);
         mt.insert(jsonArray, "saveSkuInfos"+id);
+        // 查找对应的sku更新响应的值
+//        JSONArray jsonArray1 =
+//        [{"skuname":["-MSG21","-MSG22"],"value":"上海","type":0},
+//        {"skuname":["",""],"value":"","type":1},
+//        {"skuname":["",""],"value":"","type":2},
+//        {"skuname":["",""],"value":"","type":3},
+//        {"skuname":["",""],"value":"","type":4},
+//        {"skuname":["",""],"value":"不提供","type":5},
+//        {"skuname":["",""],"value":"免费&免运费","type":6},
+//        {"skuname":["",""],"value":"免费&免运费","type":7},
+//        {"skuname":["",""],"value":"","type":8},
+//        {"skuname":["",""],"value":"","type":9},
+//        {"skuname":["",""],"value":"","type":10},
+//        {"skuname":["",""],"value":"","type":11},
+//        {"skuname":["",""],"value":"","type":12}
+//        ]
+
+        //
+       List<SkuInfo> skuInfoList = skuService.findByClassid(id);
+       if(skuInfoList!=null&&skuInfoList.size()>0){
+           for(SkuInfo skuInfo:skuInfoList){
+               for(int i=0;i<jsonArray.size();i++){
+                   JSONObject json = jsonArray.getJSONObject(i);
+                   JSONArray skunameArr = json.getJSONArray("skuname");
+                   StringBuilder skuname = new StringBuilder();
+                   for(int j=0;j<skunameArr.size();j++){
+                       skuname.append(skunameArr.get(j).toString());
+                   }
+                   String skuvalue = json.getString("value");
+                   String skutype = json.getString("type");
+                   if(!StringUtils.isEmpty(skuname)){
+                       // 产地
+                       if(skutype.equals("0")){
+                           if(skuInfo.getSkuname().contains(skuname)){
+                               skuInfo.setOrigin(skuvalue);
+                           }
+                       }
+                       // 样品单价
+                       if(skutype.equals("1")){
+                           if(skuInfo.getSkuname().contains(skuname)){
+                               skuInfo.setUnitprice(skuvalue);
+                           }
+                       }
+
+                       // 批量单价
+                       if(skutype.equals("2")){
+                           if(skuInfo.getSkuname().contains(skuname)){
+                               skuInfo.setWholesaleprice(skuvalue);
+                           }
+                       }
+
+                       // 最小包装量
+                       if(skutype.equals("3")){
+                           if(skuInfo.getSkuname().contains(skuname)){
+                               skuInfo.setMpq(skuvalue);
+                           }
+                       }
+                       //最小起订量
+                       if(skutype.equals("4")){
+                           if(skuInfo.getSkuname().contains(skuname)){
+                               skuInfo.setMoq(skuvalue);
+                           }
+                       }
+                       // 质保时间
+                       if(skutype.equals("5")){
+                           if(skuInfo.getSkuname().contains(skuname)){
+                               skuInfo.setQualityassurancetime(skuvalue);
+                           }
+                       }
+                       // 样品
+                       if(skutype.equals("6")){
+                           if(skuInfo.getSkuname().contains(skuname)){
+                               skuInfo.setSample(skuvalue);
+                           }
+                       }
+                       // 纸质样本
+                       if(skutype.equals("7")){
+                           if(skuInfo.getSkuname().contains(skuname)){
+                               skuInfo.setZzsample(skuvalue);
+                           }
+                       }
+                       // pdf样本
+                       if(skutype.equals("8")){
+                           if(skuInfo.getSkuname().contains(skuname)){
+                               skuInfo.setPdf(skuvalue);
+                           }
+                       }
+                       // 3D模型
+                       if(skutype.equals("9")){
+                           if(skuInfo.getSkuname().contains(skuname)){
+                               skuInfo.setSd(skuvalue);
+                           }
+                       }
+                       // 2D模型
+                       if(skutype.equals("10")){
+                           if(skuInfo.getSkuname().contains(skuname)){
+                               skuInfo.setTd(skuvalue);
+                           }
+                       }
+                       // 产品视频
+                       if(skutype.equals("11")){
+                           if(skuInfo.getSkuname().contains(skuname)){
+                               skuInfo.setVideo(skuvalue);
+                           }
+                       }
+
+                       // logo
+                       if(skutype.equals("12")){
+                           if(skuInfo.getSkuname().contains(skuname)){
+                               skuInfo.setLogo(skuvalue);
+                           }
+                       }
+                       skuService.updateSKU(skuInfo);
+                       System.out.println("skuname="+skuname+",skuvalue="+skuvalue+",skutype="+skutype);
+                   }
+               }
+           }
+       }
+//        gy_class_skuinfo
+
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.updateClassData(Integer.parseInt(id),5)));
     }
 

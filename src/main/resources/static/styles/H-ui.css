@@ -920,8 +920,8 @@ a{color:#333}
 a:hover,.active a{color:#06c}
 
 /*主要颜色*/
-.c-primary,.c-primary a,a.c-primary{color:#5a98de}
-.c-primary a:hover,a.c-primary:hover{ color:#5a98de}
+.c-primary,.c-primary a,a.c-primary{color:#007bff}
+.c-primary a:hover,a.c-primary:hover{ color:#007bff}
 /*次主色*/
 .c-secondary,.c-secondary a,a.c-secondary{color:#555}
 .c-secondary a:hover,a.c-secondary:hover{ color:#555}
@@ -1060,7 +1060,7 @@ ul.inline > li,ol.inline > li{display:inline-block;*display:inline;padding-right
 /*排行榜*/
 /*<ol class="list-view list-top"><li class="item"><em class="num">1</em><a href="#">排行榜列表</a><span class="date">12</span></li></ol>*/
 .list-top > .item{padding-left: 30px}
-.list-top > .item .num{ position:absolute; top:11px; display:block; width:20px; height:20px; color:#fff; background-color:#5a98de; text-align:center}
+.list-top > .item .num{ position:absolute; top:11px; display:block; width:20px; height:20px; color:#fff; background-color:#007bff; text-align:center}
 
 /*3.1.23 描述
 	Name:			style_dldtdd
@@ -1240,7 +1240,7 @@ table.dataTable thead .sorting_desc {background-image:url(../images/dataTable/so
 .dataTables_wrapper .dataTables_paginate .paginate_button {border: 1px solid #ccc;cursor: pointer;display: inline-block;margin-left: 2px;text-align: center;text-decoration: none;color: #666;height: 26px;line-height: 26px;text-decoration: none;margin: 0 0px 6px 6px;padding: 0 10px;font-size:14px}
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover,
 .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {background:#5a98de;color:#fff}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {background:#007bff;color:#fff}
 
 /*表格尺寸*/
 .table.size-MINI{}/*迷你*/
@@ -1867,7 +1867,7 @@ squid.swing.jselect()
 /*3.4.6 邮箱提示*/
 .emailSug-wrapper {position: absolute;background: #fff;text-align: left;z-index: 99}
 .emailSug-wrapper .emailSug-list .emailSug-item {font-size: 14px;height: 25px;line-height: 25px;padding-left: 10px;color: #333}
-.emailSug-wrapper .emailSug-list .emailSug-item.active {background: #5a98de;cursor: pointer;color: #fff}
+.emailSug-wrapper .emailSug-list .emailSug-item.active {background: #007bff;cursor: pointer;color: #fff}
 
 /*3.4.7 表单布局*/
 label,.placeholder{font-size:14px}
@@ -1948,7 +1948,7 @@ a.btn:hover,a.btn:focus,a.btn:active,a.btn.active,a.btn.disabled,a.btn[disabled]
 .btn-default.active{color:#333;background-color:#c7c7c7;border-color:#c7c7c7}
 
 /*主要——主色	通常用于确定、提交、购买、支付等*/
-.btn-primary{color:#fff;background-color:#5a98de; border-color:#5a98de}
+.btn-primary{color:#fff;background-color:#007bff; border-color:#007bff}
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:active,
@@ -1998,7 +1998,7 @@ a.btn:hover,a.btn:focus,a.btn:active,a.btn.active,a.btn.disabled,a.btn[disabled]
 .btn-default-outline:active,
 .btn-default-outline.active{color:#333;background-color:transparent;border-color:#c7c7c7}
 
-.btn-primary-outline{color:#5a98de;background-color:transparent; border-color:#5a98de}
+.btn-primary-outline{color:#007bff;background-color:transparent; border-color:#007bff}
 .btn-primary-outline:hover,
 .btn-primary-outline:focus,
 .btn-primary-outline:active,
@@ -3477,8 +3477,8 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus{color: #fff;text-deco
 .label-default[href], .badge-default[href]{background-color: #e6e6e6;color:#333}
 
 /*主要*/
-.label-primary, .badge-primary{background-color: #5a98de}
-.label-primary[href], .badge-primary[href]{background-color: #5a98de}
+.label-primary, .badge-primary{background-color: #007bff}
+.label-primary[href], .badge-primary[href]{background-color: #007bff}
 
 /*主要*/
 .label-secondary, .badge-secondary{background-color: #3bb4f2}
@@ -3839,8 +3839,8 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus{color: #fff;text-deco
 .panel-default > .panel-header{ border-color:#ddd; background-color:#f5f5f5; color:#444}
 
 /*主要面板*/
-.panel-primary{border-color:#5a98de}
-.panel-primary > .panel-header{ border-color:#5a98de; background-color:#5a98de; color:#fff}
+.panel-primary{border-color:#007bff}
+.panel-primary > .panel-header{ border-color:#007bff; background-color:#007bff; color:#fff}
 
 /*次要面板*/
 .panel-secondary{border-color:#3bb4f2}

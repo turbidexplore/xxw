@@ -322,6 +322,7 @@ public class BaseDataController {
         Express express = expressService.getByClassId(id);
         if(express!=null){
             express.setExpressjson(expList.getJSONArray("expList").toJSONString());
+            express.setSkurules(expList.getJSONArray("skuRules").toJSONString());
             express.setCreatedate(new Date());
             express.setUpdatedate(new Date());
             if(expList.getJSONArray("ysList")!=null){
@@ -337,6 +338,7 @@ public class BaseDataController {
                 express.setHasbuild(0);
                 express.setClassid(Integer.valueOf(id));
                 express.setExpressjson(expList.getJSONArray("expList").toJSONString());
+                express.setSkurules(expList.getJSONArray("skuRules").toJSONString());
                 express.setCreatedate(new Date());
                 express.setUpdatedate(new Date());
                 if(expList.getJSONArray("ysList")!=null){
@@ -404,6 +406,12 @@ public class BaseDataController {
         System.out.println("ysList="+expList.getJSONArray("ysList"));
         System.out.println("id="+id);
         return Mono.just(Message.SCUESSS("保存成功",0));
+    }
+
+    @GetMapping("/getskurules")
+    public Mono<Message> getskuRules(@RequestParam("id")String id){
+        Express express = expressService.getByClassId(id);
+        return Mono.just(Message.SCUESSS("ok",express.getSkurules()));
     }
 
     @GetMapping("/getskunames")

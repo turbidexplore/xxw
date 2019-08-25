@@ -65,7 +65,7 @@ $.ajax(settings).done(function (response) {
         window.location.href="/system/nodatafiveclass";
     }
     if(response.data.skutype==1){
-        url = "/system/fiveclassview?id="+response.data.id;
+        url = "/system/fiveclassview_vue?id="+response.data.id;
         $("#hgo").show();
     }else if(response.data.skutype==2){
         url = "/system/fiveclassviewpl?id="+response.data.id;

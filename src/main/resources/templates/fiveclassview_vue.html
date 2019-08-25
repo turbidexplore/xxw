@@ -18,7 +18,12 @@
   </style>
 </head>
 <body>
-<div style="padding: 50px">
+<div style="padding-left: 50px">
+  <input type="hidden" id="coreid"  th:value="${id}">
+  <span class="text-uppercase page-subtitle">零件邦
+                  <button type="button" class="btn btn-primary radius size-S" onclick="goback(this)">返回修改</button>
+                  <button type="button" class="btn btn-primary radius size-S"onclick="next()">下一步</button>
+                </span>
   <div><input type="button" class="btn btn-primary radius size-S" value="清空表格" onclick="expressModule.cleanInputExcel()"></input></div>
   <div id="inputExcel"></div>
 </div>
@@ -30,10 +35,10 @@
       <span v-for="(main,index) in expList">{{main.symob}}{{main.name}}</span>
     </h3>
     <div class="panel panel-primary">
-      <div class="panel-header">表达式<input type="button" class="btn btn-secondary radius size-S ml-40" value="添加表达式" @click="addExpress"></input>
+      <div class="panel-header">表达式<input type="button" class="btn btn-success radius radius size-S ml-40" value="添加表达式" @click="addExpress"></input>
         <span class="f-r">
-                    <input type="button" class="btn btn-secondary radius size-S ml-40" value="展开全部" @click="extendExpress"></input>
-                    <input type="button" class="btn btn-secondary radius size-S ml-40" value="合并全部" @click="closeExpress"></input>
+                    <input type="button" class="btn btn-success radius size-S ml-40" value="展开全部" @click="extendExpress"></input>
+                    <input type="button" class="btn btn-success radius size-S ml-40" value="合并全部" @click="closeExpress"></input>
                 </span>
       </div>
       <div class="panel-body">
@@ -44,8 +49,7 @@
               <option>*</option>
               <option>-</option>
             </select><span class="f-18 c-red">{{main.name}}</span></p>
-
-            <p><label>主SKU:<input type="checkbox"  v-model="expList[index].isMainSku"></input></label></p>
+            <p><label>主SKU:{{expList[index].isMainSku}}<input type="checkbox" :value="expList[index].isMainSku"  v-model="expList[index].isMainSku" @change="changeMainSku(index)"></input></label></p>
             <p>
               <input class="btn btn-danger-outline radius size-S" type="button" value="删除"
                      @click="removeExpress(index)">
@@ -58,8 +62,8 @@
           <li class="item mt-10 panel-warning" v-for="(main,index) in expList" >
             <h4 @click="hideExpress(index)">
               <span class="f-18 c-red">表达式：{{main.name}}</span>
-              <input type="button" class="btn btn-secondary radius size-S" value="导入" @click.stop="importCol(index)">
-              <input type="button" class="btn btn-secondary radius size-S" value="添加列" @click.stop="addCol(index)">
+              <input type="button" class="btn btn-primary radius size-S" value="导入" @click.stop="importCol(index)">
+              <input type="button" class="btn btn-primary radius size-S" value="添加列" @click.stop="addCol(index)">
               <!--<input type="button" class="btn btn-danger radius size-S" value="删除列" @click="removeCol(index)">-->
               <b>+</b>
             </h4>
@@ -113,19 +117,22 @@
     <div class="panel panel-warning mt-15">
       <div class="panel-header">
         约束：
-        <select v-model="ysA">
-          <option v-for="(main,index) in expList" :value="index">{{main.name}}</option>
+        <select v-model="ysAIndex" @change="selectChageYsA">
+          <option v-for="(main,index) in expList" :value="main.index">{{main.name}}</option>
         </select>
         和
-        <select v-model="ysB">
-          <option v-for="(main,index) in expList" :value="index">{{main.name}}</option>
+        <select v-model="ysBIndex">
+          <option v-for="(main,index) in selectYsBlist" :value="main.index">{{main.name}}</option>
         </select>
 
-        <input type="button" class="btn btn-secondary radius size-S" value="生成约束" @click="createYueSu"></input>
+        <input type="button" class="btn btn-primary radius size-S" value="生成约束" @click="createYueSu"></input>
       </div>
       <div class="panel-body">
         <div  v-for="(ys,index) in ysList">
-          <div class="Huialert Huialert-info">{{ys.A.name}}和{{ys.B.name}}的约束关系 <input type="button" class="btn btn-primary radius size-S" value="移除约束" @click="createYueSu"></input></div>
+          <div class="Huialert Huialert-info">{{ys.A.name}}和{{ys.B.name}}的约束关系
+            <input type="button" class="btn btn-primary radius size-S" value="移除约束" @click="deleteYueSu(index)"></input>
+            <input type="button" class="btn btn-primary radius size-S" value="全选反选" @click="fullBackYueSu(index)"></input>
+          </div>
           <table  class="table table-border table-bordered table-striped">
             <tbody> 
             <tr v-for="(row,index1) in ys.A.values">
@@ -146,18 +153,16 @@
         </div>
       </div>
     </div>
-
     <!--约束操作模块 end-->
-    共{{totalCount}}
+    全部SKU共{{totalCount}},主SKU共{{mainTotalCount}}
   </div>
-
 
 </div>
 <!--根据笛卡儿积生成SKU start-->
 <div style="padding: 50px">
   <div>
     <input type="button" class="btn btn-primary radius size-S" value="生成数据表" onclick="expressModule.descartes()"></input>
-    <input type="button" class="btn btn-primary radius size-S" value="保存数据" onclick="expressModule.saveExpList()"></input>
+    <input type="button" id="save_expList" class="btn btn-primary radius size-S" value="保存数据" onclick="expressModule.saveExpList(this)"></input>
   </div>
   <div id="outExcel"></div>
 </div>
