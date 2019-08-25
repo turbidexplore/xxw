@@ -1,20 +1,21 @@
 var titleValues = ['①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩','⑪','⑫','⑬','⑭','⑮','⑯','⑰','⑱','⑲','⑳']
-var excelData = [
-    ["MSG21", "1", "2", "3", "4"],
-    ["MSG22", "1", "2", "3", "4"],
-    ["MSG23", "1", "2", "3", "4"],
-    ["MSG24", "1", "2", "3", "4"],
-    ["MSG25", "1", "2", "3", "4"],
-    ["MSG26", "1", "2", "3", "4"],
-    ["MSG27", "1", "2", "3", "4"],
-    ["MSG28", "1", "2", "3", "4"],
-    ["MSG29", "1", "2", "3", "4"],
-    ["MSG30", "1", "2", "3", "4"],
-    ["MSG31", "1", "2", "3", "4"],
-    ["MSG32", "1", "2", "3", "4"],
-    ["MSG33", "1", "2", "3", "4"],
-    ["MSG34", "1", "2", "3", "4"]
-];
+var excelData = [["", "", "", "", ""]];
+// var excelData = [
+//     ["MSG21", "1", "2", "3", "4"],
+//     ["MSG22", "1", "2", "3", "4"],
+//     ["MSG23", "1", "2", "3", "4"],
+//     ["MSG24", "1", "2", "3", "4"],
+//     ["MSG25", "1", "2", "3", "4"],
+//     ["MSG26", "1", "2", "3", "4"],
+//     ["MSG27", "1", "2", "3", "4"],
+//     ["MSG28", "1", "2", "3", "4"],
+//     ["MSG29", "1", "2", "3", "4"],
+//     ["MSG30", "1", "2", "3", "4"],
+//     ["MSG31", "1", "2", "3", "4"],
+//     ["MSG32", "1", "2", "3", "4"],
+//     ["MSG33", "1", "2", "3", "4"],
+//     ["MSG34", "1", "2", "3", "4"]
+// ];
 // var titless = [[{value: '', placeholder: '中文名称'}],[{value: '', placeholder: '英文名称'}],[{value: '', placeholder: '代码'}],[{value: '', placeholder: '单位'}]]
 var app = new Vue({
     el: '#app',
@@ -27,10 +28,11 @@ var app = new Vue({
                 isMainSku: false, // 是否是主SKU(可进行笛卡尔积进行计算SKU)
                 name: titleValues[0],
                 titles: [[{value: '', placeholder: '中文名称'}], [{value: '', placeholder: '英文名称'}], [{value: '',placeholder: '代码'}], [{value: '', placeholder: '单位'}], [{value: '', placeholder: '数据类型'}]],
-                values: [[]]
+                values: []
             }],
         ysList:[], // 约束列表
-        titless: [{value: '长度', placeholder: '中文名称'}, {value: 'L', placeholder: '英文名称'}, {value: 'L',placeholder: '代码'}, {value: 'mm', placeholder: '单位'}, {value: '实数', placeholder: '数据类型'}],
+        titless: [{value: '', placeholder: '中文名称'}, {value: '', placeholder: '英文名称'}, {value: '',placeholder: '代码'}, {value: '', placeholder: '单位'}, {value: '', placeholder: '数据类型'}],
+        // titless: [{value: '长度', placeholder: '中文名称'}, {value: 'L', placeholder: '英文名称'}, {value: 'L',placeholder: '代码'}, {value: 'mm', placeholder: '单位'}, {value: '实数', placeholder: '数据类型'}],
         totalCount:0, // 全部sku数量
         mainTotalCount:0, // 主sku数量
         ysAIndex:'', // 约束A的数组下标
@@ -41,13 +43,13 @@ var app = new Vue({
         addCol(index) {
 
             // 添加标题列
-            for (var i = 0; i < this.titless.length; i++) {
+            for (let i = 0; i < this.titless.length; i++) {
                 this.expList[index].titles[i].push(Object.assign({}, this.titless[i]));
             }
 
             // 添加数据列
-            var valuesRows = this.expList[index].values.length;
-            for (var i = 0; i < valuesRows; i++) {
+            let valuesRows = this.expList[index].values.length;
+            for (let i = 0; i < valuesRows; i++) {
                 // 把每一行的valuesCols列数据删除
                 this.expList[index].values[i].push({value: '',expressIndex:index});
             }
@@ -141,8 +143,8 @@ var app = new Vue({
                     var expItemTitles = expItem.titles[i];
                     // 表头列数必须大于2，才表示表达式有数据，
                     if(expItemTitles.length===undefined||expItemTitles.length<2){
-                        alert('表达式：'+expItem.name+'数据不完整！');
                         break;
+                        alert('表达式：'+expItem.name+'数据不完整！');
                         return ;
                     }
                     for(var k=0;k<expItemTitles.length;k++){
@@ -163,9 +165,9 @@ var app = new Vue({
                     if(expItemValues.length===undefined){
                         //表值的列数必须大于2，才表示表达式有数据，
                         if(expItemValues.length===undefined||expItemValues.length<2){
-                            alert('表达式：'+expItem.name+'数据不完整！');
                             break;
-                            return
+                            alert('表达式：'+expItem.name+'数据不完整！');
+                            return;
                         }
                         console.log(expItem.name)
                         console.log(j+'行')
@@ -194,6 +196,10 @@ var app = new Vue({
                 }
 
             })
+            if(res.length==0){
+                alert('请选择主SKU表达式！');
+                return;
+            }
 
             // 表头合并
             var excellTitles = this.getGridTitle()
@@ -435,27 +441,32 @@ var app = new Vue({
                 "contentType": "application/json"
             }
             $.ajax(settings).done(function (response) {
-                if(response.status==200){
+                if(response.status==200&&response.data!=null){
                     _this.expList = JSON.parse(response.data.expressjson);
                     // _this.expList = response.data.skuinfos;
                     _this.ysList = JSON.parse(response.data.ysjson);
-                    expressModule.descartes();
+                    let outExcelData = JSON.parse(response.data.skuinfos);
+                    if(outExcelData.length>0){
+                        expressModule.outExcel.loadData(outExcelData)
+                    }
+                    // expressModule.descartes();
                 }
                 console.log(response)
             });
         },
-        changeMainSku(index){
+        changeMainSku(even,index){
             console.log('changeMainSku index='+index)
             // 选中主SKU时，选择的index下标前的所有sku必须选中
-            if(this.expList[index].isMainSku){
+            // if(this.expList[index].isMainSku){
                 for(let i=0;i<index;i++){
                     if(!this.expList[i].isMainSku){
                         this.expList[index].isMainSku=false
+                        even.preventDefault();
                         alert("主SKU必须连续！")
                         break;
                     }
                 }
-            }
+            // }
         }
     },
     created: function () {

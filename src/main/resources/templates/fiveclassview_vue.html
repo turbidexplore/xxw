@@ -15,6 +15,9 @@
     .w-80{
       width: 80px;
     }
+    .table td{
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -49,7 +52,7 @@
               <option>*</option>
               <option>-</option>
             </select><span class="f-18 c-red">{{main.name}}</span></p>
-            <p><label>主SKU:{{expList[index].isMainSku}}<input type="checkbox" :value="expList[index].isMainSku"  v-model="expList[index].isMainSku" @change="changeMainSku(index)"></input></label></p>
+            <p><label>主SKU:<!--{{expList[index].isMainSku}}--><input type="checkbox" :checked="expList[index].isMainSku" :value="expList[index].isMainSku"  v-model="expList[index].isMainSku" @click="changeMainSku($event,index)"></input></label></p>
             <p>
               <input class="btn btn-danger-outline radius size-S" type="button" value="删除"
                      @click="removeExpress(index)">
@@ -71,7 +74,7 @@
               <table class="table table-border table-bordered table-striped">
                 <tbody> 
                 <tr v-for="(sub,index2) in main.titles">
-                  <td v-for="(subsub,index3) in sub" width="80px">
+                  <td v-for="(subsub,index3) in sub" style="width: 80px">
                     <p v-if="index2===0&&index3!=0" class="text-c">
                       <input type="button" class="btn btn-danger-outline radius size-MINI" @click.stop="removeCol(index,index3)" value="删除列"></input>
                     </p>
