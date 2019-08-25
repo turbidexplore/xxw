@@ -395,7 +395,7 @@ var app = new Vue({
                 if(exp.isMainSku){
                     var values = [];
                     for(let j = 0;j<exp.values.length;j++){
-                        values.push(exp.symob+exp.values[i][0].value)
+                        values.push(exp.symob+exp.values[j][0].value)
                     }
                     skuRules.push(values);
                 }
