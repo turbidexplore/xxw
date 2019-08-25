@@ -98,12 +98,19 @@ public class NavController {
         return "fiveclassview";
     }
 
+    @RequestMapping("/system/fiveclassview_vue")
+    public String fiveclassview_vue(@RequestParam("id")String id, HttpServletRequest request){
+        request.setAttribute("id",id);
+        productClassService.updateSkutype(id,1);
+        return "fiveclassview_vue";
+    }
+
     @RequestMapping("/system/fiveclassviewpl")
     public String fiveclassviewpl(@RequestParam("id")String id, HttpServletRequest request){
         request.setAttribute("id",id);
         productClassService.updateSkutype(id,2);
         return "fiveclassviewpl";
-    }
+}
 
     @RequestMapping("/system/tasklogo")
     public String tasklogo(@RequestParam("id")String id, HttpServletRequest request){
