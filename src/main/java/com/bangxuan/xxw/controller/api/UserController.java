@@ -5,6 +5,8 @@ import com.bangxuan.xxw.util.Message;
 import com.bangxuan.xxw.entity.User;
 import com.bangxuan.xxw.service.UserSecurityService;
 import com.bangxuan.xxw.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -12,7 +14,7 @@ import reactor.core.publisher.Mono;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+@Api(description = "ProductClass接口")
 @RestController
 @RequestMapping("/user")
 @CrossOrigin
@@ -29,13 +31,17 @@ public class UserController {
         user.setCode(userSecurityService.findUserCodeByPhone(principal.getName()));
         return Mono.just(Message.SCUESSS(Message.SECUESS,userService.update(user)));
     }
-
+    @ApiOperation(value = "登陆" ,  notes="登陆")
     @GetMapping("/get")
     public Mono<Message> get(Principal principal){
         try {
-          User user= userService.get(principal.getName());
-          user.setMobile(principal.getName());
-            return Mono.just(Message.SCUESSS(Message.SECUESS,user));
+            if(principal!=null){
+                User user= userService.get(principal.getName());
+                user.setMobile(principal.getName());
+                return Mono.just(Message.SCUESSS(Message.SECUESS,user));
+            }else{
+                return Mono.just(Message.SCUESSS(Message.SECUESS,new Object()));
+            }
         }catch (Exception e){
             return Mono.just(Message.ERROR(Message.ERROR));
         }

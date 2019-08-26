@@ -57,6 +57,11 @@ public class SkuService {
     public int countById(String id,String ids) {
         return skuMapper.countById(id,ids);
     }
+    public int countByClassId(String classId) {
+        return skuMapper.countByClassId(classId);
+    }
+
+
 
     public List<SkuInfo> findByClassid(String classId) {
         return skuMapper.findByClassid(classId);

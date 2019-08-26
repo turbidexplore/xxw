@@ -165,7 +165,9 @@
 <div style="padding: 50px">
   <div>
     <input type="button" class="btn btn-primary radius size-S" value="生成数据表" onclick="expressModule.descartes()"></input>
+    <input type="button" class="btn btn-primary radius size-S" value="保存表达式" onclick="expressModule.saveExpress()"></input>
     <input type="button" id="save_expList" class="btn btn-primary radius size-S" value="保存数据" onclick="expressModule.saveExpList(this)"></input>
+    <span id="hasSavedCount"></span>
   </div>
   <div id="outExcel"></div>
 </div>

@@ -114,7 +114,9 @@ public class FileController {
         data.put("data",productClassService.getPDF(id));
         data.put("company",productClassService.getCompany(id));
         data.put("brand",productClassService.getBrand(id));
-        daypdfCountService.add(principal.getName());
+        if(principal!=null){
+            daypdfCountService.add(principal.getName());
+        }
         return Mono.just(Message.SCUESSS(Message.SECUESS,data));
     }
 

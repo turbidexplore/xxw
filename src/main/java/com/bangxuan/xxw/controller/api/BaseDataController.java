@@ -57,7 +57,7 @@ public class BaseDataController {
 
     @GetMapping("/getStatistics")
     public Mono<Message> getStatistics(HttpServletRequest request, Principal principal){
-        if(null!=principal.getName()){
+        if(principal!=null&&null!=principal.getName()){
             JSONObject jsonObject=new JSONObject();
             jsonObject.put("userinfo",principal.getName());
             jsonObject.put("type",request.getHeader("Referer"));
@@ -312,6 +312,52 @@ public class BaseDataController {
         return Mono.just(Message.SCUESSS("ok",expressService.getByClassId(classId)));
     }
 
+    @PostMapping("/savesExpress")
+    public Mono<Message> savesExpress(@RequestBody JSONObject expList, @RequestParam("id")String id){
+        System.out.println("expList="+expList.getJSONArray("expList"));
+        System.out.println("skuInfos="+expList.getJSONArray("skuInfos"));
+        JSONArray lists = expList.getJSONArray("skuInfos");
+
+        Express express = expressService.getByClassId(id);
+        if(express!=null){
+            express.setExpressjson(expList.getJSONArray("expList").toJSONString());
+            express.setSkurules(expList.getJSONArray("skuRules").toJSONString());
+            express.setCreatedate(new Date());
+            express.setUpdatedate(new Date());
+            if(expList.getJSONArray("ysList")!=null){
+                express.setYsjson(expList.getJSONArray("ysList").toJSONString());
+            }
+            if(expList.getJSONArray("skuInfos")!=null){
+                express.setSkuinfos(expList.getJSONArray("skuInfos").toJSONString());
+            }
+            expressService.update(express);
+        }else {
+            // 保存表达式，保存约束
+            express = new Express();
+            express.setHasbuild(0);
+            express.setClassid(Integer.valueOf(id));
+            express.setExpressjson(expList.getJSONArray("expList").toJSONString());
+            express.setSkurules(expList.getJSONArray("skuRules").toJSONString());
+            express.setCreatedate(new Date());
+            express.setUpdatedate(new Date());
+            if(expList.getJSONArray("ysList")!=null){
+                express.setYsjson(expList.getJSONArray("ysList").toJSONString());
+            }
+            if(expList.getJSONArray("skuInfos")!=null){
+                express.setSkuinfos(expList.getJSONArray("skuInfos").toJSONString());
+            }
+            expressService.insert(express);
+        }
+        System.out.println("ysList="+expList.getJSONArray("ysList"));
+        System.out.println("id="+id);
+        return Mono.just(Message.SCUESSS("保存成功",0));
+    }
+    @GetMapping("/getskuinfosCount")
+    public Mono<Message> getskuinfosCount(@RequestParam("classId")String classId){
+        int skuinfcount = skuService.countByClassId(classId);
+        return Mono.just(Message.SCUESSS("操作成功",skuinfcount));
+    }
+
 
     @PostMapping("/saveskuinfos")
     public Mono<Message> saveskuinfos(@RequestBody JSONObject expList, @RequestParam("id")String id){
@@ -357,50 +403,10 @@ public class BaseDataController {
         skuService.deleteByClassId(id);
 
         for (int i=5;i<lists.size();i++){
-            JSONArray skuValuesArr = lists.getJSONArray(i);
             String uuid=UUID.randomUUID().toString().replace("-", "");
-            // 保存skuinfo
-            SkuInfo skuInfo=new SkuInfo();
-            skuInfo.setId(uuid);
-            skuInfo.setClassid(Integer.parseInt(id));
-            skuInfo.setSkuname((skuValuesArr.get(0).toString()));
-            skuInfo.setIdx(i-4);
-            skuService.insert(skuInfo);
-
-
-            for (int a=1;a<skuValuesArr.size();a++) {
-                if(!StringUtils.isEmpty(skuValuesArr.get(a))) {
-                    SkuValues skuValues = new SkuValues();
-                    skuValues.setId(UUID.randomUUID().toString().replace("-", ""));
-                    skuValues.setSkuid(uuid);
-                    skuValues.setClassid(id);
-
-//                    JSONObject skuValue = skuValuesArr.getJSONObject(a);
-
-                    if(!StringUtils.isEmpty(lists.getJSONArray(0).get(a))) {
-                        skuValues.setSkukey(lists.getJSONArray(0).get(a).toString());
-                    }
-
-                    if(!StringUtils.isEmpty(lists.getJSONArray(1).get(a))) {
-                        skuValues.setKey_en(lists.getJSONArray(1).get(a).toString());
-                    }
-                    if(!StringUtils.isEmpty(lists.getJSONArray(2).get(a))) {
-                        skuValues.setSkucode(lists.getJSONArray(2).get(a).toString());
-                    }
-                    if(!StringUtils.isEmpty(lists.getJSONArray(3).get(a))) {
-                        skuValues.setUnit(lists.getJSONArray(3).get(a).toString());
-                    }
-                    if(!StringUtils.isEmpty(lists.getJSONArray(4).get(a))) {
-                        skuValues.setDatatype(lists.getJSONArray(4).get(a).toString());
-                    }
-                    if(!StringUtils.isEmpty(skuValuesArr.get(a))) {
-                        skuValues.setSkuvalue(skuValuesArr.get(a).toString());
-                    }
-
-                    skuValues.setIndex(a);
-                    skuValuesService.insert(skuValues);
-                }
-            }
+            JSONArray skuValuesArr = lists.getJSONArray(i);
+            skuThread.bdsrun(uuid,id,skuValuesArr,i);
+            skuThread.addBdsSkuValue(uuid,id,i,skuValuesArr,lists);
         }
 
         System.out.println("ysList="+expList.getJSONArray("ysList"));

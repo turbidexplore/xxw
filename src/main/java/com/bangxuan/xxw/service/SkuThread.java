@@ -7,6 +7,7 @@ import com.bangxuan.xxw.entity.SkuValues;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.UUID;
@@ -215,6 +216,50 @@ public class SkuThread  {
                     productClassService.updateInfo(id," pdfinfo=1 ");
                 }
                 skuService.updatevalue(jsonArray.getJSONArray(i).getString(0), id,codes[j-1],jsonArray.getJSONArray(i).getString(j));
+            }
+        }
+    }
+    @Async("asyncServiceSkuinfo")
+    public void bdsrun(String uuid, String id, JSONArray skuValuesArr, int i) {
+        // 保存skuinfo
+        SkuInfo skuInfo=new SkuInfo();
+        skuInfo.setId(uuid);
+        skuInfo.setClassid(Integer.parseInt(id));
+        skuInfo.setSkuname((skuValuesArr.get(0).toString()));
+        skuInfo.setIdx(i-4);
+        skuService.insert(skuInfo);
+    }
+    @Async("asyncServiceSkuinfo")
+    public void addBdsSkuValue(String uuid, String id, int i, JSONArray skuValuesArr,JSONArray lists) {
+        for (int a=1;a<skuValuesArr.size();a++) {
+            if(!StringUtils.isEmpty(skuValuesArr.get(a))) {
+                SkuValues skuValues = new SkuValues();
+                skuValues.setId(UUID.randomUUID().toString().replace("-", ""));
+                skuValues.setSkuid(uuid);
+                skuValues.setClassid(id);
+//              JSONObject skuValue = skuValuesArr.getJSONObject(a);
+                if(!StringUtils.isEmpty(lists.getJSONArray(0).get(a))) {
+                    skuValues.setSkukey(lists.getJSONArray(0).get(a).toString());
+                }
+
+                if(!StringUtils.isEmpty(lists.getJSONArray(1).get(a))) {
+                    skuValues.setKey_en(lists.getJSONArray(1).get(a).toString());
+                }
+                if(!StringUtils.isEmpty(lists.getJSONArray(2).get(a))) {
+                    skuValues.setSkucode(lists.getJSONArray(2).get(a).toString());
+                }
+                if(!StringUtils.isEmpty(lists.getJSONArray(3).get(a))) {
+                    skuValues.setUnit(lists.getJSONArray(3).get(a).toString());
+                }
+                if(!StringUtils.isEmpty(lists.getJSONArray(4).get(a))) {
+                    skuValues.setDatatype(lists.getJSONArray(4).get(a).toString());
+                }
+                if(!StringUtils.isEmpty(skuValuesArr.get(a))) {
+                    skuValues.setSkuvalue(skuValuesArr.get(a).toString());
+                }
+
+                skuValues.setIndex(a);
+                skuValuesService.insert(skuValues);
             }
         }
     }

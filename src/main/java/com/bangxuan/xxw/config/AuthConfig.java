@@ -11,6 +11,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 public class AuthConfig extends AuthorizationServerConfigurerAdapter {
@@ -23,12 +26,29 @@ public class AuthConfig extends AuthorizationServerConfigurerAdapter {
 
     public void configure(AuthorizationServerSecurityConfigurer security)  {
     }
+
+    private CorsConfiguration buildConfig() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.addExposedHeader("Authorization");
+        return corsConfiguration;
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", buildConfig());
+        return new CorsFilter(source);
+    }
+
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory().withClient("website")
                 .secret(bCryptPasswordEncoder.encode("turbid"))
                 .authorizedGrantTypes("password")
                 .scopes("web")
-                .accessTokenValiditySeconds(3600*24*30);
+                .accessTokenValiditySeconds(3600*24*7);
     }
     public void configure(AuthorizationServerEndpointsConfigurer endpoints)  {
         endpoints.authenticationManager(authenticationManager)

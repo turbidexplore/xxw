@@ -41,6 +41,9 @@ public interface SkuMapper {
     @Select("select count(*) from gy_class_skuinfo a  ${ids}")
     int countById(@Param("id")String id, @Param("ids")String ids);
 
+    @Select("select count(*) from gy_class_skuinfo where classid = #{classid}")
+    int countByClassId(@Param("classid") String classid);
+
     @Select("select a.* from gy_class_skuinfo a  ${ids}  order by a.idx asc  limit #{s},#{e}")
     List<SkuInfo> findByPageId(@Param("id") String id, @Param("s") Integer s, @Param("e")Integer e, @Param("ids")String ids);
 //    @Select("select * from gy_class_skuinfo where skuname like '${skuname}'  and  classid = #{classid}")

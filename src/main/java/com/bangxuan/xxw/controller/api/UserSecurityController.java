@@ -9,6 +9,8 @@ import com.bangxuan.xxw.entity.values.UserType;
 import com.bangxuan.xxw.service.UserSecurityService;
 import com.bangxuan.xxw.service.UserService;
 import com.bangxuan.xxw.util.CodeLib;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -25,7 +27,7 @@ import reactor.core.publisher.Mono;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.UUID;
-
+@Api(description = "ProductClass接口")
 @RestController
 @RequestMapping("/usersecurity")
 @CrossOrigin
@@ -43,6 +45,7 @@ public class UserSecurityController {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
+    @ApiOperation(value = "登陆" ,  notes="登陆")
     @PutMapping("/register")
     public synchronized Mono<Message> register(@RequestBody UserSecurity userSecurity,@RequestParam("registertype")String registertype,HttpServletRequest httpServletRequest){
         UserSecurity info;
