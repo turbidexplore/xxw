@@ -19,7 +19,8 @@ public class ExpressService {
         expressMapper.insertExpress(express);
     }
     public Express getByClassId(String classId){
-        return expressMapper.getByClassId(classId);
+        Express express = expressMapper.getByClassId(classId);
+        return express;
     }
 
     public void update(Express express) {

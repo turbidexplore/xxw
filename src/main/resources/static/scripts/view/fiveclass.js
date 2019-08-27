@@ -384,7 +384,7 @@ function next() {
                 text: '表达式',
                 btnClass: 'btn-primary',
                 action: function() {
-                    window.open("/system/fiveclassview?id="+$("#coreid").val(),'_blank','')
+                    window.open("/system/fiveclassview_vue?id="+$("#coreid").val(),'_blank','')
                 }
             },
             pl: {

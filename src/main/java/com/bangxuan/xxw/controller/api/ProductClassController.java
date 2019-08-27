@@ -297,7 +297,7 @@ public class ProductClassController {
                    }
                    String skuvalue = json.getString("value");
                    String skutype = json.getString("type");
-                   if(!StringUtils.isEmpty(skuname)){
+//                   if(!StringUtils.isEmpty(skuname)){
                        // 产地
                        if(skutype.equals("0")){
                            if(skuInfo.getSkuname().contains(skuname)){
@@ -351,24 +351,28 @@ public class ProductClassController {
                        // pdf样本
                        if(skutype.equals("8")){
                            if(skuInfo.getSkuname().contains(skuname)){
+                          //     System.out.print("pdf样本："+skuvalue);
                                skuInfo.setPdf(skuvalue);
                            }
                        }
                        // 3D模型
                        if(skutype.equals("9")){
                            if(skuInfo.getSkuname().contains(skuname)){
+                           //    System.out.print("3D模型："+skuvalue);
                                skuInfo.setSd(skuvalue);
                            }
                        }
                        // 2D模型
                        if(skutype.equals("10")){
                            if(skuInfo.getSkuname().contains(skuname)){
+                            //   System.out.print("2D模型："+skuvalue);
                                skuInfo.setTd(skuvalue);
                            }
                        }
                        // 产品视频
                        if(skutype.equals("11")){
                            if(skuInfo.getSkuname().contains(skuname)){
+                            //   System.out.print("产品视频："+skuvalue);
                                skuInfo.setVideo(skuvalue);
                            }
                        }
@@ -376,17 +380,18 @@ public class ProductClassController {
                        // logo
                        if(skutype.equals("12")){
                            if(skuInfo.getSkuname().contains(skuname)){
+                            //   System.out.print("logo："+skuvalue);
                                skuInfo.setLogo(skuvalue);
                            }
                        }
+                       System.out.println("-------------------------------------------");
                        skuService.updateSKU(skuInfo);
-                       System.out.println("skuname="+skuname+",skuvalue="+skuvalue+",skutype="+skutype);
-                   }
+//                       System.out.println("skuname="+skuname+",skuvalue="+skuvalue+",skutype="+skutype);
+//                   }
                }
            }
        }
-//        gy_class_skuinfo
-
+        // gy_class_skuinfo
         return Mono.just(Message.SCUESSS(Message.SECUESS,productClassService.updateClassData(Integer.parseInt(id),5)));
     }
 

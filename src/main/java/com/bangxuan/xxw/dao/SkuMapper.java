@@ -17,7 +17,7 @@ public interface SkuMapper {
     int insertSKU(SkuInfo skuinfo);
 
     @Update("update gy_class_skuinfo set classid=#{classid},skuname=#{skuname},brandname=#{brandname},brandarea=#{brandarea},brandtype=#{brandtype},origin=#{origin},unitprice=#{unitprice},wholesaleprice=#{wholesaleprice}" +
-            ",mpq=#{mpq},moq=#{moq},qualityassurancetime=#{qualityassurancetime},sample=#{sample},zzsample=#{zzsample},pdf=#{pdf},sd=#{sd},video=#{video},logo=#{logo} where id=#{id}")
+            ",mpq=#{mpq},moq=#{moq},qualityassurancetime=#{qualityassurancetime},sample=#{sample},zzsample=#{zzsample},pdf=#{pdf},sd=#{sd},td=#{td},video=#{video},logo=#{logo} where id=#{id}")
      int updateSKU(SkuInfo skuinfo);
 
     @Update("update gy_class_generalparameters set status=1,create_time=date_format(now(),'%Y-%m-%d %H:%i:%s') where id=#{id}")
