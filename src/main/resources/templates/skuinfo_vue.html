@@ -5,434 +5,255 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>零件邦-传奇</title>
     <style>
-      /* fallback */
-      @font-face {
-        font-family: 'Material Icons';
-        font-style: normal;
-        font-weight: 400;
-        src: url(https://fonts.gstatic.com/s/materialicons/v47/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
-      }
+        /* fallback */
+        @font-face {
+            font-family: 'Material Icons';
+            font-style: normal;
+            font-weight: 400;
+            src: url(https://fonts.gstatic.com/s/materialicons/v47/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
+        }
 
-      .material-icons {
-        font-family: 'Material Icons';
-        font-weight: normal;
-        font-style: normal;
-        font-size: 24px;
-        line-height: 1;
-        letter-spacing: normal;
-        text-transform: none;
-        display: inline-block;
-        white-space: nowrap;
-        word-wrap: normal;
-        direction: ltr;
-        -moz-font-feature-settings: 'liga';
-        -moz-osx-font-smoothing: grayscale;
-      }
+        .material-icons {
+            font-family: 'Material Icons';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -moz-font-feature-settings: 'liga';
+            -moz-osx-font-smoothing: grayscale;
+        }
 
     </style>
-    <link rel="stylesheet" href="/styles/bootstrap.min.css" >
+    <link rel="stylesheet" href="/styles/bootstrap.min.css">
     <link rel="stylesheet" id="main-stylesheet" data-version="1.1.0" href="/styles/shards-dashboards.1.1.0.min.css">
     <link rel="stylesheet" href="/styles/extras.1.1.0.min.css">
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/images/favicon.ico">
-  </head>
-  <body class="h-100">
+</head>
+<body class="h-100">
 
-    <div class="container-fluid">
-      <div class="row">
+<div class="container-fluid" id="app">
+    <div class="row">
         <aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0">
-          <div class="main-navbar">
-            <nav class="navbar align-items-stretch navbar-light bg-white flex-md-nowrap border-bottom p-0">
-              <a class="navbar-brand w-100 mr-0" href="#" style="line-height: 25px;">
-                <div class="d-table m-auto">
-                  <img id="main-logo" class="d-inline-block align-top mr-1" style="max-width: 25px;" src="/images/favicon.ico" alt="Shards Dashboard">
-                  <span class="d-none d-md-inline ml-1">零件邦之传奇</span>
-                </div>
-              </a>
-            </nav>
-          </div>
-          <form action="#" class="main-sidebar__search w-100 border-right d-sm-flex d-md-none d-lg-none">
-            <div class="input-group input-group-seamless ml-3">
-              <div class="input-group-prepend">
-                <div class="input-group-text">
-                  <i class="fas fa-search"></i>
-                </div>
-              </div>
-              <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> </div>
-          </form>
-          <div class="nav-wrapper">
-            <ul class="nav flex-column">
-              <li class="nav-item">
-                <a class="nav-link " href="/system/index">
-                  <i class="material-icons">view_module</i>
-                  <span>首页</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/system/task">
-                  <i class="material-icons">vertical_split</i>
-                  <span>LOGO任务</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/system/company">
-                  <i class="material-icons">vertical_split</i>
-                  <span>补全公司信息</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link =" href="/system/tasks">
-                  <i class="material-icons">vertical_split</i>
-                  <span>已完成任务列表</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/system/filelib">
-                  <i class="material-icons">vertical_split</i>
-                  <span>样本提交列表 <span class="badge badge-pill badge-danger" id="yb"></span></span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/system/fk">
-                  <i class="material-icons">vertical_split</i>
-                  <span>反馈信息 <span class="badge badge-pill badge-danger" id="fk"></span></span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="/system/fiveclass?id=0&comid=0">
-                  <i class="material-icons">vertical_split</i>
-                  <span>产品综合信息</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/system/myfiveclass">
-                  <i class="material-icons">vertical_split</i>
-                  <span>已完成SKU列表</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/system/userdata">
-                  <i class="material-icons">vertical_split</i>
-                  <span>统计数据</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/system/followInfo">
-                  <i class="material-icons">vertical_split</i>
-                  <span>用户关注企业统计</span>
-                </a>
-              </li>
-            </ul>
-          </div>
+            <div class="main-navbar">
+                <nav class="navbar align-items-stretch navbar-light bg-white flex-md-nowrap border-bottom p-0">
+                    <a class="navbar-brand w-100 mr-0" href="#" style="line-height: 25px;">
+                        <div class="d-table m-auto">
+                            <img id="main-logo" class="d-inline-block align-top mr-1" style="max-width: 25px;"
+                                 src="/images/favicon.ico" alt="Shards Dashboard">
+                            <span class="d-none d-md-inline ml-1">零件邦之传奇</span>
+                        </div>
+                    </a>
+                </nav>
+            </div>
+            <form action="#" class="main-sidebar__search w-100 border-right d-sm-flex d-md-none d-lg-none">
+                <div class="input-group input-group-seamless ml-3">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                    <input class="navbar-search form-control" type="text" placeholder="Search for something..."
+                           aria-label="Search"></div>
+            </form>
+            <div class="nav-wrapper">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link " href="/system/index">
+                            <i class="material-icons">view_module</i>
+                            <span>首页</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/system/task">
+                            <i class="material-icons">vertical_split</i>
+                            <span>LOGO任务</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/system/company">
+                            <i class="material-icons">vertical_split</i>
+                            <span>补全公司信息</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link =" href="/system/tasks">
+                            <i class="material-icons">vertical_split</i>
+                            <span>已完成任务列表</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/system/filelib">
+                            <i class="material-icons">vertical_split</i>
+                            <span>样本提交列表 <span class="badge badge-pill badge-danger" id="yb"></span></span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/system/fk">
+                            <i class="material-icons">vertical_split</i>
+                            <span>反馈信息 <span class="badge badge-pill badge-danger" id="fk"></span></span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/system/fiveclass?id=0&comid=0">
+                            <i class="material-icons">vertical_split</i>
+                            <span>产品综合信息</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/system/myfiveclass">
+                            <i class="material-icons">vertical_split</i>
+                            <span>已完成SKU列表</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/system/userdata">
+                            <i class="material-icons">vertical_split</i>
+                            <span>统计数据</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/system/followInfo">
+                            <i class="material-icons">vertical_split</i>
+                            <span>用户关注企业统计</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </aside>
         <main class="main-content col-lg-10 col-md-9 col-sm-12 p-0 offset-lg-2 offset-md-3">
-          <div class="main-navbar sticky-top bg-white">
-            <nav class="navbar align-items-stretch navbar-light flex-md-nowrap p-0">
-              <form action="#" class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
-                <div class="input-group input-group-seamless ml-3">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">
-                      <i class="fas fa-search"></i>
+            <div class="main-navbar sticky-top bg-white">
+                <nav class="navbar align-items-stretch navbar-light flex-md-nowrap p-0">
+                    <form action="#" class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
+                        <div class="input-group input-group-seamless ml-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                            </div>
+                            <input class="navbar-search form-control" id="searchtext" oninput="init()" type="text"
+                                   placeholder="输入关键字搜索内容" aria-label="Search"></div>
+                    </form>
+                    <ul class="navbar-nav border-left flex-row ">
+                        <li class="nav-item dropdown" ondblclick="logout()">
+                            <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#"
+                               role="button" aria-haspopup="true" aria-expanded="false">
+                                <img class="user-avatar rounded-circle mr-2" id="userimage" src="" alt="无图片">
+                                <span class="d-none d-md-inline-block" id="username">登录</span>
+                                <span style="color: #2d53fe;">双击退出</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <nav class="nav">
+                        <a href="#"
+                           class="nav-link nav-link-icon toggle-sidebar d-md-inline d-lg-none text-center border-left"
+                           data-toggle="collapse" data-target=".header-navbar" aria-expanded="false"
+                           aria-controls="header-navbar">
+                            <i class="material-icons">&#xE5D2;</i>
+                        </a>
+                    </nav>
+                </nav>
+            </div>
+            <div class="main-content-container container-fluid px-4">
+                <div class="page-header row no-gutters py-4">
+                    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+                        <span class="text-uppercase page-subtitle">零件邦  <button type="button" @click="save()"
+                                                                                class="mb-2 btn btn-outline-success mr-2">  提交信息 </button></span>
                     </div>
-                  </div>
-                  <input class="navbar-search form-control" id="searchtext" oninput="init()" type="text" placeholder="输入关键字搜索内容" aria-label="Search"> </div>
-              </form>
-              <ul class="navbar-nav border-left flex-row ">
-                <li class="nav-item dropdown" ondblclick="logout()">
-                  <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <img class="user-avatar rounded-circle mr-2" id="userimage" src="" alt="无图片">
-                    <span class="d-none d-md-inline-block" id="username">登录</span>
-                    <span style="color: #2d53fe;">双击退出</span>
-                  </a>
-                </li>
-              </ul>
-              <nav class="nav">
-                <a href="#" class="nav-link nav-link-icon toggle-sidebar d-md-inline d-lg-none text-center border-left" data-toggle="collapse" data-target=".header-navbar" aria-expanded="false" aria-controls="header-navbar">
-                  <i class="material-icons">&#xE5D2;</i>
-                </a>
-              </nav>
-            </nav>
-          </div>
-          <div class="main-content-container container-fluid px-4">
-            <div class="page-header row no-gutters py-4">
-              <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-                <span class="text-uppercase page-subtitle">零件邦  <button type="button" onclick="save(this)"  class="mb-2 btn btn-outline-success mr-2">  提交信息 </button></span>
-              </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-lg-12" v-for="(item,index) in skuNamesList">
+                        <div class="col-lg-12">
+                            <div class="card card-small overflow-hidden mb-4">
+                                <div class="card-header ">
+                                    <h6 class="m-0 text">
+                                        <button type="button" class="btn btn-accent" @click="addSkuRule(index)">
+                                            {{item.skuname}}
+                                        </button>
+                                    </h6>
+                                </div>
+                                <div class="card-body p-0 pb-3 ">
+                                    <table class="table mb-0">
+                                        <thead class="thead">
+                                        <tr>
+                                            <th width="45%" scope="col" class="border-bottom-0">SKU规则</th>
+                                            <th width="35%" scope="col" class="border-bottom-0">{{item.skuname}}</th>
+                                            <th width="20%" scope="col" class="border-bottom-0">操作</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tr v-for="(rule,index2) in item.rules">
+                                            <td style='padding: 2px 10px'>
+                                                <select v-for="(itemRules,index3) in skuRules" v-model = "skuNamesList[index].rules[index2][index3]">
+                                                  <option value="">任意</option>
+                                                  <option v-for="(itemRule,index4) in itemRules" :value="itemRule">
+                                                    {{itemRule}}
+                                                  </option>
+                                                </select>
+                                            </td>
+                                            <td style='padding: 2px 10px'>
+                                                <div v-if="item.inputtype===0">
+                                                    <input type="text" v-model="skuNamesList[index].typeValue[index2]">
+                                                </div>
+                                                <div v-if="item.inputtype===1">
+                                                    <select v-model="skuNamesList[index].typeValue[index2]">
+                                                        <option v-for="(itemTypeValue,index2) in item.typeValues"
+                                                                :value="itemTypeValue.value">{{itemTypeValue.name}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div v-if="item.inputtype===2">
+                                                    <input type='file' style='width: 100%'/>
+<!--                                                  v-model="skuNamesList[index].typeValue"-->
+                                                </div>
+                                            </td>
+                                            <td style='padding: 2px 10px'>
+                                                <button class='btn btn-sm btn-danger ' @click="rm(index,index2)">删除</button>
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="row">
-              <div class="col-lg-12" >
-                <div class="card card-small overflow-hidden mb-4">
-                  <div class="card-header ">
-                    <h6 class="m-0 text"><button type="submit"  class="btn btn-accent" onclick="value1()">产地</button></h6>
-                  </div>
-                  <div class="card-body p-0 pb-3 " >
-                    <table class="table mb-0">
-                      <thead class="thead">
-                      <tr>
-                        <th width="45%" scope="col" class="border-bottom-0">SKU规则</th>
-                        <th width="35%" scope="col" class="border-bottom-0">产地</th>
-                        <th width="20%" scope="col" class="border-bottom-0">操作</th>
-                      </tr>
-                      </thead>
-                      <tbody id="value1"></tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12" >
-                <div class="card card-small overflow-hidden mb-4">
-                  <div class="card-header ">
-                    <h6 class="m-0 text"><button type="submit"  class="btn btn-accent" onclick="value2()">样品单价</button></h6>
-                  </div>
-                  <div class="card-body p-0 pb-3  ">
-                    <table class="table mb-0">
-                      <thead class="thead">
-                      <tr>
-                        <th width="45%" scope="col" class="border-bottom-0">SKU规则</th>
-                        <th width="35%" scope="col" class="border-bottom-0">样品单价</th>
-                        <th width="20%" scope="col" class="border-bottom-0">操作</th>
-                      </tr>
-                      </thead>
-                      <tbody id="value2"></tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12" >
-                <div class="card card-small overflow-hidden mb-4">
-                  <div class="card-header ">
-                    <h6 class="m-0 text"><button type="submit"  class="btn btn-accent" onclick="value3()">批量价格</button></h6>
-                  </div>
-                  <div class="card-body p-0 pb-3  ">
-                    <table class="table mb-0">
-                      <thead class="thead">
-                      <tr>
-                        <th width="45%" scope="col" class="border-bottom-0">SKU规则</th>
-                        <th width="35%" scope="col" class="border-bottom-0">批量价格</th>
-                        <th width="20%" scope="col" class="border-bottom-0">操作</th>
-                      </tr>
-                      </thead>
-                      <tbody id="value3"></tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12" >
-                <div class="card card-small overflow-hidden mb-4">
-                  <div class="card-header ">
-                    <h6 class="m-0 text"><button type="submit"  class="btn btn-accent" onclick="value4()">最小包装量</button></h6>
-                  </div>
-                  <div class="card-body p-0 pb-3  ">
-                    <table class="table mb-0">
-                      <thead class="thead">
-                      <tr>
-                        <th width="45%" scope="col" class="border-bottom-0">SKU规则</th>
-                        <th width="35%" scope="col" class="border-bottom-0">最小包装量</th>
-                        <th width="20%" scope="col" class="border-bottom-0">操作</th>
-                      </tr>
-                      </thead>
-                      <tbody id="value4"></tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12" >
-                <div class="card card-small overflow-hidden mb-4">
-                  <div class="card-header ">
-                    <h6 class="m-0 text"><button type="submit"  class="btn btn-accent" onclick="value5()">最小起订量</button></h6>
-                  </div>
-                  <div class="card-body p-0 pb-3  ">
-                    <table class="table mb-0">
-                      <thead class="thead">
-                      <tr>
-                        <th width="45%" scope="col" class="border-bottom-0">SKU规则</th>
-                        <th width="35%" scope="col" class="border-bottom-0">最小起订量</th>
-                        <th width="20%" scope="col" class="border-bottom-0">操作</th>
-                      </tr>
-                      </thead>
-                      <tbody id="value5"></tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12" >
-                <div class="card card-small overflow-hidden mb-4">
-                  <div class="card-header ">
-                    <h6 class="m-0 text"><button type="submit"  class="btn btn-accent" onclick="value6()">质保时间</button></h6>
-                  </div>
-                  <div class="card-body p-0 pb-3  ">
-                    <table class="table mb-0">
-                      <thead class="thead">
-                      <tr>
-                        <th width="45%" scope="col" class="border-bottom-0">SKU规则</th>
-                        <th width="35%" scope="col" class="border-bottom-0">质保时间</th>
-                        <th width="20%" scope="col" class="border-bottom-0">操作</th>
-                      </tr>
-                      </thead>
-                      <tbody id="value6"></tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12" >
-                <div class="card card-small overflow-hidden mb-4">
-                  <div class="card-header ">
-                    <h6 class="m-0 text"><button type="submit"  class="btn btn-accent" onclick="value7()">样品</button></h6>
-                  </div>
-                  <div class="card-body p-0 pb-3  ">
-                    <table class="table mb-0">
-                      <thead class="thead">
-                      <tr>
-                        <th width="45%" scope="col" class="border-bottom-0">SKU规则</th>
-                        <th width="35%" scope="col" class="border-bottom-0">样品</th>
-                        <th width="20%" scope="col" class="border-bottom-0">操作</th>
-                      </tr>
-                      </thead>
-                      <tbody id="value7"></tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12" >
-                <div class="card card-small overflow-hidden mb-4">
-                  <div class="card-header ">
-                    <h6 class="m-0 text"><button type="submit"  class="btn btn-accent" onclick="value8()">纸质样本</button></h6>
-                  </div>
-                  <div class="card-body p-0 pb-3  ">
-                    <table class="table mb-0">
-                      <thead class="thead">
-                      <tr>
-                        <th width="45%" scope="col" class="border-bottom-0">SKU规则</th>
-                        <th width="35%" scope="col" class="border-bottom-0">纸质样品</th>
-                        <th width="20%" scope="col" class="border-bottom-0">操作</th>
-                      </tr>
-                      </thead>
-                      <tbody id="value8"></tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12" >
-                <div class="card card-small overflow-hidden mb-4">
-                  <div class="card-header ">
-                    <h6 class="m-0 text"><button type="submit"  class="btn btn-success" onclick="value9()">PDF样本</button></h6>
-                  </div>
-                  <div class="card-body p-0 pb-3  ">
-                    <table class="table mb-0">
-                      <thead class="thead">
-                      <tr>
-                        <th width="45%" scope="col" class="border-bottom-0">SKU规则</th>
-                        <th width="35%" scope="col" class="border-bottom-0">PDF样本</th>
-                        <th width="20%" scope="col" class="border-bottom-0">操作</th>
-                      </tr>
-                      </thead>
-                      <tbody id="value9"></tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12" >
-                <div class="card card-small overflow-hidden mb-4">
-                  <div class="card-header ">
-                    <h6 class="m-0 text"><button type="submit"  class="btn btn-success" onclick="value10()">3D模型</button></h6>
-                  </div>
-                  <div class="card-body p-0 pb-3  ">
-                    <table class="table mb-0">
-                      <thead class="thead">
-                      <tr>
-                        <th width="45%" scope="col" class="border-bottom-0">SKU规则</th>
-                        <th width="35%" scope="col" class="border-bottom-0">3D模型</th>
-                        <th width="20%" scope="col" class="border-bottom-0">操作</th>
-                      </tr>
-                      </thead>
-                      <tbody id="value10"></tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12" >
-                <div class="card card-small overflow-hidden mb-4">
-                  <div class="card-header ">
-                    <h6 class="m-0 text"><button type="submit"  class="btn btn-success" onclick="value11()">2D图纸</button></h6>
-                  </div>
-                  <div class="card-body p-0 pb-3  ">
-                    <table class="table mb-0">
-                      <thead class="thead">
-                      <tr>
-                        <th width="45%" scope="col" class="border-bottom-0">SKU规则</th>
-                        <th width="35%" scope="col" class="border-bottom-0">2D图纸</th>
-                        <th width="20%" scope="col" class="border-bottom-0">操作</th>
-                      </tr>
-                      </thead>
-                      <tbody id="value11"></tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12" >
-                <div class="card card-small overflow-hidden mb-4">
-                  <div class="card-header ">
-                    <h6 class="m-0 text"><button type="submit"  class="btn btn-success" onclick="value12()">产品视频</button></h6>
-                  </div>
-                  <div class="card-body p-0 pb-3  ">
-                    <table class="table mb-0">
-                      <thead class="thead">
-                      <tr>
-                        <th width="45%" scope="col" class="border-bottom-0">SKU规则</th>
-                        <th width="35%" scope="col" class="border-bottom-0">产品视频</th>
-                        <th width="20%" scope="col" class="border-bottom-0">操作</th>
-                      </tr>
-                      </thead>
-                      <tbody id="value12"></tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12" >
-                <div class="card card-small overflow-hidden mb-4">
-                  <div class="card-header ">
-                    <h6 class="m-0 text"><button type="submit"  class="btn btn-success" onclick="value13()">Logo</button></h6>
-                  </div>
-                  <div class="card-body p-0 pb-3  ">
-                    <table class="table mb-0">
-                      <thead class="thead">
-                      <tr>
-                        <th width="45%" scope="col" class="border-bottom-0">SKU规则</th>
-                        <th width="35%" scope="col" class="border-bottom-0">LOGO</th>
-                        <th width="20%" scope="col" class="border-bottom-0">操作</th>
-                      </tr>
-                      </thead>
-                      <tbody id="value13"></tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </main>
-      </div>
     </div>
-    <input id="coreid" type="hidden" th:value="${id}">
-    <script src="/scripts/jquery-3.3.1.min.js" ></script>
-    <script src="/scripts/popper.min.js" ></script>
-    <script src="/scripts/bootstrap.min.js" ></script>
-    <script src="/scripts/shards.min.js"></script>
-    <script src="/scripts/jquery.sharrre.min.js"></script>
-    <script src="/scripts/extras.1.1.0.min.js"></script>
-    <script src="/scripts/jquery.cookie.min.js" ></script>
-    <script src="/scripts/buttons.js"></script>
-  <script th:inline="none">
+</div>
+<input id="coreid" type="hidden" th:value="${id}">
+<script src="/scripts/jquery-3.3.1.min.js"></script>
+<script src="/scripts/popper.min.js"></script>
+<script src="/scripts/bootstrap.min.js"></script>
+<script src="/scripts/shards.min.js"></script>
+<script src="/scripts/jquery.sharrre.min.js"></script>
+<script src="/scripts/extras.1.1.0.min.js"></script>
+<script src="/scripts/jquery.cookie.min.js"></script>
+<script src="/scripts/buttons.js"></script>
+<!-- vue-->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!--根据笛卡儿积生成SKU end-->
+<script src="/scripts/view/skuinfo_vue.js" th:inline="none"></script>
 
-      if($.cookie("ACCESS_TOKEN")==undefined){
-          window.location.href="/system/login";
-      }
-      function logout() {
-          $.removeCookie("ACCESS_TOKEN", {path:"/",domain:"chuanqi.lingjianbang.com"});
-          window.location.href="/system/login";
-      }
+<script th:inline="none">
 
+    if ($.cookie("ACCESS_TOKEN") == undefined) {
+        window.location.href = "/system/login";
+    }
 
+    function logout() {
+        $.removeCookie("ACCESS_TOKEN", {path: "/", domain: "chuanqi.lingjianbang.com"});
+        window.location.href = "/system/login";
+    }
 
-  </script>
-  </body>
+</script>
+</body>
 </html>

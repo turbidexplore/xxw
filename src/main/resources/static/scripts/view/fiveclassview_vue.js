@@ -281,6 +281,7 @@ var app = new Vue({
                     }
                 }
             }
+            console.log(removeList)
             return removeList;
         },
         getGridTitle() {
@@ -330,7 +331,7 @@ var app = new Vue({
                     res = res.concat(this.flattenType(item));
                 } else {
                     if (index == 0) {
-                        console.log('item.expressIndex='+item.expressIndex)
+                        // console.log('item.expressIndex='+item.expressIndex)
                         res.push(this.expList[item.expressIndex].symob + item.value);
                     }
                 }
@@ -432,18 +433,20 @@ var app = new Vue({
                     "expList": JSON.stringify(this.expList),
                     "skuInfos": JSON.stringify(expressModule.outExcel.getData()),
                     "ysList": JSON.stringify(this.ysList),
-                    "skuRules": JSON.stringify(skuRules)
+                    "skuRules": JSON.stringify(skuRules),
+                    "mainTotalCount":this.mainTotalCount,
+                    "alltotalcount":this.totalCount
                 }),
                 "contentType": "application/json"
             }
             $.ajax(settings).done(function (response) {
+                $('#save_expList').val('保存数据')
+                $('#save_expList').attr("disabled", "")
                 if(response.status==200){
                     alert("保存成功！")
                 }else {
-                    alert("保存失败！")
+                    alert(response.message)
                 }
-                $('#save_expList').val('保存数据')
-                $('#save_expList').attr("disabled", "")
                 console.log(response)
             });
         },

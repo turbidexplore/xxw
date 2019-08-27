@@ -371,6 +371,7 @@ public class BaseDataController {
             express.setSkurules(expList.getJSONArray("skuRules").toJSONString());
             express.setCreatedate(new Date());
             express.setUpdatedate(new Date());
+            express.setMaintotalcount(expList.getInteger("mainTotalCount"));
             if(expList.getJSONArray("ysList")!=null){
                 express.setYsjson(expList.getJSONArray("ysList").toJSONString());
             }
@@ -387,6 +388,8 @@ public class BaseDataController {
                 express.setSkurules(expList.getJSONArray("skuRules").toJSONString());
                 express.setCreatedate(new Date());
                 express.setUpdatedate(new Date());
+                express.setMaintotalcount(expList.getInteger("mainTotalCount"));
+
                 if(expList.getJSONArray("ysList")!=null){
                     express.setYsjson(expList.getJSONArray("ysList").toJSONString());
                 }

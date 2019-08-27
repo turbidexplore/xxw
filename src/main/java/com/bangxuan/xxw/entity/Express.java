@@ -36,6 +36,10 @@ public class Express {
 
     private String skurules;
 
+    private Integer maintotalcount;
+
+    private Integer alltotalcount;
+
     public Integer getId() {
         return id;
     }
@@ -106,5 +110,21 @@ public class Express {
 
     public void setSkurules(String skurules) {
         this.skurules = skurules;
+    }
+
+    public Integer getMaintotalcount() {
+        return maintotalcount;
+    }
+
+    public void setMaintotalcount(Integer maintotalcount) {
+        this.maintotalcount = maintotalcount;
+    }
+
+    public Integer getAlltotalcount() {
+        return alltotalcount;
+    }
+
+    public void setAlltotalcount(Integer alltotalcount) {
+        this.alltotalcount = alltotalcount;
     }
 }

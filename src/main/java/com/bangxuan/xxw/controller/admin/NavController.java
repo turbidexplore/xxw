@@ -124,6 +124,12 @@ public class NavController {
         return "skuinfo";
     }
 
+    @RequestMapping("/system/skuinfo_vue")
+    public String skuinfovue(@RequestParam("id")String id, HttpServletRequest request){
+        request.setAttribute("id",id);
+        return "skuinfo_vue";
+    }
+
     @RequestMapping("/system/skuinfopl")
     public String skuinfopl(@RequestParam("id")String id, HttpServletRequest request){
         request.setAttribute("id",id);
