@@ -359,8 +359,7 @@ var app = new Vue({
                     res = res.concat(this.flattenType(item));
                 } else {
                     if (index == 0) {
-                        // console.log('item.expressIndex='+item.expressIndex)
-                        res.push(this.expList[item.expressIndex].symob + item.value);
+                        res.push(this.expList[item.expressIndex].symob + '{'+item.value+'}');
                     }
                 }
             });
@@ -442,7 +441,8 @@ var app = new Vue({
                 if (exp.isMainSku) {
                     var values = [];
                     for (let j = 0; j < exp.values.length; j++) {
-                        values.push(exp.symob + exp.values[j][0].value)
+                        // values.push(exp.symob + exp.values[j][0].value)
+                        values.push(exp.values[j][0].value)
                     }
                     skuRules.push(values);
                 }
@@ -488,7 +488,7 @@ var app = new Vue({
                 if (exp.isMainSku) {
                     var values = [];
                     for (let j = 0; j < exp.values.length; j++) {
-                        values.push(exp.symob + exp.values[j][0].value)
+                        values.push(exp.values[j][0].value)
                     }
                     skuRules.push(values);
                 }

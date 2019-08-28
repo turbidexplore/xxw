@@ -63,6 +63,8 @@ public class SkuInfo {
 
     private Integer isauth;
 
+    private String skunameexp;
+
     public Integer getIsauth() {
         return isauth;
     }
@@ -229,5 +231,13 @@ public class SkuInfo {
 
     public void setIdx(Integer idx) {
         this.idx = idx;
+    }
+
+    public String getSkunameexp() {
+        return skunameexp;
+    }
+
+    public void setSkunameexp(String skunameexp) {
+        this.skunameexp = skunameexp;
     }
 }

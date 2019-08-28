@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.entity.SkuInfo;
 import com.bangxuan.xxw.entity.SkuValues;
+import com.bangxuan.xxw.util.ExpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -225,7 +226,9 @@ public class SkuThread  {
         SkuInfo skuInfo=new SkuInfo();
         skuInfo.setId(uuid);
         skuInfo.setClassid(Integer.parseInt(id));
-        skuInfo.setSkuname((skuValuesArr.get(0).toString()));
+        String skuname = skuValuesArr.get(0).toString().replace("{","").replace("}","");
+        skuInfo.setSkuname(skuname);
+        skuInfo.setSkunameexp(skuValuesArr.get(0).toString());
         skuInfo.setIdx(i-4);
         skuService.insert(skuInfo);
     }

@@ -192,7 +192,7 @@
                                         <tr v-for="(rule,index2) in item.rules">
                                             <td style='padding: 2px 10px'>
                                                 <select v-for="(itemRules,index3) in skuRules" v-model = "skuNamesList[index].rules[index2][index3]">
-<!--                                                  <option value="">任意</option>-->
+                                                  <option value="">任意</option>
                                                   <option v-for="(itemRule,index4) in itemRules" :value="itemRule">
                                                     {{itemRule}}
                                                   </option>

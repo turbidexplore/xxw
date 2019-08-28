@@ -5,14 +5,15 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.entity.*;
 import com.bangxuan.xxw.service.*;
+import com.bangxuan.xxw.util.ExpUtils;
 import com.bangxuan.xxw.util.Message;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -283,17 +284,29 @@ public class ProductClassController {
                         JSONArray rules = json.getJSONArray("rules");
                         for (int j = 0; j < rules.size(); j++) {
                             JSONObject rule = rules.getJSONObject(j);
-                            StringBuilder sb = new StringBuilder();
+                            List<String> list = new ArrayList<>();
                             Iterator<Object> it = rule.values().iterator();
                             while (it.hasNext()) {
                                 String next = (String) it.next();
-                                System.out.print(next + " ");
-                                sb.append(next);
+                                list.add(next);
                             }
-//                            System.out.println("skuname=" + skuname + " rule=" + sb);
-
+                            // 获取表达式
+                            String skuexp = skuInfo.getSkunameexp();
+                            List<String> listName = ExpUtils.extractSkuExpName(skuexp);
                             String typval = typeValue.getString(j);
-                            if (skuInfo.getSkuname().contains(sb.toString())) {
+                            boolean isMatch = true;
+                            // 判断表达式是否和型号匹配
+                            for(int jj=0;jj<listName.size();jj++){
+                                if(StringUtils.isNotEmpty(list.get(jj))){
+                                    if(!listName.get(jj).equals(list.get(jj))){
+                                        isMatch =false;
+                                        break;
+                                    }
+                                }
+                            }
+                            System.out.println("skuname"+skuname+"  listName="+StringUtils.join(listName,"")+"  list="+StringUtils.join(list,""));
+
+                            if (isMatch) {
                                 switch (index){
                                     case 0: skuInfo.setOrigin(typval); // 产地
                                             break;
@@ -329,6 +342,7 @@ public class ProductClassController {
                     }
                 }
             }
+            productClassService.updateClassData(Integer.parseInt(classId),5);
 
         return Mono.just(Message.SCUESSS(Message.SECUESS, "操作成功！"));
     }
