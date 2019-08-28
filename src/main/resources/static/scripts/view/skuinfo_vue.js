@@ -21,16 +21,58 @@ var app = new Vue({
         skuNamesList: [],
     },
     methods: {
-        save(){
-          // console.log('save()')
-            for(let i=0;i<this.skuNamesList.length;i++){
-                let item = this.skuNamesList[i];
-
+        init(){
+            var _this = this;
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "/basedata/getexpressbyclassid?classId=" + $("#coreid").val(),
+                "method": "GET",
+                "processData": false,
+                "contentType": "application/json"
             }
-            console.log(this.skuNamesList)
+            $.ajax(settings).done(function (response) {
+                if(response.status ==200&&response.data.bisexpressjson!=null){
+                    _this.skuNamesList = JSON.parse(response.data.bisexpressjson);
+                }else{
+                    _this.initData()
+                }
+                // console.log(response)
+            });
         },
-        addCol(index) {
+        initData(){
+            let rules = [];
+            for(let i=0;i<this.skuRules.length;i++){
+                let skuRule = this.skuRules[i];
+                rules.push('')
+            }
+            for (let [key, value] of mapType.entries()) {
+                this.skuNamesList.push({
+                    index:key, // 序号
+                    skuname:value.name, // skuname
+                    inputtype:value.inputtype, // skunametype
+                    typeValues:value.typeValues, // typeValues
+                    typeValue:[''],  // 默认是空
+                    rules:[Object.assign({},rules)] // 默认是SKU规则的长度
+                })
+            }
+            // console.log(this.skuNamesList)
+        },
+        save(){
 
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "/productclass/saveProductSkuInfos?classId="+$("#coreid").val(),
+                "method": "PUT",
+                "processData": false,
+                "data":JSON.stringify({productskuinfos:JSON.stringify(this.skuNamesList)}),
+                "contentType": "application/json"
+            }
+
+            $.ajax(settings).done(function (res) {
+                alert(res.data);
+            });
         },
         rm(index,index2){
             this.skuNamesList[index].rules.splice(index2,1);
@@ -45,23 +87,27 @@ var app = new Vue({
             this.skuNamesList[index].typeValue.push('');
             this.skuNamesList[index].rules.push(Object.assign({},rules));
         },
-        initData(){
-            let rules = [];
-            for(let i=0;i<this.skuRules.length;i++){
-                let skuRule = this.skuRules[i];
-                rules.push({value:''})
+        uploadFile(e,index,index2){
+            let _this = this
+            let photoFile = e.target
+            // 判断是否符合上传条件
+            if (photoFile.files.length === 0){
+                alert("请选择文件！");
+                return false
             }
-            for (let [key, value] of mapType.entries()) {
-                this.skuNamesList.push({
-                    index:key, // 序号
-                    skuname:value.name, // skuname
-                    inputtype:value.inputtype, // skunametype
-                    typeValues:value.typeValues, // typeValues
-                    typeValue:[''],  // 默认是空
-                    rules:[Object.assign({},rules)] // 默认是SKU规则的长度
-                })
-            }
-            console.log(this.skuNamesList)
+
+            var form = new FormData();
+            form.append('file', photoFile.files[0]); // 第三个参数为文件名
+            $.ajax({
+                type: 'POST',
+                url : "/file/upload",
+                data: form ,
+                processData: false,
+                contentType: false,
+            }).done(function(result) {
+                _this.skuNamesList[index].typeValue[index2]=result.data
+                alert("上传成功！");
+            });
         }
     },
     created: function () {
@@ -74,18 +120,13 @@ var app = new Vue({
             "processData": false
         }
         $.ajax(settings).done(function (res) {
-            let skurule= JSON.parse(res.data);
-            _this.skuRules = skurule;
-            _this.initData();
-            console.log(skurule);
+            if(res.status==200){
+                let skurule= JSON.parse(res.data);
+                _this.skuRules = skurule;
+                _this.init();
+            }else if(res.status==500){
+                alert("表达式不存在！请先做表达式！")
+            }
         });
-        console.log("mapType.get('0')="+mapType.get('0'))
     }
 })
-
-//笛卡儿积算法
-function CartesianModule() {
-}
-
-CartesianModule.prototype.Cartesian = function (a, b) {
-}

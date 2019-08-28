@@ -192,7 +192,7 @@
                                         <tr v-for="(rule,index2) in item.rules">
                                             <td style='padding: 2px 10px'>
                                                 <select v-for="(itemRules,index3) in skuRules" v-model = "skuNamesList[index].rules[index2][index3]">
-                                                  <option value="">任意</option>
+<!--                                                  <option value="">任意</option>-->
                                                   <option v-for="(itemRule,index4) in itemRules" :value="itemRule">
                                                     {{itemRule}}
                                                   </option>
@@ -205,13 +205,14 @@
                                                 <div v-if="item.inputtype===1">
                                                     <select v-model="skuNamesList[index].typeValue[index2]">
                                                         <option v-for="(itemTypeValue,index2) in item.typeValues"
-                                                                :value="itemTypeValue.value">{{itemTypeValue.name}}
+                                                                :value="itemTypeValue.value">
+                                                            {{itemTypeValue.name}}
                                                         </option>
                                                     </select>
                                                 </div>
                                                 <div v-if="item.inputtype===2">
-                                                    <input type='file' style='width: 100%'/>
-<!--                                                  v-model="skuNamesList[index].typeValue"-->
+                                                    <input type='file' @change="uploadFile($event,index,index2)"/>
+                                                    <p><input type="hidden" v-model="skuNamesList[index].typeValue[index2]"/></p>
                                                 </div>
                                             </td>
                                             <td style='padding: 2px 10px'>

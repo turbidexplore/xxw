@@ -309,7 +309,12 @@ public class BaseDataController {
 
     @GetMapping("/getexpressbyclassid")
     public Mono<Message> getExpressByClassId(@RequestParam("classId")String classId){
-        return Mono.just(Message.SCUESSS("ok",expressService.getByClassId(classId)));
+        Express express = expressService.getByClassId(classId);
+        if(express==null){
+            return Mono.just(Message.ERROR("暂无数据"));
+        }else{
+            return Mono.just(Message.SCUESSS("ok",expressService.getByClassId(classId)));
+        }
     }
 
     @PostMapping("/savesExpress")
@@ -420,7 +425,12 @@ public class BaseDataController {
     @GetMapping("/getskurules")
     public Mono<Message> getskuRules(@RequestParam("id")String id){
         Express express = expressService.getByClassId(id);
-        return Mono.just(Message.SCUESSS("ok",express.getSkurules()));
+        if(express==null){
+            return Mono.just(Message.ERROR("暂无数据"));
+        }else{
+            return Mono.just(Message.SCUESSS("ok",express.getSkurules()));
+        }
+
     }
 
     @GetMapping("/getskunames")

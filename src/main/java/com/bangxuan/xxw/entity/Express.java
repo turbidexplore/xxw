@@ -40,6 +40,9 @@ public class Express {
 
     private Integer alltotalcount;
 
+    private String bisexpressjson; // 商业参数表达式
+
+
     public Integer getId() {
         return id;
     }
@@ -126,5 +129,13 @@ public class Express {
 
     public void setAlltotalcount(Integer alltotalcount) {
         this.alltotalcount = alltotalcount;
+    }
+
+    public String getBisexpressjson() {
+        return bisexpressjson;
+    }
+
+    public void setBisexpressjson(String bisexpressjson) {
+        this.bisexpressjson = bisexpressjson;
     }
 }

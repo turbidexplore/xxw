@@ -232,7 +232,25 @@ var app = new Vue({
             // 遍历笛卡儿积结果
             let outExcelData = [];
             // 计算约束的型号
-            let removeList = this.removeList();
+            let removeList = [];
+            for (let i = 0; i < this.ysList.length; i++) {
+                let A = this.ysList[i].A;
+                let B = this.ysList[i].B;
+                let listAdot = this.ysList[i].listAdot;
+                // A:ys0.values[i],B:ys1.values[j]
+                for (let j = 0; j < listAdot.length; j++) {
+                    let dot = listAdot[j];
+                    if (!dot.checked) {
+                        console.log('dot.A=' + JSON.stringify(dot.A))
+                        console.log('dot.B=' + JSON.stringify(dot.B))
+                        let dotAB = A.symob + dot.A[0].value + B.symob + dot.B[0].value;
+                        console.log('A.index=' + A.index + ",B.index=" + B.index + ' dotAB=' + dotAB)
+                        removeList.push({A:A,B:B,dot:dot});
+                    }
+                }
+            }
+
+            // let removeList = this.removeList();
             for (var i = 0; i < skuinfos.length; i++) {
 
                 // 从结果中抽取型号
@@ -246,9 +264,19 @@ var app = new Vue({
                     let skuName = skuNameItem.join('');
                     for (let j = 0; j < removeList.length; j++) {
                         // console.log('skuName=' + skuName + ',removeList[j]=' + removeList[j] + 'skuName.indexOf(removeList)!=-1=' + skuName.indexOf(removeList) != -1)
-                        if (skuName.indexOf(removeList[j]) != -1) {
+                        // console.log('removeList.length='+removeList.length+",j="+j)
+                        let A = removeList[j].A;
+                        let B = removeList[j].B;
+                        let dot = removeList[j].dot;
+                        // let dot = listAdot[0]
+                        // let dotAB = A.symob + dot.A[0].value + B.symob + dot.B[0].value;
+                        // if (skuName.indexOf(removeList[j]) != -1) {
+                        // console.log('skuName='+skuNameItem)
+                        if(skuNameItem[A.index]===(A.symob + dot.A[0].value)&&skuNameItem[B.index]===(B.symob + dot.B[0].value)){
+                            // console.log('removeed=  '+A.symob + dot.A[0].value+" ** "+B.symob + dot.B[0].value)
                             isSureMove = true;
                         }
+                        // }
                     }
                 }
                 if (!isSureMove) {
@@ -601,7 +629,7 @@ function goback() {
 }
 
 function next() {
-    location.href = "/system/skuinfo?id=" + $("#coreid").val();
+    location.href = "/system/skuinfo_vue?id=" + $("#coreid").val();
 }
 
 window.expressModule = new ExpressModule();
