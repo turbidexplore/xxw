@@ -377,6 +377,7 @@ public class BaseDataController {
             express.setCreatedate(new Date());
             express.setUpdatedate(new Date());
             express.setMaintotalcount(expList.getInteger("mainTotalCount"));
+            express.setAlltotalcount(expList.getInteger("alltotalcount"));
             if(expList.getJSONArray("ysList")!=null){
                 express.setYsjson(expList.getJSONArray("ysList").toJSONString());
             }
@@ -394,7 +395,7 @@ public class BaseDataController {
                 express.setCreatedate(new Date());
                 express.setUpdatedate(new Date());
                 express.setMaintotalcount(expList.getInteger("mainTotalCount"));
-
+                express.setAlltotalcount(expList.getInteger("alltotalcount"));
                 if(expList.getJSONArray("ysList")!=null){
                     express.setYsjson(expList.getJSONArray("ysList").toJSONString());
                 }

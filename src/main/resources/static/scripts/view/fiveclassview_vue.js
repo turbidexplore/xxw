@@ -451,6 +451,9 @@ var app = new Vue({
             //  console.log('skuRules'+JSON.stringify(skuRules))
             //  return;
             // }
+            console.log('this.mainTotalCount='+this.mainTotalCount);
+            console.log('this.totalCount='+this.totalCount);
+
             var settings = {
                 "async": true,
                 "crossDomain": true,
@@ -493,6 +496,8 @@ var app = new Vue({
             // if(true){
             //  console.log('skuRules'+JSON.stringify(skuRules))
             //  return;
+
+
             // }
             var settings = {
                 "async": true,
@@ -534,7 +539,12 @@ var app = new Vue({
                         let outExcelData = JSON.parse(response.data.skuinfos);
                         expressModule.outExcel.loadData(outExcelData)
                     }
-                    // expressModule.descartes();
+                    this.mainTotalCount = response.data.maintotalcount
+                    this.totalCount = response.data.alltotalcount
+
+                    // "mainTotalCount":this.mainTotalCount,
+                    //  "alltotalcount":this.totalCount
+                    //  expressModule.descartes();
                 }
                 console.log(response)
             });
