@@ -32,7 +32,7 @@ var app = new Vue({
                 "contentType": "application/json"
             }
             $.ajax(settings).done(function (response) {
-                if(response.status ==200&&response.data.bisexpressjson!=null){
+                if(response.status ==200&&response.data.bisexpressjson!=null&&response.data.bisexpressjson!=''){
                     _this.skuNamesList = JSON.parse(response.data.bisexpressjson);
                 }else{
                     _this.initData()
@@ -59,7 +59,7 @@ var app = new Vue({
             // console.log(this.skuNamesList)
         },
         save(){
-
+            console.log(JSON.stringify(this.skuNamesList))
             var settings = {
                 "async": true,
                 "crossDomain": true,
@@ -76,13 +76,13 @@ var app = new Vue({
         },
         rm(index,index2){
             this.skuNamesList[index].rules.splice(index2,1);
-            this.skuNamesList[index].rules.splice(index2,1);
+            this.skuNamesList[index].typeValue.splice(index2,1);
         },
         addSkuRule(index){
             let rules = [];
             for(let i=0;i<this.skuRules.length;i++){
                 let skuRule = this.skuRules[i];
-                rules.push({value:''})
+                rules.push('')
             }
             this.skuNamesList[index].typeValue.push('');
             this.skuNamesList[index].rules.push(Object.assign({},rules));

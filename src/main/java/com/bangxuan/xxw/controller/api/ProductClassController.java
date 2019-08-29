@@ -285,10 +285,10 @@ public class ProductClassController {
                         for (int j = 0; j < rules.size(); j++) {
                             JSONObject rule = rules.getJSONObject(j);
                             List<String> list = new ArrayList<>();
-                            Iterator<Object> it = rule.values().iterator();
-                            while (it.hasNext()) {
-                                String next = (String) it.next();
-                                list.add(next);
+
+                            for (Map.Entry<String, Object> entry : rule.entrySet()) {
+                                System.out.println("entry.getValue()="+entry.getValue());
+                                list.add((String) entry.getValue());
                             }
                             // 获取表达式
                             String skuexp = skuInfo.getSkunameexp();

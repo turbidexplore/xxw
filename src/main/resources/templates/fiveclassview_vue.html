@@ -27,8 +27,18 @@
                   <button type="button" class="btn btn-primary radius size-S" onclick="goback(this)">返回修改</button>
                   <button type="button" class="btn btn-primary radius size-S"onclick="next()">下一步</button>
                 </span>
-  <div class="mt-10"><input type="button" class="btn btn-primary radius size-S" value="清空表格" onclick="expressModule.cleanInputExcel()"></input></div>
-  <div class="mt-10" id="inputExcel"></div>
+  <div class="mt-10"></div>
+
+  <div>
+    <H3>表体信息粘贴处<input type="button" class="btn btn-primary radius size-S" value="清空表格" onclick="expressModule.cleanInputExcel()"></input></H3>
+    <div class="mt-10 " id="inputExcel"></div>
+  </div>
+
+  <div>
+    <H3>表头信息粘贴处<input type="button" class="btn btn-primary radius size-S" value="清空表格" onclick="expressModule.cleanInputTitlteExcel()"></input></H3>
+    <div class="mt-10" id="inputTitlteExcel"></div>
+  </div>
+
 </div>
 
 <div id="app" style="padding-left: 50px;padding-right: 50px;margin-top: 10px;">
@@ -51,9 +61,13 @@
               <option></option>
               <option>*</option>
               <option>-</option>
+              <option>.</option>
+              <option>x</option>
             </select><span class="f-18 c-red">{{main.name}}</span></p>
             <p><label>主SKU:<!--{{expList[index].isMainSku}}--><input type="checkbox" :checked="expList[index].isMainSku" :value="expList[index].isMainSku"  v-model="expList[index].isMainSku" @click="changeMainSku($event,index)"></input></label></p>
             <p>
+<!--              <input class="btn btn-danger-outline radius size-S" type="button" value="插入"-->
+<!--                     @click="insertExpress(index)">-->
               <input class="btn btn-danger-outline radius size-S" type="button" value="删除"
                      @click="removeExpress(index)">
             </p>
@@ -66,7 +80,10 @@
             <h4 @click="hideExpress(index)">
               <span class="f-18 c-red">表达式：{{main.name}}</span>
               <input type="button" class="btn btn-primary radius size-S" value="导入" @click.stop="importCol(index)">
+              <input type="button" class="btn btn-primary radius size-S" value="导入表头" @click.stop="importTitleCol(index)">
               <input type="button" class="btn btn-primary radius size-S" value="添加列" @click.stop="addCol(index)">
+<!--              <input type="button" class="btn btn-primary radius size-S" value="添加行" @click.stop="addCol(index)">-->
+
               <!--<input type="button" class="btn btn-danger radius size-S" value="删除列" @click="removeCol(index)">-->
               <b>+</b>
             </h4>
@@ -76,6 +93,7 @@
                 <tr v-for="(sub,index2) in main.titles">
                   <td v-for="(subsub,index3) in sub" style="width: 80px">
                     <p v-if="index2===0&&index3!=0" class="text-c">
+                      <input type="button" class="btn btn-danger-outline radius size-MINI" @click.stop="insertCol(index,index3)" value="插入列"></input>
                       <input type="button" class="btn btn-danger-outline radius size-MINI" @click.stop="removeCol(index,index3)" value="删除列"></input>
                     </p>
 
@@ -92,6 +110,7 @@
                   <td v-for="(subsub,index3) in sub">
                             <div style="width: 150px;">
                                 <span v-if="index3===0" style="width: 50px;float: left">
+<!--                                     <input type="button" class="btn btn-danger-outline radius size-MINI" @click.stop="insertRow(index,index2)" value="插入行"></input>-->
                                      <input type="button" class="btn btn-danger-outline radius size-MINI" @click.stop="removeRow(index,index2)" value="删除行"></input>
                                 </span>
                                <span>
@@ -135,6 +154,7 @@
           <div class="Huialert Huialert-info">{{ys.A.name}}和{{ys.B.name}}的约束关系
             <input type="button" class="btn btn-primary radius size-S" value="移除约束" @click="deleteYueSu(index)"></input>
             <input type="button" class="btn btn-primary radius size-S" value="全选反选" @click="fullBackYueSu(index)"></input>
+<!--            <input type="button" class="btn btn-primary radius size-S" value="重新生成" @click="fullBackYueSu(index)"></input>-->
           </div>
           <table  class="table table-border table-bordered table-striped">
             <tbody> 
@@ -168,8 +188,8 @@
     <input type="button" id="save_expList" class="btn btn-primary radius size-S" value="保存数据" onclick="expressModule.saveExpList(this)"></input>
     <span id="hasSavedCount"></span>
   </div>
-
-  <div style="height: 400px; overflow:scroll;padding-bottom: 15px;" class="mt-10">
+<!--  overflow-x:scroll;overflow-y:scroll;-->
+  <div  style="height: 500px;overflow: scroll;" class="mt-10">
     <div id="outExcel"></div>
   </div>
 

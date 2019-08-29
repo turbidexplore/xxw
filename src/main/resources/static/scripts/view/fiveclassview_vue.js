@@ -82,6 +82,24 @@ var app = new Vue({
                 }
             }
         },
+        importTitleCol(index) {
+            // 导入excell表格数据
+            // 清空原来数据
+            // this.expList[index].values = [[]]
+            for (let rowIndex = 0; rowIndex <= expressModule.inputTitlteExcel.countRows(); rowIndex++) {
+                if (!expressModule.inputTitlteExcel.isEmptyRow(rowIndex)) {
+                    let colcount = this.expList[index].titles[0].length;
+                    if (colcount < 2) {
+                        return;
+                    }
+                    for (let j = 0; j < colcount; j++) {
+                        if(this.expList[index].titles[rowIndex][j+1]!=undefined){
+                            this.expList[index].titles[rowIndex][j+1].value = expressModule.inputTitlteExcel.getDataAtCell(rowIndex, j);
+                        }
+                    }
+                }
+            }
+        },
         removeCol(index, index3) {
             // 移除列标题最后一列
             // 标题列数
@@ -101,8 +119,47 @@ var app = new Vue({
                 }
             }
         },
+        insertCol(index, index3) {
+            // console.log('index='+index+",  index3="+index3)
+            // 插入列
+            let titleRows = this.expList[index].titles.length;
+            for (let i = 0; i < titleRows; i++) {
+                // 把每一行的titleCols列数据插入数据
+                this.expList[index].titles[i].splice(index3,0, Object.assign({}, this.titless[i]));
+            }
+
+            // 添加数据列
+            let valuesRows = this.expList[index].values.length;
+            for (let i = 0; i < valuesRows; i++) {
+                // 把每一行的valuesCols列数据插入数据
+                this.expList[index].values[i].splice(index3,0, {value: '', expressIndex: index});
+            }
+        },
         removeRow(index, index2) {
             this.expList[index].values.splice(index2, 1);
+        },
+        insertRow(index, index2) {
+            // 添加数据列
+            let valuesRows = this.expList[index].values.length;
+            for (let i = 0; i < valuesRows; i++) {
+                // 把每一行的valuesCols列数据插入数据
+                this.expList[index].values[i].splice(index3,0, {value: '', expressIndex: index});
+            }
+        },
+        insertExpress(index) {
+            let titles = this.titless.map((value, index) => {
+                return [value]
+            })
+            // 添加表达式
+            this.expList.splice(index,0,{
+                isHidden: true,
+                symob: '-',
+                isMainSku: false, // 是否是主SKU(可进行笛卡尔积进行计算SKU)
+                name: titleValues[index+1],
+                index: index+1,
+                titles: titles,
+                values: []
+            })
         },
         addExpress() {
             var titles = this.titless.map((value, index) => {
@@ -148,12 +205,12 @@ var app = new Vue({
             for (var i = 0; i < this.expList.length; i++) {
                 var expItem = this.expList[i];
                 // 对标题校验
-                console.log('表达式：expItem=' + expItem.name)
+                // console.log('表达式：expItem=' + expItem.name)
                 // expItem.titles.length
                 for (let j = 0; j < 1; j++) {
                     let expItemTitles = expItem.titles[j];
                     // 表头列数必须大于2，才表示表达式有数据，
-                    console.log('expItemTitles.length=' + expItemTitles.length)
+                    // console.log('expItemTitles.length=' + expItemTitles.length)
                     if (expItemTitles.length === undefined || expItemTitles.length < 2) {
                         break;
                         alert('表达式：' + expItem.name + '数据不完整！');
@@ -180,8 +237,8 @@ var app = new Vue({
                         alert('表达式：' + expItem.name + '数据不完整！');
                         return;
                     }
-                    console.log(expItem.name)
-                    console.log(j + '行')
+                    // console.log(expItem.name)
+                    // console.log(j + '行')
                     for (let k = 0; k < expItemValues.length; k++) {
                         let itemValue = this.$refs[`expListValue${i}_${j}_${k}`][0]
                         if (!itemValue.value) {
@@ -232,8 +289,9 @@ var app = new Vue({
             // 遍历笛卡儿积结果
             let outExcelData = [];
             // 计算约束的型号
-            let removeList = [];
+            // 遍历约束，每次遍历进行过滤
             for (let i = 0; i < this.ysList.length; i++) {
+                let removeList = [];
                 let A = this.ysList[i].A;
                 let B = this.ysList[i].B;
                 let listAdot = this.ysList[i].listAdot;
@@ -241,75 +299,69 @@ var app = new Vue({
                 for (let j = 0; j < listAdot.length; j++) {
                     let dot = listAdot[j];
                     if (!dot.checked) {
-                        console.log('dot.A=' + JSON.stringify(dot.A))
-                        console.log('dot.B=' + JSON.stringify(dot.B))
+                        // console.log('dot.A=' + JSON.stringify(dot.A))
+                        // console.log('dot.B=' + JSON.stringify(dot.B))
                         let dotAB = A.symob + dot.A[0].value + B.symob + dot.B[0].value;
-                        console.log('A.index=' + A.index + ",B.index=" + B.index + ' dotAB=' + dotAB)
+                        // console.log('A.index=' + A.index + ",B.index=" + B.index + ' dotAB=' + dotAB)
                         removeList.push({A:A,B:B,dot:dot});
                     }
                 }
-            }
 
-            // let removeList = this.removeList();
-            for (var i = 0; i < skuinfos.length; i++) {
+                // 第一遍过滤 skuinfo
+                for (var k = 0; k < skuinfos.length; k++) {
+                    // 从结果中抽取型号
+                    var skuNameItem = this.flattenType(skuinfos[k])
 
-                // 从结果中抽取型号
-                var skuNameItem = this.flattenType(skuinfos[i])
-
-                // 获取每种类型的值
-                var skuValueItem = this.flatten(skuinfos[i]);
-                // 判断是否在约束中
-                let isSureMove = false;
-                if (removeList.length > 0) {
-                    let skuName = skuNameItem.join('');
-                    for (let j = 0; j < removeList.length; j++) {
-                        // console.log('skuName=' + skuName + ',removeList[j]=' + removeList[j] + 'skuName.indexOf(removeList)!=-1=' + skuName.indexOf(removeList) != -1)
-                        // console.log('removeList.length='+removeList.length+",j="+j)
-                        let A = removeList[j].A;
-                        let B = removeList[j].B;
-                        let dot = removeList[j].dot;
-                        // let dot = listAdot[0]
-                        // let dotAB = A.symob + dot.A[0].value + B.symob + dot.B[0].value;
-                        // if (skuName.indexOf(removeList[j]) != -1) {
-                        // console.log('skuName='+skuNameItem)
-                        if(skuNameItem[A.index]===(A.symob + dot.A[0].value)&&skuNameItem[B.index]===(B.symob + dot.B[0].value)){
-                            // console.log('removeed=  '+A.symob + dot.A[0].value+" ** "+B.symob + dot.B[0].value)
-                            isSureMove = true;
+                    // 获取每种类型的值
+                    var skuValueItem = this.flatten(skuinfos[k]);
+                    // 判断是否在约束中
+                    let isSureMove = false;
+                    // console.log(JSON.stringify(removeList))
+                    if (removeList.length > 0) {
+                        // let skuName = skuNameItem.join('');
+                        for (let j = 0; j < removeList.length; j++) {
+                            let A = removeList[j].A;
+                            let B = removeList[j].B;
+                            let dot = removeList[j].dot;
+                            if(skuNameItem[A.index]==(A.symob+'{'+ dot.A[0].value+'}')&&skuNameItem[B.index]==(B.symob+'{'+dot.B[0].value+'}')){
+                                isSureMove = true;
+                            }
                         }
-                        // }
                     }
-                }
-                if (!isSureMove) {
-                    var skuifoItem = []
-                    skuifoItem.push(skuNameItem.join('').replace("空值",'')) // sku型号放在第一个位置,把空值给替换成空
-                    for (var j = 0; j < skuValueItem.length; j++) {
-                        skuifoItem.push(skuValueItem[j].value)
+                    if (!isSureMove) {
+                        var skuifoItem = []
+                        skuifoItem.push(skuNameItem.join('').replace("空值",'')) // sku型号放在第一个位置,把空值给替换成空
+                        for (var j = 0; j < skuValueItem.length; j++) {
+                            skuifoItem.push(skuValueItem[j].value)
+                        }
+                        outExcelData.push(skuifoItem)
                     }
-                    outExcelData.push(skuifoItem)
                 }
             }
+
+
             return outExcelData;
         },
         removeList() {
             // 计算约束型号
-            let removeList = [];
-            for (let i = 0; i < this.ysList.length; i++) {
-                let A = this.ysList[i].A;
-                let B = this.ysList[i].B;
-                let listAdot = this.ysList[i].listAdot;
-                // A:ys0.values[i],B:ys1.values[j]
-                for (let j = 0; j < listAdot.length; j++) {
-                    let dot = listAdot[j];
-                    if (!dot.checked) {
-                        console.log('dot.A=' + JSON.stringify(dot.A))
-                        console.log('dot.B=' + JSON.stringify(dot.B))
-                        let dotAB = A.symob + dot.A[0].value + B.symob + dot.B[0].value;
-                        console.log('A.index=' + A.index + ",B.index=" + B.index + ' dotAB=' + dotAB)
-                        removeList.push(dotAB);
-                    }
-                }
-            }
-            console.log(removeList)
+            // let removeList = [];
+            // for (let i = 0; i < this.ysList.length; i++) {
+            //     let A = this.ysList[i].A;
+            //     let B = this.ysList[i].B;
+            //     let listAdot = this.ysList[i].listAdot;
+            //     // A:ys0.values[i],B:ys1.values[j]
+            //     for (let j = 0; j < listAdot.length; j++) {
+            //         let dot = listAdot[j];
+            //         if (!dot.checked) {
+            //             // console.log('dot.A=' + JSON.stringify(dot.A))
+            //             // console.log('dot.B=' + JSON.stringify(dot.B))
+            //             let dotAB = A.symob + dot.A[0].value + B.symob + dot.B[0].value;
+            //             // console.log('A.index=' + A.index + ",B.index=" + B.index + ' dotAB=' + dotAB)
+            //             removeList.push(dot);
+            //         }
+            //     }
+            // }
+            // console.log(removeList)
             return removeList;
         },
         getGridTitle() {
@@ -359,14 +411,14 @@ var app = new Vue({
                     res = res.concat(this.flattenType(item));
                 } else {
                     if (index == 0) {
-                        res.push(this.expList[item.expressIndex].symob + '{'+item.value+'}');
+                        res.push(this.expList[item.expressIndex].symob+'{'+item.value+'}');
                     }
                 }
             });
             return res;
         },
         hideExpress(index) {
-            console.log('hideExpress=' + this.expList[index].isHidden)
+            // console.log('hideExpress=' + this.expList[index].isHidden)
             this.expList[index].isHidden = !this.expList[index].isHidden;
         },
         createYueSu() {
@@ -375,16 +427,21 @@ var app = new Vue({
                 for (let i = 0; i < this.ysList.length; i++) {
                     let ys = this.ysList[i];
                     if (ys.A.index == this.ysAIndex && ys.B.index == this.ysBIndex) {
-                        alert("约束已存在！")
-                        return;
+                        let r=confirm("约束已存在！是否重新生成！")
+                        if (r==true) {
+                            // alert("约束已存在！")
+                        }else {
+                            // alert("约束已存在！")
+                            return;
+                        }
                     }
                 }
-                var ys0 = Object.assign({}, this.expList[this.ysAIndex]);
-                var ys1 = Object.assign({}, this.expList[this.ysBIndex]);
+                let ys0 =  Object.assign({}, this.expList[this.ysAIndex]); //this.expList[this.ysAIndex]; //
+                let ys1 = Object.assign({}, this.expList[this.ysBIndex]); //this.expList[this.ysBIndex]; //
 
-                var listAdot = [];
-                for (var i = 0; i < ys0.values.length; i++) {
-                    for (var j = 0; j < ys1.values.length; j++) {
+                let listAdot = [];
+                for (let i = 0; i < ys0.values.length; i++) {
+                    for (let j = 0; j < ys1.values.length; j++) {
                         listAdot.push({checked: true, A: ys0.values[i], B: ys1.values[j]});
                     }
                 }
@@ -392,12 +449,47 @@ var app = new Vue({
             }
             // console.log(JSON.stringify(result))
         },
+        // createYueSu(ysAIndex,ysBIndex) {
+        //     // 2个表达式型号的笛卡儿积
+        //     let isExist = false;
+        //     let existIndex = -1;
+        //     if (ysAIndex !== '' && ysBIndex !== '') {
+        //         for (let i = 0; i < this.ysList.length; i++) {
+        //             let ys = this.ysList[i];
+        //             if (ys.A.index == ysBIndex && ys.B.index == ysBIndex) {
+        //                 existIndex = i;
+        //                 isExist =true;
+        //                 let r=confirm("约束已存在！是否重新生成！")
+        //                 if (r==false) {
+        //                     break;
+        //                     return;
+        //                 }
+        //             }
+        //         }
+        //         var ys0 = this.expList[ysAIndex]; // Object.assign({}, this.expList[this.ysAIndex]);
+        //         var ys1 = this.expList[ysBIndex]; //Object.assign({}, this.expList[this.ysBIndex]);
+        //
+        //         var listAdot = [];
+        //         for (var i = 0; i < ys0.values.length; i++) {
+        //             for (var j = 0; j < ys1.values.length; j++) {
+        //                 listAdot.push({checked: true, A: ys0.values[i], B: ys1.values[j]});
+        //             }
+        //         }
+        //         if(isExist){
+        //             // 表达式改变后，约束也要更新
+        //             this.ysList.splice(existIndex,1,{A: ys0, B: ys1, listAdot: listAdot})
+        //         }else{
+        //             // 添加约束
+        //             this.ysList.push({A: ys0, B: ys1, listAdot: listAdot})
+        //         }
+        //     }
+        // },
         selectChageYsA() {
             // 选中约束A后，约束B的可选范围
-            console.log(this.ysAIndex)
+            // console.log(this.ysAIndex)
             this.selectYsBlist = []
             for (let i = (this.ysAIndex + 1); i < this.expList.length; i++) {
-                console.log('this.selectYsBlist.push i=' + i)
+                // console.log('this.selectYsBlist.push i=' + i)
                 this.selectYsBlist.push(this.expList[i]);
             }
         },
@@ -451,8 +543,8 @@ var app = new Vue({
             //  console.log('skuRules'+JSON.stringify(skuRules))
             //  return;
             // }
-            console.log('this.mainTotalCount='+this.mainTotalCount);
-            console.log('this.totalCount='+this.totalCount);
+            // console.log('this.mainTotalCount='+this.mainTotalCount);
+            // console.log('this.totalCount='+this.totalCount);
 
             var settings = {
                 "async": true,
@@ -478,7 +570,7 @@ var app = new Vue({
                 }else {
                     alert(response.message)
                 }
-                console.log(response)
+                // console.log(response)
             });
         },
         saveExpress() {
@@ -517,7 +609,7 @@ var app = new Vue({
                 if(response.status==200){
                     alert("保存成功！")
                 }
-                console.log(response)
+                // console.log(response)
             });
         },
         initData() {
@@ -546,17 +638,17 @@ var app = new Vue({
                     //  "alltotalcount":this.totalCount
                     //  expressModule.descartes();
                 }
-                console.log(response)
+                // console.log(response)
             });
         },
         changeMainSku(even, index) {
-            console.log('changeMainSku index=' + index)
+            // console.log('changeMainSku index=' + index)
             // 选中主SKU时，选择的index下标前的所有sku必须选中
             // if(this.expList[index].isMainSku){
             for (let i = 0; i < index; i++) {
                 if (!this.expList[i].isMainSku) {
-                    console.log('i='+i);
-                    console.log('index='+index);
+                    // console.log('i='+i);
+                    // console.log('index='+index);
 
                     if(index===this.expList.length-1&&this.expList[index].isMainSku==false){
                         even.preventDefault();
@@ -593,6 +685,10 @@ ExpressModule.prototype.cleanInputExcel = function () {
 ExpressModule.prototype.cleanOutExcel = function () {
     this.outExcel.clear();
 }
+
+ExpressModule.prototype.cleanInputTitlteExcel = function () {
+    this.inputTitlteExcel.clear();
+}
 // 生成skuinfo
 ExpressModule.prototype.descartes = function () {
     this.cleanOutExcel();
@@ -612,11 +708,21 @@ ExpressModule.prototype.initData = function () {
         colHeaders: true,//显示表头　
         contextMenu: true//显示表头下拉菜单
     });
+
     var containerOutExcel = document.getElementById('outExcel');
     this.outExcel = new Handsontable(containerOutExcel, {
         data: [["", "", "", "", ""]],
         minSpareRows: 0,//空出多少行
         minSpareCols: 0,
+        colHeaders: true,//显示表头　
+        contextMenu: true//显示表头下拉菜单
+    });
+
+    var containerInputTitlteExcel = document.getElementById('inputTitlteExcel');
+    this.inputTitlteExcel = new Handsontable(containerInputTitlteExcel, {
+        data: [["", "", "", "", ""]],
+        minSpareRows: 2,//空出多少行
+        minSpareCols: 2,
         colHeaders: true,//显示表头　
         contextMenu: true//显示表头下拉菜单
     });
@@ -655,11 +761,11 @@ setInterval(function(){
     }
     $.ajax(settings).done(function (response) {
         if (response.status == 200 && response.data != null) {
-            console.log(JSON.stringify(response))
+            // console.log(JSON.stringify(response))
             // expressModule.descartes();
             $("#hasSavedCount").html('已保存'+response.data)
         }
-        console.log(response)
+        // console.log(response)
     });
     // hasSavedCount
 }, 5000);
@@ -679,7 +785,7 @@ CartesianModule.prototype.Cartesian = function (a, b) {
         }
     }
     dikerCount = ret.length;
-    console.log('dikerCount=' + dikerCount)
+    // console.log('dikerCount=' + dikerCount)
     return ret;
 }
 CartesianModule.prototype.ft = function (a, b) {
