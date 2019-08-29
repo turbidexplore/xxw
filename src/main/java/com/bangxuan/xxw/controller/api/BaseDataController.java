@@ -65,7 +65,10 @@ public class BaseDataController {
             userService.addUserLogs(jsonObject);
         }
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("spareparts",productClassService.getSKUCount());
+        // 表达式总数
+        Integer amount = expressService.getAmount();
+        jsonObject.put("spareparts",productClassService.getSKUCount()+amount);
+
         jsonObject.put("spareparts_class",productClassService.getFiveClass());
         jsonObject.put("brand",companyService.getCount());
         jsonObject.put("pdf",productClassService.getPDFCount());

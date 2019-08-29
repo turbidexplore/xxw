@@ -22,4 +22,6 @@ public interface ExpressMapper {
     @Select("select * from gy_class_express where classid = #{classId} ")
     Express getByClassId(@Param("classId")String classId);
 
+    @Select("SELECT (SUM(alltotalcount)-SUM(maintotalcount)) amount from gy_class_express ")
+    Integer getAmount();
 }

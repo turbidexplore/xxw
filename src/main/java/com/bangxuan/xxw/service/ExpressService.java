@@ -26,4 +26,8 @@ public class ExpressService {
     public void update(Express express) {
         this.expressMapper.update(express);
     }
+
+    public Integer getAmount() {
+        return this.expressMapper.getAmount();
+    }
 }

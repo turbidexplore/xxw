@@ -64,13 +64,13 @@ var app = new Vue({
             // 导入excell表格数据
             // 清空原来数据
             this.expList[index].values = [[]]
-            for (var rowIndex = 0; rowIndex <= expressModule.inputExcel.countRows(); rowIndex++) {
+            for (let rowIndex = 0; rowIndex <= expressModule.inputExcel.countRows(); rowIndex++) {
                 if (!expressModule.inputExcel.isEmptyRow(rowIndex)) {
-                    var colcount = this.expList[index].titles[0].length;
+                    let colcount = this.expList[index].titles[0].length;
                     if (colcount < 2) {
                         return;
                     }
-                    for (var j = 0; j < colcount; j++) {
+                    for (let j = 0; j < colcount; j++) {
                         if (!this.expList[index].values[rowIndex]) {
                             this.expList[index].values[rowIndex] = []
                         }
@@ -104,16 +104,16 @@ var app = new Vue({
             // 移除列标题最后一列
             // 标题列数
             // var titleCols = this.expList[index].titles[0].length;
-            var titleRows = this.expList[index].titles.length;
-            for (var i = 0; i < titleRows; i++) {
+            let titleRows = this.expList[index].titles.length;
+            for (let i = 0; i < titleRows; i++) {
                 // 把每一行的titleCols列数据删除
                 this.expList[index].titles[i].splice(index3, 1);
             }
             //数据列数
             if (this.expList[index].values.length > 0) {
                 // var valuesCols = this.expList[index].values[0].length;
-                var valuesRows = this.expList[index].values.length;
-                for (var i = 0; i < valuesRows; i++) {
+                let valuesRows = this.expList[index].values.length;
+                for (let i = 0; i < valuesRows; i++) {
                     // 把每一行的valuesCols列数据删除
                     this.expList[index].values[i].splice(index3, 1);
                 }
@@ -162,7 +162,7 @@ var app = new Vue({
             })
         },
         addExpress() {
-            var titles = this.titless.map((value, index) => {
+            let titles = this.titless.map((value, index) => {
                 return [value]
             })
             // 添加表达式
@@ -179,38 +179,33 @@ var app = new Vue({
         removeExpress(index) {
             this.expList.splice(index, 1);
             // 重新排序
-            for (var i = 0; i < this.expList.length; i++) {
+            for (let i = 0; i < this.expList.length; i++) {
                 this.expList[i].name = titleValues[i]
             }
         },
         allDescartes() {
-            dikerCount = 0;
             // 所有sku笛卡儿积
             //  表值笛卡儿积
-            var cartesian = new CartesianModule();
-            var res = []
+            let cartesian = new CartesianModule();
+            let res = []
             this.expList.map((value, index) => {
                 res.push(value.values)
             })
             // 主SKU笛卡儿积
-            var skuinfos = cartesian.multiCartesian(res);
+            let skuinfos = cartesian.multiCartesian(res);
             // 格式化笛卡儿积结果
             let formatCartesianArr = this.formatCartesian(skuinfos);
             this.totalCount = formatCartesianArr.length;
         },
         descartes() {
-            dikerCount = 0;
             // 校验数据
             let isError = false;
-            for (var i = 0; i < this.expList.length; i++) {
-                var expItem = this.expList[i];
+            for (let i = 0; i < this.expList.length; i++) {
+                let expItem = this.expList[i];
                 // 对标题校验
-                // console.log('表达式：expItem=' + expItem.name)
-                // expItem.titles.length
                 for (let j = 0; j < 1; j++) {
                     let expItemTitles = expItem.titles[j];
                     // 表头列数必须大于2，才表示表达式有数据，
-                    // console.log('expItemTitles.length=' + expItemTitles.length)
                     if (expItemTitles.length === undefined || expItemTitles.length < 2) {
                         break;
                         alert('表达式：' + expItem.name + '数据不完整！');
@@ -237,8 +232,6 @@ var app = new Vue({
                         alert('表达式：' + expItem.name + '数据不完整！');
                         return;
                     }
-                    // console.log(expItem.name)
-                    // console.log(j + '行')
                     for (let k = 0; k < expItemValues.length; k++) {
                         let itemValue = this.$refs[`expListValue${i}_${j}_${k}`][0]
                         if (!itemValue.value) {
@@ -247,7 +240,6 @@ var app = new Vue({
                         } else {
                             itemValue.style.borderColor = ''
                         }
-                        // this.$refs[`expListValue${i}_${j}_${k}`][0].style.color='red'
                     }
                 }
             }
@@ -256,8 +248,8 @@ var app = new Vue({
                 alert("请输入必填数据！")
                 return [];
             }
-            var outExcelData = []
-            var res = []
+            let outExcelData = []
+            let res = []
             this.expList.map((value, index) => {
                 if (value.isMainSku) {
                     res.push(value.values)
@@ -270,13 +262,13 @@ var app = new Vue({
             }
 
             // 表头合并
-            var excellTitles = this.getGridTitle()
+            let excellTitles = this.getGridTitle()
             outExcelData = outExcelData.concat(excellTitles)
             //  表值笛卡儿积
-            var cartesian = new CartesianModule();
+            let cartesian = new CartesianModule();
 
             // 主SKU笛卡儿积
-            var skuinfos = cartesian.multiCartesian(res);
+            let skuinfos = cartesian.multiCartesian(res);
             // 格式化笛卡儿积结果
             let formatCartesianArr = this.formatCartesian(skuinfos);
             outExcelData = outExcelData.concat(formatCartesianArr)
@@ -288,6 +280,16 @@ var app = new Vue({
             // 格式化笛卡尔积结果
             // 遍历笛卡儿积结果
             let outExcelData = [];
+            let listSkuinfos = [];
+            for (let k = 0; k < skuinfos.length; k++) {
+                // 从结果中抽取型号
+                let skuNameItem = this.flattenType(skuinfos[k])
+                // 获取每种类型的值
+                let skuValueItem = this.flatten(skuinfos[k]);
+
+                listSkuinfos.push({"skuNameItem":skuNameItem,"skuValueItem":skuValueItem});
+
+            }
             // 计算约束的型号
             // 遍历约束，每次遍历进行过滤
             for (let i = 0; i < this.ysList.length; i++) {
@@ -295,87 +297,68 @@ var app = new Vue({
                 let A = this.ysList[i].A;
                 let B = this.ysList[i].B;
                 let listAdot = this.ysList[i].listAdot;
-                // A:ys0.values[i],B:ys1.values[j]
                 for (let j = 0; j < listAdot.length; j++) {
                     let dot = listAdot[j];
                     if (!dot.checked) {
-                        // console.log('dot.A=' + JSON.stringify(dot.A))
-                        // console.log('dot.B=' + JSON.stringify(dot.B))
-                        let dotAB = A.symob + dot.A[0].value + B.symob + dot.B[0].value;
-                        // console.log('A.index=' + A.index + ",B.index=" + B.index + ' dotAB=' + dotAB)
                         removeList.push({A:A,B:B,dot:dot});
                     }
                 }
+                listSkuinfos= this.filterSkuinfos(removeList,listSkuinfos);
+            }
 
-                // 第一遍过滤 skuinfo
-                for (var k = 0; k < skuinfos.length; k++) {
-                    // 从结果中抽取型号
-                    var skuNameItem = this.flattenType(skuinfos[k])
-
-                    // 获取每种类型的值
-                    var skuValueItem = this.flatten(skuinfos[k]);
-                    // 判断是否在约束中
-                    let isSureMove = false;
-                    // console.log(JSON.stringify(removeList))
-                    if (removeList.length > 0) {
-                        // let skuName = skuNameItem.join('');
-                        for (let j = 0; j < removeList.length; j++) {
-                            let A = removeList[j].A;
-                            let B = removeList[j].B;
-                            let dot = removeList[j].dot;
-                            if(skuNameItem[A.index]==(A.symob+'{'+ dot.A[0].value+'}')&&skuNameItem[B.index]==(B.symob+'{'+dot.B[0].value+'}')){
-                                isSureMove = true;
-                            }
-                        }
-                    }
-                    if (!isSureMove) {
-                        var skuifoItem = []
-                        skuifoItem.push(skuNameItem.join('').replace("空值",'')) // sku型号放在第一个位置,把空值给替换成空
-                        for (var j = 0; j < skuValueItem.length; j++) {
-                            skuifoItem.push(skuValueItem[j].value)
-                        }
-                        outExcelData.push(skuifoItem)
-                    }
+            for(let l =0;l<listSkuinfos.length;l++){
+                let skuNameItem = listSkuinfos[l].skuNameItem;
+                let skuValueItem = listSkuinfos[l].skuValueItem;
+                var skuifoItem = [];
+                skuifoItem.push(skuNameItem.join('').replace("空值",'')) // sku型号放在第一个位置,把空值给替换成空
+                for (let j = 0; j < skuValueItem.length; j++) {
+                    skuifoItem.push(skuValueItem[j].value)
                 }
+                outExcelData.push(skuifoItem)
             }
 
 
             return outExcelData;
         },
-        removeList() {
-            // 计算约束型号
-            // let removeList = [];
-            // for (let i = 0; i < this.ysList.length; i++) {
-            //     let A = this.ysList[i].A;
-            //     let B = this.ysList[i].B;
-            //     let listAdot = this.ysList[i].listAdot;
-            //     // A:ys0.values[i],B:ys1.values[j]
-            //     for (let j = 0; j < listAdot.length; j++) {
-            //         let dot = listAdot[j];
-            //         if (!dot.checked) {
-            //             // console.log('dot.A=' + JSON.stringify(dot.A))
-            //             // console.log('dot.B=' + JSON.stringify(dot.B))
-            //             let dotAB = A.symob + dot.A[0].value + B.symob + dot.B[0].value;
-            //             // console.log('A.index=' + A.index + ",B.index=" + B.index + ' dotAB=' + dotAB)
-            //             removeList.push(dot);
-            //         }
-            //     }
-            // }
-            // console.log(removeList)
-            return removeList;
+        filterSkuinfos(removeList,skuinfos){
+            let filterData = [];
+            // 第一遍过滤 skuinfo
+            for (let k = 0; k < skuinfos.length; k++) {
+                // 从结果中抽取型号
+                let skuNameItem = skuinfos[k].skuNameItem; //this.flattenType(skuinfos[k])
+
+                // 获取每种类型的值
+                let skuValueItem = skuinfos[k].skuValueItem; //this.flatten(skuinfos[k]);
+                // 判断是否在约束中
+                let isSureMove = false;
+                if (removeList.length > 0) {
+                    // let skuName = skuNameItem.join('');
+                    for (let j = 0; j < removeList.length; j++) {
+                        let A = removeList[j].A;
+                        let B = removeList[j].B;
+                        let dot = removeList[j].dot;
+                        if(skuNameItem[A.index]==(A.symob+'{'+ dot.A[0].value+'}')&&skuNameItem[B.index]==(B.symob+'{'+dot.B[0].value+'}')){
+                            isSureMove = true;
+                        }
+                    }
+                }
+                if (!isSureMove) {
+                    filterData.push(skuinfos[k])
+                }
+            }
+            return filterData;
         },
         getGridTitle() {
-            var dataExcellTitle = [];
-            var diker = this.expList;
-            var zw = [""];
-            var yw = [""];
-            var dm = [""];
-            var dw = [""];
-            var sjlx = [""];
-            for (var i = 0; i < diker.length; i++) {
-                // for(var j=0;j<diker[i].titles.length;j++){
+            let dataExcellTitle = [];
+            let diker = this.expList;
+            let zw = [""];
+            let yw = [""];
+            let dm = [""];
+            let dw = [""];
+            let sjlx = [""];
+            for (let i = 0; i < diker.length; i++) {
                 if (diker[i].isMainSku) {
-                    for (var k = 1; k < diker[i].titles[0].length; k++) {
+                    for (let k = 1; k < diker[i].titles[0].length; k++) {
                         zw.push(diker[i].titles[0][k].value);
                         yw.push(diker[i].titles[1][k].value);
                         dm.push(diker[i].titles[2][k].value);
@@ -392,7 +375,7 @@ var app = new Vue({
             return dataExcellTitle;
         },
         flatten(arr) {
-            var res = [];
+            let res = [];
             arr.map((item, index) => {
                 if (Array.isArray(item)) {
                     res = res.concat(this.flatten(item));
@@ -405,7 +388,7 @@ var app = new Vue({
             return res;
         },
         flattenType(arr) {
-            var res = [];
+            let res = [];
             arr.map((item, index) => {
                 if (Array.isArray(item)) {
                     res = res.concat(this.flattenType(item));
@@ -418,7 +401,6 @@ var app = new Vue({
             return res;
         },
         hideExpress(index) {
-            // console.log('hideExpress=' + this.expList[index].isHidden)
             this.expList[index].isHidden = !this.expList[index].isHidden;
         },
         createYueSu() {
@@ -430,14 +412,14 @@ var app = new Vue({
                         let r=confirm("约束已存在！是否重新生成！")
                         if (r==true) {
                             // alert("约束已存在！")
-                        }else {
+                        }else {getStatistics
                             // alert("约束已存在！")
                             return;
                         }
                     }
                 }
-                let ys0 =  Object.assign({}, this.expList[this.ysAIndex]); //this.expList[this.ysAIndex]; //
-                let ys1 = Object.assign({}, this.expList[this.ysBIndex]); //this.expList[this.ysBIndex]; //
+                let ys0 =  this.expList[this.ysAIndex]; // Object.assign({}, this.expList[this.ysAIndex]); //this.expList[this.ysAIndex]; //
+                let ys1 = this.expList[this.ysBIndex]; //Object.assign({}, this.expList[this.ysBIndex]); //this.expList[this.ysBIndex]; //
 
                 let listAdot = [];
                 for (let i = 0; i < ys0.values.length; i++) {
@@ -447,7 +429,6 @@ var app = new Vue({
                 }
                 this.ysList.push({A: ys0, B: ys1, listAdot: listAdot})
             }
-            // console.log(JSON.stringify(result))
         },
         // createYueSu(ysAIndex,ysBIndex) {
         //     // 2个表达式型号的笛卡儿积
@@ -489,7 +470,6 @@ var app = new Vue({
             // console.log(this.ysAIndex)
             this.selectYsBlist = []
             for (let i = (this.ysAIndex + 1); i < this.expList.length; i++) {
-                // console.log('this.selectYsBlist.push i=' + i)
                 this.selectYsBlist.push(this.expList[i]);
             }
         },
@@ -501,10 +481,9 @@ var app = new Vue({
             for (let i = 0; i < listAdot.length; i++) {
                 listAdot[i].checked = !listAdot[i].checked;
             }
-            // this.ysList.push({A:ys0,B:ys1,listAdot:listAdot})
         },
         addYs(index, index1, index2) {
-            var dotIndex = this.ysList[index].B.values.length * index1 + index2
+            let dotIndex = this.ysList[index].B.values.length * index1 + index2
             this.ysList[index].listAdot[dotIndex].checked = !this.ysList[index].listAdot[dotIndex].checked
         },
         extendExpress() {
@@ -521,31 +500,17 @@ var app = new Vue({
         },
         saveExpList() {
             // 表达式内容
-            // console.log(JSON.stringify(this.expList))
-            // sku数据
-            // console.log(JSON.stringify(expressModule.outExcel.getData()))
-            // 约束数据
-            // console.log(JSON.stringify(this.ysList))
-            // sku规则
             let skuRules = [];
             for (let i = 0; i < this.expList.length; i++) {
                 let exp = this.expList[i];
                 if (exp.isMainSku) {
                     var values = [];
                     for (let j = 0; j < exp.values.length; j++) {
-                        // values.push(exp.symob + exp.values[j][0].value)
                         values.push(exp.values[j][0].value)
                     }
                     skuRules.push(values);
                 }
             }
-            // if(true){
-            //  console.log('skuRules'+JSON.stringify(skuRules))
-            //  return;
-            // }
-            // console.log('this.mainTotalCount='+this.mainTotalCount);
-            // console.log('this.totalCount='+this.totalCount);
-
             var settings = {
                 "async": true,
                 "crossDomain": true,
@@ -570,7 +535,6 @@ var app = new Vue({
                 }else {
                     alert(response.message)
                 }
-                // console.log(response)
             });
         },
         saveExpress() {
@@ -585,12 +549,6 @@ var app = new Vue({
                     skuRules.push(values);
                 }
             }
-            // if(true){
-            //  console.log('skuRules'+JSON.stringify(skuRules))
-            //  return;
-
-
-            // }
             var settings = {
                 "async": true,
                 "crossDomain": true,
@@ -609,12 +567,11 @@ var app = new Vue({
                 if(response.status==200){
                     alert("保存成功！")
                 }
-                // console.log(response)
             });
         },
         initData() {
-            var _this = this;
-            var settings = {
+            let _this = this;
+            let settings = {
                 "async": true,
                 "crossDomain": true,
                 "url": "/basedata/getexpressbyclassid?classId=" + $("#coreid").val(),
@@ -633,23 +590,13 @@ var app = new Vue({
                     }
                     this.mainTotalCount = response.data.maintotalcount
                     this.totalCount = response.data.alltotalcount
-
-                    // "mainTotalCount":this.mainTotalCount,
-                    //  "alltotalcount":this.totalCount
-                    //  expressModule.descartes();
                 }
-                // console.log(response)
             });
         },
         changeMainSku(even, index) {
-            // console.log('changeMainSku index=' + index)
             // 选中主SKU时，选择的index下标前的所有sku必须选中
-            // if(this.expList[index].isMainSku){
             for (let i = 0; i < index; i++) {
                 if (!this.expList[i].isMainSku) {
-                    // console.log('i='+i);
-                    // console.log('index='+index);
-
                     if(index===this.expList.length-1&&this.expList[index].isMainSku==false){
                         even.preventDefault();
                     }
@@ -661,11 +608,6 @@ var app = new Vue({
                     break;
                 }
             }
-
-            // for(let i=index;i<this.expList.length;i++){
-            //     this.expList[i].isMainSku = false
-            // }
-            // }
         }
     },
     created: function () {
