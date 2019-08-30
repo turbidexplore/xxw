@@ -129,7 +129,8 @@
                                             v-model="expList[index].values[index2][index3].value"
                                             placeholder="参数"
                                             required="required"
-                                            :ref="`expListValue${index}_${index2}_${index3}`"/>
+                                            :ref="`expListValue${index}_${index2}_${index3}`"
+                                            @change="changeValue(index,index2,index3)"/>
                                 </span>
                             </div>
                   </td>

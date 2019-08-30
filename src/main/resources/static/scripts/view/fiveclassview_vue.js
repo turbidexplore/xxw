@@ -496,8 +496,9 @@ var app = new Vue({
             }
         },
         addYs(index, index1, index2) {
-            let dotIndex = this.ysList[index].B.values.length * index1 + index2
-            this.ysList[index].listAdot[dotIndex].checked = !this.ysList[index].listAdot[dotIndex].checked
+            let dotIndex = this.ysList[index].B.values.length * index1 + index2;
+            this.ysList[index].listAdot[dotIndex].checked = !this.ysList[index].listAdot[dotIndex].checked;
+            console.log('addYs='+JSON.stringify(this.ysList[index].listAdot[dotIndex]));
         },
         extendExpress() {
             // 展开全部表达式
@@ -621,7 +622,44 @@ var app = new Vue({
                     break;
                 }
             }
+        },
+        changeValue(index,index2,index3){
+            console.log("index="+index);
+            console.log("index2="+index2);
+            console.log("index3="+index3);
+            let value = this.$refs[`expListValue${index}_${index2}_${index3}`][0].value;
+            console.log('value='+value)
+            //找到约束，修改约束内的数据
+            for(let i=0;i<this.ysList.length;i++){
+                let ys = this.ysList[i];
+
+                let A = ys.A;
+                let B = ys.B;
+                if(A.index==index){
+                    // 找到对应的行,列修改响应的值
+                    this.ysList[i].A.values[index2][index3].value = value;
+                }
+                if(B.index == index){
+                        // 找到对应的行,列修改响应的值
+                    this.ysList[i].B.values[index2][index3].value = value;
+                }
+                // let listAdot = ys.listAdot;
+                let dotIndex = this.ysList[index].B.values.length * index2 + index3
+                let dot = ys.listAdot[dotIndex];
+                if(A.index==index){
+                    this.ysList[index].listAdot[dotIndex].A.values[index3] = value
+                    console.log(this.ysList[index].listAdot[dotIndex].A.values)
+                    // dot.A.values[index3] = value
+                }
+                if(B.index == index){
+                    this.ysList[index].listAdot[dotIndex].B.values[index3] = value
+                    console.log(this.ysList[index].listAdot[dotIndex].B.values)
+                    // dot.B.values[index3] = value
+                }
+            }
+
         }
+
     },
     created: function () {
         this.initData();
