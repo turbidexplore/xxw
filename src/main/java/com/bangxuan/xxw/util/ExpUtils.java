@@ -31,27 +31,27 @@ public class ExpUtils {
         return list;
     }
 
-    public static void main(String[] args){
-        List<String> list = new ArrayList<>();
-        list.add("MSG21");
-        list.add("");
-        list.add("MSG22");
-
-        // 获取表达式
-        String skuexp = "-{MSG23}{MSG22}-{MSG27}";
-        List<String> listName = ExpUtils.extractSkuExpName(skuexp);
-        boolean isMatch = true;
-        // 判断表达式是否和型号匹配
-        for(int jj=0;jj<listName.size();jj++){
-            if(StringUtils.isNotEmpty(list.get(jj))){
-                if(!listName.get(jj).equals(list.get(jj))){
-                    isMatch =false;
-                    break;
-                }
-            }
-        }
-        System.out.println("isMatch="+isMatch);
-
-
-    }
+//    public static void main(String[] args){
+//        List<String> list = new ArrayList<>();
+//        list.add("MSG21");
+//        list.add("");
+//        list.add("MSG22");
+//
+//        // 获取表达式
+//        String skuexp = "-{MSG23}{MSG22}-{MSG27}";
+//        List<String> listName = ExpUtils.extractSkuExpName(skuexp);
+//        boolean isMatch = true;
+//        // 判断表达式是否和型号匹配
+//        for(int jj=0;jj<listName.size();jj++){
+//            if(StringUtils.isNotEmpty(list.get(jj))){
+//                if(!listName.get(jj).equals(list.get(jj))){
+//                    isMatch =false;
+//                    break;
+//                }
+//            }
+//        }
+//        System.out.println("isMatch="+isMatch);
+//
+//
+//    }
 }

@@ -323,8 +323,8 @@ public class BaseDataController {
 
     @PostMapping("/savesExpress")
     public Mono<Message> savesExpress(@RequestBody JSONObject expList, @RequestParam("id")String id){
-        System.out.println("expList="+expList.getJSONArray("expList"));
-        System.out.println("skuInfos="+expList.getJSONArray("skuInfos"));
+//        System.out.println("expList="+expList.getJSONArray("expList"));
+//        System.out.println("skuInfos="+expList.getJSONArray("skuInfos"));
         JSONArray lists = expList.getJSONArray("skuInfos");
 
         Express express = expressService.getByClassId(id);
@@ -357,8 +357,8 @@ public class BaseDataController {
             }
             expressService.insert(express);
         }
-        System.out.println("ysList="+expList.getJSONArray("ysList"));
-        System.out.println("id="+id);
+//        System.out.println("ysList="+expList.getJSONArray("ysList"));
+//        System.out.println("id="+id);
         return Mono.just(Message.SCUESSS("保存成功",0));
     }
     @GetMapping("/getskuinfosCount")
@@ -370,8 +370,8 @@ public class BaseDataController {
 
     @PostMapping("/saveskuinfos")
     public Mono<Message> saveskuinfos(@RequestBody JSONObject expList, @RequestParam("id")String id){
-        System.out.println("expList="+expList.getJSONArray("expList"));
-        System.out.println("skuInfos="+expList.getJSONArray("skuInfos"));
+//        System.out.println("expList="+expList.getJSONArray("expList"));
+//        System.out.println("skuInfos="+expList.getJSONArray("skuInfos"));
         JSONArray lists = expList.getJSONArray("skuInfos");
 
         Express express = expressService.getByClassId(id);
@@ -418,12 +418,20 @@ public class BaseDataController {
         for (int i=5;i<lists.size();i++){
             String uuid=UUID.randomUUID().toString().replace("-", "");
             JSONArray skuValuesArr = lists.getJSONArray(i);
-            skuThread.bdsrun(uuid,id,skuValuesArr,i);
+//            https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/pdf
+            List<JSONObject> listPdf = this.productClassService.getPDF(id);
+            String pdf = "";
+            if(listPdf!=null&&listPdf.size()>0){
+                pdf = "https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/pdf/"+listPdf.get(0).getString("pdf_file");
+            }
+
+
+            skuThread.bdsrun(uuid,id,skuValuesArr,i,pdf);
             skuThread.addBdsSkuValue(uuid,id,i,skuValuesArr,lists);
         }
 
-        System.out.println("ysList="+expList.getJSONArray("ysList"));
-        System.out.println("id="+id);
+//        System.out.println("ysList="+expList.getJSONArray("ysList"));
+//        System.out.println("id="+id);
         return Mono.just(Message.SCUESSS("保存成功",0));
     }
 

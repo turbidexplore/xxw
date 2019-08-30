@@ -180,8 +180,19 @@ var app = new Vue({
             this.expList.splice(index, 1);
             // 重新排序
             for (let i = 0; i < this.expList.length; i++) {
-                this.expList[i].name = titleValues[i]
+                this.expList[i].name = titleValues[i];
             }
+            // 表达式关联的约束同时删除
+            let removeIndex= [];
+            if(this.ysList.length>0){
+                for(let i=this.ysList.length-1;i>=0;i--){
+                    let ys = this.ysList[i];
+                    if(ys.A.index ===index||ys.B.index===index){
+                        this.ysList.splice(i,1);
+                    }
+                }
+            }
+
         },
         allDescartes() {
             // 所有sku笛卡儿积
@@ -224,24 +235,24 @@ var app = new Vue({
                     }
                 }
                 //表值校验
-                for (let j = 0; j < expItem.values.length; j++) {
-                    let expItemValues = expItem.values[j];
-                    //表值的列数必须大于2，才表示表达式有数据，
-                    if (expItemValues.length === undefined || expItemValues.length < 2) {
-                        break;
-                        alert('表达式：' + expItem.name + '数据不完整！');
-                        return;
-                    }
-                    for (let k = 0; k < expItemValues.length; k++) {
-                        let itemValue = this.$refs[`expListValue${i}_${j}_${k}`][0]
-                        if (!itemValue.value) {
-                            itemValue.style.borderColor = 'red'
-                            isError = true;
-                        } else {
-                            itemValue.style.borderColor = ''
-                        }
-                    }
-                }
+                // for (let j = 0; j < expItem.values.length; j++) {
+                //     let expItemValues = expItem.values[j];
+                //     //表值的列数必须大于2，才表示表达式有数据，
+                //     if (expItemValues.length === undefined || expItemValues.length < 2) {
+                //         break;
+                //         alert('表达式：' + expItem.name + '数据不完整！');
+                //         return;
+                //     }
+                //     for (let k = 0; k < expItemValues.length; k++) {
+                //         let itemValue = this.$refs[`expListValue${i}_${j}_${k}`][0]
+                //         if (!itemValue.value) {
+                //             itemValue.style.borderColor = 'red'
+                //             isError = true;
+                //         } else {
+                //             itemValue.style.borderColor = ''
+                //         }
+                //     }
+                // }
             }
             // 对表里的值校验
             if (isError) {
@@ -309,8 +320,8 @@ var app = new Vue({
             for(let l =0;l<listSkuinfos.length;l++){
                 let skuNameItem = listSkuinfos[l].skuNameItem;
                 let skuValueItem = listSkuinfos[l].skuValueItem;
-                var skuifoItem = [];
-                skuifoItem.push(skuNameItem.join('').replace("空值",'')) // sku型号放在第一个位置,把空值给替换成空
+                let skuifoItem = [];
+                skuifoItem.push(skuNameItem.join('')) // sku型号放在第一个位置,把空值给替换成空
                 for (let j = 0; j < skuValueItem.length; j++) {
                     skuifoItem.push(skuValueItem[j].value)
                 }
@@ -337,7 +348,7 @@ var app = new Vue({
                         let A = removeList[j].A;
                         let B = removeList[j].B;
                         let dot = removeList[j].dot;
-                        if(skuNameItem[A.index]==(A.symob+'{'+ dot.A[0].value+'}')&&skuNameItem[B.index]==(B.symob+'{'+dot.B[0].value+'}')){
+                        if(skuNameItem[A.index]==(this.expList[A.index].symob+'{'+ dot.A[0].value+'}')&&skuNameItem[B.index]==(this.expList[A.index]+'{'+dot.B[0].value+'}')){
                             isSureMove = true;
                         }
                     }
@@ -418,8 +429,10 @@ var app = new Vue({
                         }
                     }
                 }
-                let ys0 =  this.expList[this.ysAIndex]; // Object.assign({}, this.expList[this.ysAIndex]); //this.expList[this.ysAIndex]; //
-                let ys1 = this.expList[this.ysBIndex]; //Object.assign({}, this.expList[this.ysBIndex]); //this.expList[this.ysBIndex]; //
+                // let ys0 =  this.expList[this.ysAIndex]; // Object.assign({}, this.expList[this.ysAIndex]); //this.expList[this.ysAIndex]; //
+                // let ys1 = this.expList[this.ysBIndex]; //Object.assign({}, this.expList[this.ysBIndex]); //this.expList[this.ysBIndex]; //
+                let ys0 = Object.assign({}, this.expList[this.ysAIndex]); //this.expList[this.ysAIndex]; //
+                let ys1 = Object.assign({}, this.expList[this.ysBIndex]); //this.expList[this.ysBIndex]; //
 
                 let listAdot = [];
                 for (let i = 0; i < ys0.values.length; i++) {
@@ -750,3 +763,14 @@ CartesianModule.prototype.multiCartesian = function (data) {
         return r;
     }
 }
+
+// var tab_top = $('.tab-list-contain').offset().top-$('#myTab2').height();
+$(window).scroll(function () {
+    var scroH = $(this).scrollTop();
+    if(scroH > 0){
+        $('#myTab2').addClass("pos_fixed");
+    }else{
+        $('#myTab2').removeClass("pos_fixed");
+    }
+});
+

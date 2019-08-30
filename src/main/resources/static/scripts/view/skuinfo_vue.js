@@ -72,6 +72,10 @@ var app = new Vue({
 
             $.ajax(settings).done(function (res) {
                 alert(res.data);
+                // alert("已保存"+(values.length-5)+"条数据！");
+                window.open("https://www.lingjianbang.com/level5/"+$("#coreid").val(),'_blank','');
+                location.href = "/system/fiveclass?id=0&comid=0";
+
             });
         },
         rm(index,index2){

@@ -18,6 +18,18 @@
     .table td{
       text-align: center;
     }
+    .bk-gray{border:solid 1px #ddd}
+    .radius{border-radius:4px; overflow:hidden}
+    .size-MINI.radius{ border-radius:3px}
+    .size-L.radius{ border-radius:5px}
+    .size-XL.radius{ border-radius:6px}
+    .round{border-radius:1000px; overflow:hidden}
+    .circle{ border-radius:50%; overflow:hidden}
+      .pos_fixed{
+          position: fixed;
+          z-index: 100000;
+          top: 0px;
+      }
   </style>
 </head>
 <body>
@@ -29,16 +41,16 @@
                 </span>
   <div class="mt-10"></div>
 
-  <div>
-    <H3>表体信息粘贴处<input type="button" class="btn btn-primary radius size-S" value="清空表格" onclick="expressModule.cleanInputExcel()"></input></H3>
-    <div class="mt-10 " id="inputExcel"></div>
+  <div id="myTab2" style="margin-top: 0px;background-color: white;width: 100%; display:flex; flex-direction:row;flex-wrap: wrap" class="bk-gray pd-20">
+    <div style="width: 49%">
+        <H3>表体信息粘贴处<input type="button" class="btn btn-primary radius size-S" value="清空表格" onclick="expressModule.cleanInputExcel()"></input></H3>
+        <div class="mt-10 " id="inputExcel"></div>
+    </div>
+    <div  style="width: 49%" class="f-l">
+      <H3>表头信息粘贴处<input type="button" class="btn btn-primary radius size-S" value="清空表格" onclick="expressModule.cleanInputTitlteExcel()"></input></H3>
+      <div class="mt-10" id="inputTitlteExcel"></div>
+    </div>
   </div>
-
-  <div>
-    <H3>表头信息粘贴处<input type="button" class="btn btn-primary radius size-S" value="清空表格" onclick="expressModule.cleanInputTitlteExcel()"></input></H3>
-    <div class="mt-10" id="inputTitlteExcel"></div>
-  </div>
-
 </div>
 
 <div id="app" style="padding-left: 50px;padding-right: 50px;margin-top: 10px;">
@@ -68,8 +80,7 @@
             <p>
 <!--              <input class="btn btn-danger-outline radius size-S" type="button" value="插入"-->
 <!--                     @click="insertExpress(index)">-->
-              <input class="btn btn-danger-outline radius size-S" type="button" value="删除"
-                     @click="removeExpress(index)">
+              <input class="btn btn-danger-outline radius size-S" type="button" value="删除" @click="removeExpress(index)"/>
             </p>
           </div>
         </div>
@@ -149,8 +160,8 @@
 
         <input type="button" class="btn btn-primary radius size-S" value="生成约束" @click="createYueSu"></input>
       </div>
-      <div class="panel-body">
-        <div  v-for="(ys,index) in ysList">
+      <div class="panel-body ">
+        <div  v-for="(ys,index) in ysList" class="bk-gray mt-15">
           <div class="Huialert Huialert-info">{{ys.A.name}}和{{ys.B.name}}的约束关系
             <input type="button" class="btn btn-primary radius size-S" value="移除约束" @click="deleteYueSu(index)"></input>
             <input type="button" class="btn btn-primary radius size-S" value="全选反选" @click="fullBackYueSu(index)"></input>

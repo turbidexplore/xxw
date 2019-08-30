@@ -287,7 +287,7 @@ public class ProductClassController {
                             List<String> list = new ArrayList<>();
 
                             for (Map.Entry<String, Object> entry : rule.entrySet()) {
-                                System.out.println("entry.getValue()="+entry.getValue());
+//                                System.out.println("entry.getValue()="+entry.getValue());
                                 list.add((String) entry.getValue());
                             }
                             // 获取表达式
@@ -304,7 +304,7 @@ public class ProductClassController {
                                     }
                                 }
                             }
-                            System.out.println("skuname"+skuname+"  listName="+StringUtils.join(listName,"")+"  list="+StringUtils.join(list,""));
+//                            System.out.println("skuname"+skuname+"  listName="+StringUtils.join(listName,"")+"  list="+StringUtils.join(list,""));
 
                             if (isMatch) {
                                 switch (index){
@@ -325,10 +325,13 @@ public class ProductClassController {
                                     case 7: skuInfo.setZzsample(typval); // 纸质样本
                                         break;
                                     case 8: skuInfo.setPdf(typval); // pdf样本
+                                        productClassService.updateInfo(classId," pdfinfo=1 ");
                                         break;
                                     case 9: skuInfo.setSd(typval); // 3D模型
+                                        productClassService.updateInfo(classId," modelb=1 ");
                                         break;
                                     case 10: skuInfo.setTd(typval); // 2D模型
+                                        productClassService.updateInfo(classId," modela=1 ");
                                         break;
                                     case 11: skuInfo.setVideo(typval); // 产品视频
                                         break;

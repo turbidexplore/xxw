@@ -221,7 +221,8 @@ public class SkuThread  {
         }
     }
     @Async("asyncServiceSkuinfo")
-    public void bdsrun(String uuid, String id, JSONArray skuValuesArr, int i) {
+    public void bdsrun(String uuid, String id, JSONArray skuValuesArr, int i,String pdf) {
+        productClassService.updateInfo(id," information=1 ");
         // 保存skuinfo
         SkuInfo skuInfo=new SkuInfo();
         skuInfo.setId(uuid);
@@ -230,6 +231,7 @@ public class SkuThread  {
         skuInfo.setSkuname(skuname);
         skuInfo.setSkunameexp(skuValuesArr.get(0).toString());
         skuInfo.setIdx(i-4);
+        skuInfo.setPdf(pdf);
         skuService.insert(skuInfo);
     }
     @Async("asyncServiceSkuinfo")
