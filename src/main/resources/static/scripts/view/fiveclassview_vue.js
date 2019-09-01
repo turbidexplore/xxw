@@ -269,11 +269,11 @@ var app = new Vue({
                 let B = ys.B;
                 if(A.index==index){
                     // 找到对应的行,列修改响应的值
-                    this.ysList[i].A.values=this.expList[index].values;//.push(row)
+                    this.ysList[i].A.values.push(row.slice(0));//=this.expList[index].values;//.push(row)
                 }
                 if(B.index == index){
                     // 找到对应的行,列修改响应的值
-                    this.ysList[i].B.values=this.expList[index].values;//.push(row)
+                    this.ysList[i].B.values.push(row.slice(0));//=this.expList[index].values;//.push(row)
                 }
 
                 // this.ysList[i].listAdot = []
