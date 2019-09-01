@@ -59,6 +59,35 @@ var app = new Vue({
                 // 把每一行的valuesCols列数据删除
                 this.expList[index].values[i].push({value: '', expressIndex: index});
             }
+
+            //  查找对应的约束，添加对应的列
+            for(let i=0;i<this.ysList.length;i++){
+                let ys = this.ysList[i];
+
+                let A = ys.A;
+                let B = ys.B;
+                if(A.index==index){
+                    // 添加列
+                    for(let j=0;j<this.ysList[i].A.values.length;j++){
+                        this.ysList[i].A.values[j].push({value: '', expressIndex: index})
+                    }
+                    // 添加列
+                    for(let k=0;k<this.ysList[i].listAdot.length;k++){
+                        this.ysList[i].listAdot[k].A.push({value: '', expressIndex: index})
+                    }
+
+                }
+                if(B.index == index){
+                    // 添加列
+                    for(let j=0;j<this.ysList[i].B.values.length;j++){
+                        this.ysList[i].B.values[j].push({value: '', expressIndex: index})
+                    }
+                    // 添加列
+                    for(let k=0;k<this.ysList[i].listAdot.length;k++){
+                        this.ysList[i].listAdot[k].B.push({value: '', expressIndex: index})
+                    }
+                }
+            }
         },
         importCol(index) {
             // 导入excell表格数据
@@ -103,7 +132,6 @@ var app = new Vue({
         removeCol(index, index3) {
             // 移除列标题最后一列
             // 标题列数
-            // var titleCols = this.expList[index].titles[0].length;
             let titleRows = this.expList[index].titles.length;
             for (let i = 0; i < titleRows; i++) {
                 // 把每一行的titleCols列数据删除
@@ -111,16 +139,44 @@ var app = new Vue({
             }
             //数据列数
             if (this.expList[index].values.length > 0) {
-                // var valuesCols = this.expList[index].values[0].length;
                 let valuesRows = this.expList[index].values.length;
                 for (let i = 0; i < valuesRows; i++) {
                     // 把每一行的valuesCols列数据删除
                     this.expList[index].values[i].splice(index3, 1);
                 }
             }
+
+            //  查找对应的约束，删除对应的行
+            for(let i=0;i<this.ysList.length;i++){
+                let ys = this.ysList[i];
+
+                let A = ys.A;
+                let B = ys.B;
+                if(A.index==index){
+                    // 找到对应的列，并删除
+                    for(let j=0;j<this.ysList[i].A.values.length;j++){
+                        this.ysList[i].A.values[j].splice(index3,1)
+                    }
+                    // 删除约束内列对应的值
+                    for(let k=0;k<this.ysList[i].listAdot.length;k++){
+                        this.ysList[i].listAdot[k].A.splice(index3,1)
+                    }
+
+                }
+                if(B.index == index){
+                    // 找到对应的列，并删除
+                    for(let j=0;j<this.ysList[i].B.values.length;j++){
+                        this.ysList[i].B.values[j].splice(index3,1)
+                    }
+                    // 删除约束内列对应的值
+                    for(let k=0;k<this.ysList[i].listAdot.length;k++){
+                        this.ysList[i].listAdot[k].B.splice(index3,1)
+                    }
+
+                }
+            }
         },
         insertCol(index, index3) {
-            // console.log('index='+index+",  index3="+index3)
             // 插入列
             let titleRows = this.expList[index].titles.length;
             for (let i = 0; i < titleRows; i++) {
@@ -134,9 +190,102 @@ var app = new Vue({
                 // 把每一行的valuesCols列数据插入数据
                 this.expList[index].values[i].splice(index3,0, {value: '', expressIndex: index});
             }
+
+            //  查找对应的约束，删除对应的行
+            for(let i=0;i<this.ysList.length;i++){
+                let ys = this.ysList[i];
+
+                let A = ys.A;
+                let B = ys.B;
+                if(A.index==index){
+                    // 找到对应的列，并插入
+                    for(let j=0;j<this.ysList[i].A.values.length;j++){
+                        this.ysList[i].A.values[j].splice(index3,0,{value: '', expressIndex: index})
+                    }
+                    // 插入约束内列对应的值
+                    for(let k=0;k<this.ysList[i].listAdot.length;k++){
+                        this.ysList[i].listAdot[k].A.splice(index3,0,{value: '', expressIndex: index})
+                    }
+
+                }
+                if(B.index == index){
+                    // 找到对应的列，并插入
+                    for(let j=0;j<this.ysList[i].B.values.length;j++){
+                        this.ysList[i].B.values[j].splice(index3,0,{value: '', expressIndex: index})
+                    }
+                    // 插入约束内列对应的值
+                    for(let k=0;k<this.ysList[i].listAdot.length;k++){
+                        this.ysList[i].listAdot[k].B.splice(index3,0,{value: '', expressIndex: index})
+                    }
+
+                }
+
+            }
         },
         removeRow(index, index2) {
             this.expList[index].values.splice(index2, 1);
+            //  查找对应的约束，删除对应的行
+            for(let i=0;i<this.ysList.length;i++){
+                let ys = this.ysList[i];
+
+                let A = ys.A;
+                let B = ys.B;
+                if(A.index==index){
+                    // 找到对应的行,列修改响应的值
+                    this.ysList[i].A.values.splice(index2,1)
+                }
+                if(B.index == index){
+                    // 找到对应的行,列修改响应的值
+                    this.ysList[i].B.values.splice(index2,1)
+                }
+                if(A.index==index){
+                    for(let k=0;k<this.ysList[i].B.values.length;k++){
+                        let dotIndex = k+(this.ysList[i].A.values.length*index2);
+                        this.ysList[i].listAdot.splice(dotIndex,1)
+                    }
+                }
+                if(B.index == index){
+                    for(let k=0;k<this.ysList[i].A.values.length;k++){
+                        let dotIndex = k*this.ysList[i].B.values.length+index2;
+                        this.ysList[i].listAdot.splice(dotIndex,1)
+                    }
+                }
+            }
+        },
+        addRow(index){
+            // 添加行
+            let row=[]
+            for (let i = 0; i < this.expList[index].titles[0].length; i++) {
+                // 把每一行的valuesCols列数据插入数据
+                row.push({value: '', expressIndex: index})
+            }
+            this.expList[index].values.push(row)
+            // 对关联的约束表进行处理
+            //  查找对应的约束，删除对应的行
+            for(let i=0;i<this.ysList.length;i++){
+                let ys = this.ysList[i];
+
+                let A = ys.A;
+                let B = ys.B;
+                if(A.index==index){
+                    // 找到对应的行,列修改响应的值
+                    this.ysList[i].A.values=this.expList[index].values;//.push(row)
+                }
+                if(B.index == index){
+                    // 找到对应的行,列修改响应的值
+                    this.ysList[i].B.values=this.expList[index].values;//.push(row)
+                }
+
+                // this.ysList[i].listAdot = []
+                let listAdot = [];
+                for (let j = 0; j < this.ysList[i].A.values.length; j++) {
+                    for (let k = 0; k < this.ysList[i].B.values.length; k++) {
+                        listAdot.push({checked: true, A: this.ysList[i].A.values[j], B: this.ysList[i].B.values[k]});
+                    }
+                }
+                console.log('listAdot.length='+listAdot.length)
+                this.ysList[i].listAdot = listAdot
+            }
         },
         insertRow(index, index2) {
             // 添加数据列
@@ -643,18 +792,19 @@ var app = new Vue({
                         // 找到对应的行,列修改响应的值
                     this.ysList[i].B.values[index2][index3].value = value;
                 }
-                // let listAdot = ys.listAdot;
-                let dotIndex = this.ysList[index].B.values.length * index2 + index3
-                let dot = ys.listAdot[dotIndex];
                 if(A.index==index){
-                    this.ysList[index].listAdot[dotIndex].A.values[index3] = value
-                    console.log(this.ysList[index].listAdot[dotIndex].A.values)
-                    // dot.A.values[index3] = value
+                    for(let k=0;k<this.ysList[i].B.values.length;k++){
+                        let dotIndex = k+(this.ysList[i].B.values.length*index2);
+                        this.ysList[i].listAdot[dotIndex].A[index3].value = value
+                        console.log(JSON.stringify(this.ysList[i].listAdot[dotIndex].A))
+                    }
                 }
                 if(B.index == index){
-                    this.ysList[index].listAdot[dotIndex].B.values[index3] = value
-                    console.log(this.ysList[index].listAdot[dotIndex].B.values)
-                    // dot.B.values[index3] = value
+                    for(let k=0;k<this.ysList[i].A.values.length;k++){
+                        let dotIndex = k*this.ysList[i].B.values.length+index2;
+                        this.ysList[i].listAdot[dotIndex].B[index3].value = value
+                        console.log(JSON.stringify(this.ysList[i].listAdot[dotIndex].B))
+                    }
                 }
             }
 

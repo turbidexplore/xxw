@@ -42,6 +42,7 @@
   <div class="mt-10"></div>
 
   <div id="myTab2" style="margin-top: 0px;background-color: white;width: 100%; display:flex; flex-direction:row;flex-wrap: wrap" class="bk-gray pd-20">
+    <!--<div id="titleOpenAndClose" class="text-l"> <input type="button" class="btn btn-success radius size-S ml-40" value="展开" click="extendExpress"></input></div>-->
     <div style="width: 49%">
         <H3>表体信息粘贴处<input type="button" class="btn btn-primary radius size-S" value="清空表格" onclick="expressModule.cleanInputExcel()"></input></H3>
         <div class="mt-10 " id="inputExcel"></div>
@@ -50,6 +51,7 @@
       <H3>表头信息粘贴处<input type="button" class="btn btn-primary radius size-S" value="清空表格" onclick="expressModule.cleanInputTitlteExcel()"></input></H3>
       <div class="mt-10" id="inputTitlteExcel"></div>
     </div>
+
   </div>
 </div>
 
@@ -93,7 +95,7 @@
               <input type="button" class="btn btn-primary radius size-S" value="导入" @click.stop="importCol(index)">
               <input type="button" class="btn btn-primary radius size-S" value="导入表头" @click.stop="importTitleCol(index)">
               <input type="button" class="btn btn-primary radius size-S" value="添加列" @click.stop="addCol(index)">
-<!--              <input type="button" class="btn btn-primary radius size-S" value="添加行" @click.stop="addCol(index)">-->
+              <input type="button" class="btn btn-primary radius size-S" value="添加行" @click.stop="addRow(index)">
 
               <!--<input type="button" class="btn btn-danger radius size-S" value="删除列" @click="removeCol(index)">-->
               <b>+</b>
