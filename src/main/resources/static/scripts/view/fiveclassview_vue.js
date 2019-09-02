@@ -720,9 +720,10 @@ var app = new Vue({
                 "processData": false,
                 "data": JSON.stringify({
                     "expList": JSON.stringify(this.expList),
-                    // "skuInfos":JSON.stringify(expressModule.outExcel.getData()),
                     "ysList": JSON.stringify(this.ysList),
-                    "skuRules": JSON.stringify(skuRules)
+                    "skuRules": JSON.stringify(skuRules),
+                    "mainTotalCount":this.mainTotalCount,
+                    "alltotalcount":this.totalCount
                 }),
                 "contentType": "application/json"
             }
@@ -751,8 +752,8 @@ var app = new Vue({
                         let outExcelData = JSON.parse(response.data.skuinfos);
                         expressModule.outExcel.loadData(outExcelData)
                     }
-                    this.mainTotalCount = response.data.maintotalcount
-                    this.totalCount = response.data.alltotalcount
+                    _this.mainTotalCount = response.data.maintotalcount
+                    _this.totalCount = response.data.alltotalcount
                 }
             });
         },

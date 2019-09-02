@@ -10,7 +10,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Component
@@ -223,6 +225,9 @@ public class SkuThread  {
     @Async("asyncServiceSkuinfo")
     public void bdsrun(String uuid, String id, JSONArray skuValuesArr, int i,String pdf) {
         productClassService.updateInfo(id," information=1 ");
+        if(!StringUtils.isEmpty(pdf)){
+            productClassService.updateInfo(id," pdfinfo=1 ");
+        }
         // 保存skuinfo
         SkuInfo skuInfo=new SkuInfo();
         skuInfo.setId(uuid);
@@ -265,6 +270,95 @@ public class SkuThread  {
 
                 skuValues.setIndex(a);
                 skuValuesService.insert(skuValues);
+            }
+        }
+    }
+
+    @Async("asyncServiceExecutorpl")
+    public void saveProductSkuInfos(String classId, JSONArray jsonArray) {
+        productClassService.updateInfo(classId," information=1 ");
+//        pdf继承5级
+
+        // 更新product_class表商业参数
+        List<SkuInfo> skuInfoList = skuService.findByClassid(classId);
+        if (skuInfoList != null && skuInfoList.size() > 0) {
+            for (SkuInfo skuInfo : skuInfoList) {
+                // 表达式下一步的json
+                for (int i = 0; i < jsonArray.size(); i++) {
+                    JSONObject json = jsonArray.getJSONObject(i);
+                    //
+                    int index = json.getInteger("index");
+                    String skuname = json.getString("skuname");
+                    System.out.println("skuname="+skuname);
+                    JSONArray typeValue = json.getJSONArray("typeValue");
+                    JSONArray rules = json.getJSONArray("rules");
+                    for (int j = 0; j < rules.size(); j++) {
+                        JSONObject rule = rules.getJSONObject(j);
+                        List<String> list = new ArrayList<>();
+
+                        for (Map.Entry<String, Object> entry : rule.entrySet()) {
+//                                System.out.println("entry.getValue()="+entry.getValue());
+                            list.add((String) entry.getValue());
+                        }
+                        // 获取表达式
+                        String skuexp = skuInfo.getSkunameexp();
+                        List<String> listName = ExpUtils.extractSkuExpName(skuexp);
+                        String typval = typeValue.getString(j);
+                        boolean isMatch = true;
+                        // 判断表达式是否和型号匹配
+                        for(int jj=0;jj<listName.size();jj++){
+                            if(!StringUtils.isEmpty(list.get(jj))){
+                                if(!listName.get(jj).equals(list.get(jj))){
+                                    isMatch =false;
+                                    break;
+                                }
+                            }
+                        }
+//                            System.out.println("skuname"+skuname+"  listName="+StringUtils.join(listName,"")+"  list="+StringUtils.join(list,""));
+
+                        if (isMatch) {
+                            switch (index){
+                                case 0: skuInfo.setOrigin(typval); // 产地
+                                    break;
+                                case 1: skuInfo.setUnitprice(typval); // 单价
+                                    break;
+                                case 2: skuInfo.setWholesaleprice(typval);   // 批量单价
+                                    break;
+                                case 3: skuInfo.setMpq(typval); // 最小包装量
+                                    break;
+                                case 4: skuInfo.setMoq(typval);   //最小起订量
+                                    break;
+                                case 5: skuInfo.setQualityassurancetime(typval); // 质保时间
+                                    break;
+                                case 6: skuInfo.setSample(typval);   // 样品
+                                    break;
+                                case 7: skuInfo.setZzsample(typval); // 纸质样本
+                                    break;
+                                case 8: skuInfo.setPdf(typval); // pdf样本
+                                    if(!StringUtils.isEmpty(typval)){
+                                        productClassService.updateInfo(classId," pdfinfo=1 ");
+                                    }
+                                    break;
+                                case 9: skuInfo.setSd(typval); // 3D模型
+                                    if(!StringUtils.isEmpty(typval)){
+                                        productClassService.updateInfo(classId," modelb=1 ");
+                                    }
+                                    break;
+                                case 10: skuInfo.setTd(typval); // 2D模型
+                                    if(!StringUtils.isEmpty(typval)) {
+                                        productClassService.updateInfo(classId, " modela=1 ");
+                                    }
+                                    break;
+                                case 11: skuInfo.setVideo(typval); // 产品视频
+                                    break;
+                                case 12: skuInfo.setLogo(typval); // logo
+                                    break;
+                                default: break;
+                            }
+                            skuService.updateSKU(skuInfo);
+                        }
+                    }
+                }
             }
         }
     }

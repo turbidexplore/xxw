@@ -47,12 +47,23 @@ var app = new Vue({
                 rules.push('')
             }
             for (let [key, value] of mapType.entries()) {
+                let tvalue = '';
+                // 质保时间
+                if(key==='1'||key==='2'||key==='5'){
+                    tvalue='不提供';
+                }else if(key==='3'||key==='4'){
+                    // 最小包装量,最小起订量,
+                    tvalue='1';
+                }else if(key==='5'||key==='6'||key==='7'){
+                    tvalue='免费&免运费';
+                }
+
                 this.skuNamesList.push({
                     index:key, // 序号
                     skuname:value.name, // skuname
                     inputtype:value.inputtype, // skunametype
                     typeValues:value.typeValues, // typeValues
-                    typeValue:[''],  // 默认是空
+                    typeValue:[tvalue],  // 默认是空
                     rules:[Object.assign({},rules)] // 默认是SKU规则的长度
                 })
             }

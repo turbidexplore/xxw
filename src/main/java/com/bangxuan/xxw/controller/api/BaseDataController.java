@@ -339,6 +339,8 @@ public class BaseDataController {
             if(expList.getJSONArray("skuInfos")!=null){
                 express.setSkuinfos(expList.getJSONArray("skuInfos").toJSONString());
             }
+            express.setMaintotalcount(expList.getInteger("mainTotalCount"));
+            express.setAlltotalcount(expList.getInteger("alltotalcount"));
             expressService.update(express);
         }else {
             // 保存表达式，保存约束
@@ -355,6 +357,8 @@ public class BaseDataController {
             if(expList.getJSONArray("skuInfos")!=null){
                 express.setSkuinfos(expList.getJSONArray("skuInfos").toJSONString());
             }
+            express.setMaintotalcount(expList.getInteger("mainTotalCount"));
+            express.setAlltotalcount(expList.getInteger("alltotalcount"));
             expressService.insert(express);
         }
 //        System.out.println("ysList="+expList.getJSONArray("ysList"));
@@ -430,8 +434,6 @@ public class BaseDataController {
             skuThread.addBdsSkuValue(uuid,id,i,skuValuesArr,lists);
         }
 
-//        System.out.println("ysList="+expList.getJSONArray("ysList"));
-//        System.out.println("id="+id);
         return Mono.just(Message.SCUESSS("保存成功",0));
     }
 
