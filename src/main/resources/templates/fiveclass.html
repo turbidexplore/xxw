@@ -40,6 +40,7 @@
     <link rel="stylesheet" media="screen" href="/styles/alert.css">
     <link href="/styles/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="/styles/jquery.notebook.css" >
+
     <style type="text/css">
       table.gridtable {
         font-family: verdana,arial,sans-serif;
@@ -62,6 +63,20 @@
         border-style: solid;
         border-color: #666666;
         background-color: #ffffff;
+      }
+      .move_div{
+        display:inline-block;
+      }
+      .move_span{
+        width: 30px;
+        display:inline-block;
+        cursor: pointer;
+      }
+
+      .move_div_span{
+        padding-left: 20px;
+        border: 1px solid gray;
+        margin: 5px;
       }
     </style>
   </head>
@@ -187,7 +202,10 @@
                             <div class="form-row"  >
                               <label>图片信息</label>
                               <div id="imgs"  class="form-group col-md-12">
-                                <img src="https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/images/201906201756133105692658530968103.png" width="20px;" style="margin-top: 30px;" ><span style="margin-top: 30px;">粘贴处</span>
+                                <div style="float: left">
+                                  <img src="https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/images/201906201756133105692658530968103.png" width="20px;" style="margin-top: 30px;" >
+                                  <span style="margin-top: 30px;">粘贴处</span>
+                                </div>
                               </div>
                             </div>
                             <div class="form-row"  >
@@ -199,7 +217,7 @@
                                   <select id="lv2" onchange="changevalue('lv3','',this)">
                                     <option value="">无</option>
                                   </select>
-                                  <select id="lv3">
+                                  <select id="lv3" onchange="changeLast(this)">
                                     <option value="">无</option>
                                   </select>
                               </div>

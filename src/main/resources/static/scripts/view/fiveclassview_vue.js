@@ -283,7 +283,7 @@ var app = new Vue({
                         listAdot.push({checked: true, A: this.ysList[i].A.values[j], B: this.ysList[i].B.values[k]});
                     }
                 }
-                console.log('listAdot.length='+listAdot.length)
+                // console.log('listAdot.length='+listAdot.length)
                 this.ysList[i].listAdot = listAdot
             }
         },
@@ -433,7 +433,7 @@ var app = new Vue({
             let formatCartesianArr = this.formatCartesian(skuinfos);
             outExcelData = outExcelData.concat(formatCartesianArr)
             this.mainTotalCount = formatCartesianArr.length
-            this.allDescartes()
+            // this.allDescartes()
             return outExcelData;
         },
         formatCartesian(skuinfos) {
@@ -647,7 +647,7 @@ var app = new Vue({
         addYs(index, index1, index2) {
             let dotIndex = this.ysList[index].B.values.length * index1 + index2;
             this.ysList[index].listAdot[dotIndex].checked = !this.ysList[index].listAdot[dotIndex].checked;
-            console.log('addYs='+JSON.stringify(this.ysList[index].listAdot[dotIndex]));
+            // console.log('addYs='+JSON.stringify(this.ysList[index].listAdot[dotIndex]));
         },
         extendExpress() {
             // 展开全部表达式
@@ -773,11 +773,11 @@ var app = new Vue({
             }
         },
         changeValue(index,index2,index3){
-            console.log("index="+index);
-            console.log("index2="+index2);
-            console.log("index3="+index3);
+            // console.log("index="+index);
+            // console.log("index2="+index2);
+            // console.log("index3="+index3);
             let value = this.$refs[`expListValue${index}_${index2}_${index3}`][0].value;
-            console.log('value='+value)
+            // console.log('value='+value)
             //找到约束，修改约束内的数据
             for(let i=0;i<this.ysList.length;i++){
                 let ys = this.ysList[i];
@@ -796,14 +796,14 @@ var app = new Vue({
                     for(let k=0;k<this.ysList[i].B.values.length;k++){
                         let dotIndex = k+(this.ysList[i].B.values.length*index2);
                         this.ysList[i].listAdot[dotIndex].A[index3].value = value
-                        console.log(JSON.stringify(this.ysList[i].listAdot[dotIndex].A))
+                        // console.log(JSON.stringify(this.ysList[i].listAdot[dotIndex].A))
                     }
                 }
                 if(B.index == index){
                     for(let k=0;k<this.ysList[i].A.values.length;k++){
                         let dotIndex = k*this.ysList[i].B.values.length+index2;
                         this.ysList[i].listAdot[dotIndex].B[index3].value = value
-                        console.log(JSON.stringify(this.ysList[i].listAdot[dotIndex].B))
+                        // console.log(JSON.stringify(this.ysList[i].listAdot[dotIndex].B))
                     }
                 }
             }
@@ -840,6 +840,10 @@ ExpressModule.prototype.descartes = function () {
         this.outExcel.loadData(outExcelData)
     }
 }
+ExpressModule.prototype.allDescartes = function () {
+    app.allDescartes();
+}
+
 ExpressModule.prototype.initData = function () {
 
     // var dd = [["", "", "", "", ""]];

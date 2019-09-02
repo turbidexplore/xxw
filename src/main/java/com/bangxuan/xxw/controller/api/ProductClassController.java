@@ -178,7 +178,6 @@ public class ProductClassController {
         jsonObject.getJSONArray("imgs").forEach(img -> {
             productClassService.addImage(jsonObject.getString("id"), img.toString());
         });
-
         return Mono.just(Message.SCUESSS("ok", null));
     }
 

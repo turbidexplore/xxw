@@ -223,8 +223,11 @@ $.ajax(settings).done(function (response) {
     }
 
     response.data.images.forEach(function (value){
-        $("#imgs").append("<div onclick='rmimgs(this)'  style='float: left;margin: 10px;'><input type='hidden' value='" + value.url + "'><img src=\"https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/images/" +value.url+ "\" alt=\"logo\"  width=\"80px;\"></div>");
+        var index =$(".move_div").length;
+        $("#imgs").append("<div class='move_div' ondblclick='rmimgs(this)'><div class='drag'   style='float: left;margin: 10px;'><input type='hidden' value='" + value.url + "'><img src=\"https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/images/" +value.url+ "\" alt=\"logo\"  width=\"80px;\">" +
+            "</div><div class='move_div_span'><span class='move_span' onclick='moveLeft(this)'><</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='move_span' onclick='moveRight(this)'>></span></div></div>");
 
+        reIndex();
     });
 
 
@@ -243,6 +246,7 @@ var index=0;
 
 function rmimgs(my) {
     $(my).remove();
+    reIndex();
 }
 
 
@@ -280,7 +284,9 @@ function upload(fileList) {
                 'Access-Control-Allow-Credentials': 'true'
             },
             success: function(result){
-                $("#imgs").append("<div onclick='rmimgs(this)'  style='float: left;margin: 10px;'><input type='hidden' value='" + result.data + "'><img src=\"https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/images/" +result.data+ "\" alt=\"logo\"  width=\"80px;\"></div>");
+                $("#imgs").append("<div class='move_div' ondblclick='rmimgs(this)'><div style='float: left;margin: 10px;'><input type='hidden' value='" + result.data + "'><img src=\"https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/product_class/images/" +result.data+ "\" alt=\"logo\"  width=\"80px;\"></div>" +
+                    "<div class='move_div_span'><span class='move_span' onclick='moveLeft(this)'><</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='move_span' onclick='moveRight(this)'>></span></div></div>");
+                reIndex();
             },
             error: function(){
                 alert("上传图片错误");
@@ -452,3 +458,47 @@ function changevalue(type,ntype,obj) {
 
     });
 }
+
+// 行业信息，三级变化时，带出产品简介
+function changeLast(obj){
+    console.log(obj.value)
+}
+
+$('#imgs .drag').each(function(index){
+    $(this).myDrag({
+        direction:'x'
+    });
+});
+
+function moveLeft(obj) {
+    var index = $(obj).parent().parent().attr("index")
+    var htmlCurrent = $(".move_div:eq("+index+")").html();
+    var htmlleft = $(".move_div:eq("+(parseInt(index)-1)+")").html();
+    $(".move_div:eq("+index+")").html(htmlleft);
+    $(".move_div:eq("+(parseInt(index)-1)+")").html(htmlCurrent);
+}
+
+function moveRight(obj) {
+    var index = $(obj).parent().parent().attr("index")
+    console.log("index="+index)
+    var htmlCurrent = $(".move_div:eq("+index+")").html();
+    var htmlright = $(".move_div:eq("+(parseInt(index)+1)+")").html();
+    $(".move_div:eq("+index+")").html(htmlright);
+    $(".move_div:eq("+(parseInt(index)+1)+")").html(htmlCurrent);
+}
+//重新计算序号
+function reIndex(){
+    $.each($(".move_div"), function(i,val){
+        $(this).attr("index",i);
+    });
+}
+
+// $(".form-row").myDrag({
+//     parent:'parent', //定义拖动不能超出的外框,拖动范围
+//     randomPosition:true, //初始化随机位置
+//     direction:'all', //方向
+//     handler:false, //把手
+//     dragStart:function(x,y){}, //拖动开始 x,y为当前坐标
+//     dragEnd:function(x,y){}, //拖动停止 x,y为当前坐标
+//     dragMove:function(x,y){} //拖动进行中 x,y为当前坐标
+// });
