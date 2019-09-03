@@ -5,7 +5,7 @@ mapType.set('1',{name:'样品单价',inputtype:0});
 mapType.set('2',{name:'批量单价',inputtype:0});
 mapType.set('3',{name:'最小包装量',inputtype:0});
 mapType.set('4',{name:'最小起订量',inputtype:0});
-mapType.set('5',{name:'质保时间',inputtype:1,typeValues:[{name:'不提供',value:'不提供'},{name:'12个月',value:'12个月'},{name:'24个月',value:'24个月'},{name:'36个月',value:'36个月'},{name:'36+',value:'36+'},{name:'终身质保',value:'终身质保'}]});
+mapType.set('5',{name:'质保时间',inputtype:1,typeValues:[{name:'未提供',value:'未提供'},{name:'12个月',value:'12个月'},{name:'24个月',value:'24个月'},{name:'36个月',value:'36个月'},{name:'36+',value:'36+'},{name:'终身质保',value:'终身质保'}]});
 mapType.set('6',{name:'样品',inputtype:1,typeValues:[{name:'免费&免运费',value:'免费&免运费'},{name:'免费&运费到付',value:'免费&运费到付'},{name:'收费&免运费',value:'收费&免运费'},{name:'收费&运费到付',value:'收费&运费到付'}]});
 mapType.set('7',{name:'纸质样本',inputtype:1,typeValues:[{name:'免费&免运费',value:'免费&免运费'},{name:'免费&运费到付',value:'免费&运费到付'}]});
 mapType.set('8',{name:'pdf样本',inputtype:2});
@@ -49,8 +49,10 @@ var app = new Vue({
             for (let [key, value] of mapType.entries()) {
                 let tvalue = '';
                 // 质保时间
-                if(key==='1'||key==='2'||key==='5'){
-                    tvalue='不提供';
+                if(key==='1'||key==='2'){
+                    tvalue='未提供';
+                }else if(key==='5'){
+                    tvalue='12个月';
                 }else if(key==='3'||key==='4'){
                     // 最小包装量,最小起订量,
                     tvalue='1';

@@ -958,12 +958,12 @@ CartesianModule.prototype.multiCartesian = function (data) {
 }
 
 // var tab_top = $('.tab-list-contain').offset().top-$('#myTab2').height();
-$(window).scroll(function () {
-    var scroH = $(this).scrollTop();
-    if(scroH > 0){
-        $('#myTab2').addClass("pos_fixed");
-    }else{
-        $('#myTab2').removeClass("pos_fixed");
-    }
-});
+// $(window).scroll(function () {
+//     var scroH = $(this).scrollTop();
+//     if(scroH > 0){
+//         $('#myTab2').addClass("pos_fixed");
+//     }else{
+//         $('#myTab2').removeClass("pos_fixed");
+//     }
+// });
 
