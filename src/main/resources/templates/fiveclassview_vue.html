@@ -168,6 +168,8 @@
           <div class="Huialert Huialert-info">{{ys.A.name}}和{{ys.B.name}}的约束关系
             <input type="button" class="btn btn-primary radius size-S" value="移除约束" @click="deleteYueSu(index)"></input>
             <input type="button" class="btn btn-primary radius size-S" value="全选反选" @click="fullBackYueSu(index)"></input>
+              <input type="button" class="btn btn-primary radius size-S" value="上三角" @click="fullTop3YueSu(index)"></input>
+              <input type="button" class="btn btn-primary radius size-S" value="下三角" @click="fullBottom3YueSu(index)"></input>
 <!--            <input type="button" class="btn btn-primary radius size-S" value="重新生成" @click="fullBackYueSu(index)"></input>-->
           </div>
           <table  class="table table-border table-bordered table-striped">
