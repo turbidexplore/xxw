@@ -649,6 +649,19 @@ var app = new Vue({
             for (let i = 0; i < listAdot.length; i++) {
                 listAdot[i].checked = false;
             }
+            for(let i=0;i<this.ysList[index].A.values.length;i++){
+                for(let j=this.ysList[index].B.values.length-1;j>=i;j--){
+                    let dotindex = i*this.ysList[index].A.values.length+j;
+                    listAdot[dotindex].checked = true;
+                }
+            }
+        },
+        fullBottom3YueSu(index) {
+
+            let listAdot = this.ysList[index].listAdot;
+            for (let i = 0; i < listAdot.length; i++) {
+                listAdot[i].checked = false;
+            }
 
             for(let i=0;i<this.ysList[index].A.values.length;i++){
                 for(let j=0;j<=i;j++){
@@ -656,16 +669,6 @@ var app = new Vue({
                     listAdot[dotindex].checked = true;
                     console.log('i='+i+'j='+j+' dotindex='+dotindex)
                 }
-            }
-            // let listAdot = this.ysList[index].listAdot;
-            // for (let i = 0; i < listAdot.length; i++) {
-            //     listAdot[i].checked = !listAdot[i].checked;
-            // }
-        },
-        fullBottom3YueSu(index) {
-            let listAdot = this.ysList[index].listAdot;
-            for (let i = 0; i < listAdot.length; i++) {
-                listAdot[i].checked = !listAdot[i].checked;
             }
         },
         addYs(index, index1, index2) {
