@@ -42,6 +42,14 @@ public class User {
 
     private String company_area;
 
+    private String company_country_name;
+
+    private String company_province_name;
+
+    private String company_city_name;
+
+    private String company_area_name;
+
     private String company_name;
 
     private String company_address;
@@ -218,6 +226,38 @@ public class User {
 
     public void setYbcount(int ybcount) {
         this.ybcount = ybcount;
+    }
+
+    public String getCompany_country_name() {
+        return company_country_name;
+    }
+
+    public void setCompany_country_name(String company_country_name) {
+        this.company_country_name = company_country_name;
+    }
+
+    public String getCompany_province_name() {
+        return company_province_name;
+    }
+
+    public void setCompany_province_name(String company_province_name) {
+        this.company_province_name = company_province_name;
+    }
+
+    public String getCompany_city_name() {
+        return company_city_name;
+    }
+
+    public void setCompany_city_name(String company_city_name) {
+        this.company_city_name = company_city_name;
+    }
+
+    public String getCompany_area_name() {
+        return company_area_name;
+    }
+
+    public void setCompany_area_name(String company_area_name) {
+        this.company_area_name = company_area_name;
     }
 }
 

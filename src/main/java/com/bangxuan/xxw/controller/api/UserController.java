@@ -1,6 +1,8 @@
 package com.bangxuan.xxw.controller.api;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.bangxuan.xxw.service.AreaService;
 import com.bangxuan.xxw.util.Message;
 import com.bangxuan.xxw.entity.User;
 import com.bangxuan.xxw.service.UserSecurityService;
@@ -14,7 +16,7 @@ import reactor.core.publisher.Mono;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-@Api(description = "ProductClass接口")
+@Api(description = "UserController接口")
 @RestController
 @RequestMapping("/user")
 @CrossOrigin
@@ -25,6 +27,9 @@ public class UserController {
 
     @Autowired
     private UserSecurityService userSecurityService;
+
+    @Autowired
+    private AreaService areaService;
 
     @PutMapping("/update")
     public Mono<Message> update(Principal principal,@RequestBody User user){
@@ -37,6 +42,30 @@ public class UserController {
         try {
             if(principal!=null){
                 User user= userService.get(principal.getName());
+                // 国家
+                JSONObject jsonCountry = areaService.getById(user.getCompany_country());
+                if(jsonCountry!=null){
+                    user.setCompany_country_name(jsonCountry.getString("area_name"));
+                }
+
+                //省
+                JSONObject jsonProvince = areaService.getById(user.getCompany_province());
+                if(jsonProvince!=null){
+                    user.setCompany_province_name(jsonProvince.getString("area_name"));
+                }
+
+                //城市
+                JSONObject jsonCity = areaService.getById(user.getCompany_city());
+                if(jsonCity!=null){
+                    user.setCompany_city_name(jsonCity.getString("area_name"));
+                }
+
+                //区域
+                JSONObject jsonArea = areaService.getById(user.getCompany_area());
+                if(jsonArea!=null){
+                    user.setCompany_area_name(jsonArea.getString("area_name"));
+                }
+
                 user.setMobile(principal.getName());
                 return Mono.just(Message.SCUESSS(Message.SECUESS,user));
             }else{

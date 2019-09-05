@@ -24,4 +24,7 @@ public interface ExpressMapper {
 
     @Select("SELECT (SUM(alltotalcount)-SUM(maintotalcount)) amount from gy_class_express ")
     Integer getAmount();
+
+    @Select("select id,classid,expressjson,ysjson,maintotalcount,alltotalcount from gy_class_express where classid = #{classId} ")
+    Express getShortExpressByClassId(@Param("classId")String classId);
 }

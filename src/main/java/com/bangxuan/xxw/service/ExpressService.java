@@ -30,4 +30,9 @@ public class ExpressService {
     public Integer getAmount() {
         return this.expressMapper.getAmount();
     }
+
+    public Express getShortExpressByClassId(String classId) {
+        Express express = expressMapper.getShortExpressByClassId(classId);
+        return express;
+    }
 }

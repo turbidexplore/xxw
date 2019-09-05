@@ -317,7 +317,24 @@ public class BaseDataController {
         if(express==null){
             return Mono.just(Message.ERROR("暂无数据"));
         }else{
-            return Mono.just(Message.SCUESSS("ok",expressService.getByClassId(classId)));
+            return Mono.just(Message.SCUESSS("ok",express));
+        }
+    }
+
+    @GetMapping("/getshortexpressbyclassid")
+    public Mono<Message> getshortexpressbyclassid(@RequestParam("classId")String classId){
+        Express express = expressService.getShortExpressByClassId(classId);
+        if(express==null){
+            return Mono.just(Message.ERROR("暂无数据"));
+        }else{
+            Map<String,Object> data = new HashMap<>();
+            data.put("id",express.getId());
+            data.put("classid",express.getClassid());
+            data.put("expressjson",express.getExpressjson());
+            data.put("ysjson",express.getYsjson());
+            data.put("maintotalcount",express.getMaintotalcount());
+            data.put("alltotalcount",express.getAlltotalcount());
+            return Mono.just(Message.SCUESSS("ok",data));
         }
     }
 

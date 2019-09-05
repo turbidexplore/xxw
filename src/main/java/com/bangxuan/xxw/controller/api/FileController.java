@@ -1,5 +1,6 @@
 package com.bangxuan.xxw.controller.api;
 
+import cn.hutool.core.io.FileUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.bangxuan.xxw.service.DaypdfCountService;
 import com.bangxuan.xxw.service.FileService;
@@ -13,7 +14,9 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 ;
 
@@ -36,6 +39,29 @@ public class FileController {
     public Mono<Message> images(@RequestParam("file") MultipartFile filePart) {
         try {
             return Mono.just(Message.SCUESSS("上传成功", "https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/public/"+fileService.images(filePart,"public/")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @PostMapping(value = "/uploadMulti")
+    public Mono<Message> images(@RequestParam("file") MultipartFile[] fileParts) {
+        try {
+            List<String> files=new ArrayList<>();
+            for (int i=0;i<fileParts.length;i++){
+                String fileName =  fileParts[i].getOriginalFilename();
+                // 获取pdf语言版本
+//                "https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/public/"
+                String lang = "CN";
+                String fileMainName = FileUtil.mainName(fileName);
+                if (fileMainName.matches(".*-([A-Z]{2})$")) {
+                    lang = fileMainName.replaceAll(".*-([A-Z]{2})$", "$1");
+                }
+                files.add(fileService.images(fileParts[i],"public/")+"_"+lang);
+            }
+            return Mono.just(Message.SCUESSS("上传成功",files));
+//          return Mono.just(Message.SCUESSS("上传成功", "https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/public/"+fileService.images(filePart,"public/")));
         } catch (IOException e) {
             e.printStackTrace();
         }

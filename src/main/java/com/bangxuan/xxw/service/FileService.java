@@ -1,5 +1,6 @@
 package com.bangxuan.xxw.service;
 
+import cn.hutool.core.io.FileUtil;
 import com.bangxuan.xxw.util.CodeLib;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.model.PutObjectRequest;
@@ -24,8 +25,8 @@ public class FileService {
     public String images(MultipartFile multipartFile,String path) throws IOException {
         if (multipartFile != null) {
             if (multipartFile.getOriginalFilename() != null || "".equals(multipartFile.getOriginalFilename())) {
-                String[] name = multipartFile.getOriginalFilename().split("\\.");
-                    File file = File.createTempFile(CodeLib.getSHC() ,"."+name[1]);
+//                String[] name = multipartFile.getOriginalFilename().split("\\.");
+                    File file = File.createTempFile(CodeLib.getSHC() ,"."+ FileUtil.extName(multipartFile.getOriginalFilename()));
                     multipartFile.transferTo(file);
                     String bucketName =tencentOSS.QCLOUD_FILE_BUCKET;
                     String key = path+file.getName();

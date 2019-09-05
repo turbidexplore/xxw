@@ -16,4 +16,8 @@ public class AreaService {
     public List<JSONObject> getByPid(String pid){
         return areaMapper.getByPid(pid);
     }
+
+    public JSONObject getById(String id){
+        return areaMapper.getById(id);
+    }
 }

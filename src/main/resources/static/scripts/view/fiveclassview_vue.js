@@ -497,7 +497,7 @@ var app = new Vue({
                         let A = removeList[j].A;
                         let B = removeList[j].B;
                         let dot = removeList[j].dot;
-                        if(skuNameItem[A.index]==(this.expList[A.index].symob+'{'+ dot.A[0].value+'}')&&skuNameItem[B.index]==(this.expList[A.index]+'{'+dot.B[0].value+'}')){
+                        if(skuNameItem[A.index]==(this.expList[A.index].symob+'{'+ dot.A[0].value+'}')&&skuNameItem[B.index]==(this.expList[B.index].symob+'{'+dot.B[0].value+'}')){
                             isSureMove = true;
                         }
                     }

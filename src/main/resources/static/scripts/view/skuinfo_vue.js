@@ -114,17 +114,56 @@ var app = new Vue({
             }
 
             var form = new FormData();
-            form.append('file', photoFile.files[0]); // 第三个参数为文件名
+            for(var i=0;i<photoFile.files.length;i++){
+                form.append('file', photoFile.files[i]); // 第三个参数为文件名
+            }
+
             $.ajax({
                 type: 'POST',
-                url : "/file/upload",
+                url : "/file/uploadMulti",
                 data: form ,
                 processData: false,
                 contentType: false,
             }).done(function(result) {
-                _this.skuNamesList[index].typeValue[index2]=result.data
+                console.log(result.data.join(","))
+                _this.skuNamesList[index].typeValue[index2]=_this.skuNamesList[index].typeValue[index2]+";"+result.data.join(";")
+                _this.renderFileList(index,index2);
+                console.log("上传成功！"+_this.skuNamesList[index].typeValue[index2]);
                 alert("上传成功！");
             });
+        },
+        removeFile(index,index2,fileName){
+            let newList = _this.skuNamesList[index].typeValue[index2].split(";");
+            for(let k=0;k<newList.length;k++){
+                let fileIndex = newList[k].indexOf(fileName);
+                if (fileIndex > -1) {
+                    newList.splice(fileIndex, 1);
+                    break;
+                }
+            }
+            _this.skuNamesList[index].typeValue[index2] = newList.join(";")
+            _this.renderFileList(index,index2);
+        },
+        renderFileList(index,index2){
+            let _this = this;
+            let resList =[];
+            let newList = _this.skuNamesList[index].typeValue[index2].split(";");
+            for(let k=0;k<newList.length;k++){
+                let fileName = newList[k].split("_")[0];
+                if(fileName.indexOf('cos.ap-shanghai.myqcloud')!=-1){
+                    resList.push("<p><a target='_blank' href='"+fileName+"'>"+fileName+"</a><span onclick='removeFile("+index+","+index2+",\""+fileName+"\")'>删除</span></p>")
+                }else{
+                    resList.push("<p><a target='_blank' href='https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/public/"+fileName+"'>"+fileName+"</a><span onclick='removeFile("+index+","+index2+",\""+fileName+"\")'>删除</span></p>")
+                }
+            }
+            _this.$refs[`fileValue${index}_${index2}`][0].innerHTML=resList.join("")//result.data.join(";")
+        },
+        getFiles(files){
+            let newList = files.split(";");
+            return newList;
+        },
+        splitFileName(fileName){
+            return fileName.split("_")[0];
         }
     },
     created: function () {
@@ -147,3 +186,10 @@ var app = new Vue({
         });
     }
 })
+
+function removeFile(index,index2,fileName) {
+    app.removeFile(index,index2,fileName);
+    // console.log(index);
+    // console.log(index2);
+    // console.log(fileName);
+}

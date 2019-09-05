@@ -27,7 +27,7 @@ import reactor.core.publisher.Mono;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.UUID;
-@Api(description = "ProductClass接口")
+@Api(description = "usersecurity接口")
 @RestController
 @RequestMapping("/usersecurity")
 @CrossOrigin

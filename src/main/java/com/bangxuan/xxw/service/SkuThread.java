@@ -337,6 +337,7 @@ public class SkuThread  {
                                 case 8: skuInfo.setPdf(typval); // pdf样本
                                     if(!StringUtils.isEmpty(typval)){
                                         productClassService.updateInfo(classId," pdfinfo=1 ");
+                                        //
                                     }
                                     break;
                                 case 9: skuInfo.setSd(typval); // 3D模型

@@ -28,6 +28,14 @@
             -moz-font-feature-settings: 'liga';
             -moz-osx-font-smoothing: grayscale;
         }
+        .fileList p{
+            margin-top: 0px;
+            margin-bottom: 0px;
+            font-size: 12px;
+        }
+        .fileList span{
+            color: red;
+        }
 
     </style>
     <link rel="stylesheet" href="/styles/bootstrap.min.css">
@@ -211,8 +219,18 @@
                                                     </select>
                                                 </div>
                                                 <div v-if="item.inputtype===2">
-                                                    <input type='file' @change="uploadFile($event,index,index2)"/>
-                                                    <p><input type="hidden" v-model="skuNamesList[index].typeValue[index2]"/></p>
+                                                    <input type='file' @change="uploadFile($event,index,index2)" multiple/>
+                                                    <div class="fileList" :ref="`fileValue${index}_${index2}`" >
+                                                        <p v-for="(value,index3) in getFiles(skuNamesList[index].typeValue[index2])">
+                                                            <a v-if="value.indexOf('cos.ap-shanghai.myqcloud')!=-1" target="_blank" :href="splitFileName(value)">
+                                                                {{splitFileName(value)}}
+                                                            </a>
+                                                            <a v-else target="_blank" :href="'https://web-site-1252739071.cos.ap-shanghai.myqcloud.com/public/'+splitFileName(value)">
+                                                                {{splitFileName(value)}}
+                                                            </a>
+                                                            <span v-if="value!=null&&value.lenght>0" @click='removeFile(index,index2,value)'>删除</span>
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </td>
                                             <td style='padding: 2px 10px'>

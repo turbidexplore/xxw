@@ -14,4 +14,7 @@ public interface AreaMapper {
 
     @Select("select * from gy_sys_area where parent_id=#{pid}")
     List<JSONObject> getByPid(@Param("pid")String pid);
+
+    @Select("select * from gy_sys_area where id=#{id}")
+    JSONObject getById(@Param("id")String id);
 }
